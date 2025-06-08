@@ -1,0 +1,357 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */; };
+		2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0EF879D78D1A817387F248 /* GlucoseReading.swift */; };
+		5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5722274D1D9F9DA35BFB627E /* OnboardingView.swift */; };
+		733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */; };
+		7ACFF396C8EA7EC570F0B5B8 /* ExerciseEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */; };
+		81588D4297680F710069B55E /* ReverseItApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */; };
+		860E41C94CDE6C05562BC367 /* FoodEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C9C3124625C294D00645F1 /* FoodEntry.swift */; };
+		8A2672B11E3745096AC5522E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EE708AF498E4F3709E77CF /* SettingsView.swift */; };
+		924907CE22457B576B29328F /* GlucoseLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */; };
+		994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E9EA8BD8F74342ECD61D8 /* FoodLogView.swift */; };
+		A9B38B4F1E1DFEBBE921258E /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219990FF657DA029A6DCDFCD /* UserProfile.swift */; };
+		AE468A8D7F4EFC9466868253 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9BF898ABDA316E1B8D5C8B /* ContentView.swift */; };
+		EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF0A7BEB791801FABEE09D /* DashboardView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		08EE708AF498E4F3709E77CF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0F0EF879D78D1A817387F248 /* GlucoseReading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseReading.swift; sourceTree = "<group>"; };
+		1C9BF898ABDA316E1B8D5C8B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		219990FF657DA029A6DCDFCD /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		2BBD898F491C85DF3E0BAFA1 /* ReverseIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReverseIt.entitlements; sourceTree = "<group>"; };
+		431E9EA8BD8F74342ECD61D8 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
+		4FBF0A7BEB791801FABEE09D /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		5722274D1D9F9DA35BFB627E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseLogView.swift; sourceTree = "<group>"; };
+		860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseItApp.swift; sourceTree = "<group>"; };
+		8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReverseItApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0C9C3124625C294D00645F1 /* FoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEntry.swift; sourceTree = "<group>"; };
+		E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogView.swift; sourceTree = "<group>"; };
+		E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntry.swift; sourceTree = "<group>"; };
+		EF00942187A5F9C384D69EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		23B6061B5E4E04B1C4A619FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */,
+				C0C9C3124625C294D00645F1 /* FoodEntry.swift */,
+				0F0EF879D78D1A817387F248 /* GlucoseReading.swift */,
+				219990FF657DA029A6DCDFCD /* UserProfile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		32CD1876439FFC958CC845D1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1C9BF898ABDA316E1B8D5C8B /* ContentView.swift */,
+				4FBF0A7BEB791801FABEE09D /* DashboardView.swift */,
+				E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */,
+				431E9EA8BD8F74342ECD61D8 /* FoodLogView.swift */,
+				7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */,
+				5722274D1D9F9DA35BFB627E /* OnboardingView.swift */,
+				08EE708AF498E4F3709E77CF /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		33602058979C99E192833C20 /* ReverseItApp */ = {
+			isa = PBXGroup;
+			children = (
+				EF00942187A5F9C384D69EA8 /* Info.plist */,
+				2BBD898F491C85DF3E0BAFA1 /* ReverseIt.entitlements */,
+				860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */,
+				23B6061B5E4E04B1C4A619FD /* Models */,
+				710E98172EC3AA16151FC3D5 /* Services */,
+				32CD1876439FFC958CC845D1 /* Views */,
+			);
+			path = ReverseItApp;
+			sourceTree = "<group>";
+		};
+		40814960CB88E3B439203CEA = {
+			isa = PBXGroup;
+			children = (
+				33602058979C99E192833C20 /* ReverseItApp */,
+				6CAB7B523697A5781015B460 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6CAB7B523697A5781015B460 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		710E98172EC3AA16151FC3D5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		831AE609096A4AC1B1C7FACB /* ReverseItApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96F63DDDF706A84498FF3627 /* Build configuration list for PBXNativeTarget "ReverseItApp" */;
+			buildPhases = (
+				282B0C0173FC1D6F0611BC03 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReverseItApp;
+			packageProductDependencies = (
+			);
+			productName = ReverseItApp;
+			productReference = 8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EC6D3FF64E473E891E32EF93 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = EC75049C976FEB94DBF349AC /* Build configuration list for PBXProject "ReverseItApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 40814960CB88E3B439203CEA;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				831AE609096A4AC1B1C7FACB /* ReverseItApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		282B0C0173FC1D6F0611BC03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE468A8D7F4EFC9466868253 /* ContentView.swift in Sources */,
+				EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */,
+				7ACFF396C8EA7EC570F0B5B8 /* ExerciseEntry.swift in Sources */,
+				733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */,
+				860E41C94CDE6C05562BC367 /* FoodEntry.swift in Sources */,
+				994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */,
+				924907CE22457B576B29328F /* GlucoseLogView.swift in Sources */,
+				2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */,
+				0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */,
+				5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */,
+				81588D4297680F710069B55E /* ReverseItApp.swift in Sources */,
+				8A2672B11E3745096AC5522E /* SettingsView.swift in Sources */,
+				A9B38B4F1E1DFEBBE921258E /* UserProfile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1F4179FCAF860A2CD77ECBE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		72CF38C4FD7A39CE8768F3E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B84275758650D92E6714C236 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReverseItApp/ReverseIt.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = S927NCGL3V;
+				INFOPLIST_FILE = ReverseItApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.diabetesapp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E58CA532A741DD822710745C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReverseItApp/ReverseIt.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = S927NCGL3V;
+				INFOPLIST_FILE = ReverseItApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.diabetesapp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		96F63DDDF706A84498FF3627 /* Build configuration list for PBXNativeTarget "ReverseItApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B84275758650D92E6714C236 /* Debug */,
+				E58CA532A741DD822710745C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EC75049C976FEB94DBF349AC /* Build configuration list for PBXProject "ReverseItApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F4179FCAF860A2CD77ECBE7 /* Debug */,
+				72CF38C4FD7A39CE8768F3E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EC6D3FF64E473E891E32EF93 /* Project object */;
+}

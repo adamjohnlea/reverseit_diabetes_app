@@ -1,0 +1,37 @@
+name: ReverseItApp
+options:
+  bundleIdPrefix: com.reverseit
+  deploymentTarget:
+    iOS: 17.0 # Required for SwiftData
+targets:
+  ReverseItApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: ReverseItApp
+    entitlements:
+      path: ReverseItApp/ReverseIt.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: [health-records]
+    settings:
+      base:
+        INFOPLIST_FILE: ReverseItApp/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.reverseit.diabetesapp
+    info:
+      path: ReverseItApp/Info.plist
+      properties:
+        CFBundleDisplayName: ReverseIt!
+        UILaunchStoryboardName: LaunchScreen
+        LSRequiresIPhoneOS: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: true
+        NSHealthShareUsageDescription: ReverseIt requires access to your health data to help track your progress
+        NSHealthUpdateUsageDescription: ReverseIt needs to save health data to track your progress
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight

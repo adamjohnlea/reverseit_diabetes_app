@@ -4,7 +4,7 @@ import HealthKit
 
 struct OnboardingView: View {
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var healthKitManager: HealthKitManager
+    @Environment(HealthKitManager.self) private var healthKitManager
     @State private var currentPage = 0
     @State private var name = ""
     @State private var age = ""
@@ -130,7 +130,8 @@ struct OnboardingView: View {
                     } else {
                         Button(healthKitManager.isHealthKitAuthorized ? "Continue" : "Allow Health Access") {
                             if healthKitManager.isHealthKitAuthorized {
-                                healthKitManager.importDataFromHealthKit(modelContext: modelContext) { success in
+                                Task {
+                                    let success = await healthKitManager.importDataFromHealthKit(modelContext: modelContext)
                                     if !success {
                                         alertMessage = "Failed to import health data. You can try again later in settings."
                                         showAlert = true
@@ -139,13 +140,21 @@ struct OnboardingView: View {
                                 }
                             } else {
                                 isHealthKitAuthorizing = true
-                                healthKitManager.requestAuthorization { success, error in
-                                    isHealthKitAuthorizing = false
-                                    if !success {
+                                Task {
+                                    do {
+                                        let success = try await healthKitManager.requestAuthorization()
+                                        isHealthKitAuthorizing = false
+                                        if !success {
+                                            alertMessage = "Unable to access Health data. You can enable this later in settings."
+                                            showAlert = true
+                                        }
+                                        completeOnboarding()
+                                    } catch {
+                                        isHealthKitAuthorizing = false
                                         alertMessage = "Unable to access Health data. You can enable this later in settings."
                                         showAlert = true
+                                        completeOnboarding()
                                     }
-                                    completeOnboarding()
                                 }
                             }
                         }

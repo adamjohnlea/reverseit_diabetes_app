@@ -3,12 +3,14 @@ import HealthKit
 import SwiftUI
 import SwiftData
 
-class HealthKitManager: ObservableObject {
+@MainActor
+@Observable
+class HealthKitManager {
     static let shared = HealthKitManager()
     
     private let healthStore: HKHealthStore?
     
-    @Published var isHealthKitAuthorized = false
+    var isHealthKitAuthorized = false
     
     // Health data types we want to read from HealthKit
     private let readTypes: Set<HKObjectType> = [
@@ -35,7 +37,7 @@ class HealthKitManager: ObservableObject {
     private var lastFetchDate: Date?
     private let minimumFetchInterval: TimeInterval = 60 // 1 minute
     
-    init() {
+    nonisolated init() {
         // Check if HealthKit is available on this device
         if HKHealthStore.isHealthDataAvailable() {
             healthStore = HKHealthStore()
@@ -45,16 +47,21 @@ class HealthKitManager: ObservableObject {
     }
     
     // Request authorization for HealthKit
-    func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
+    func requestAuthorization() async throws -> Bool {
         guard let healthStore = healthStore else {
-            completion(false, nil)
-            return
+            return false
         }
         
-        healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { success, error in
-            DispatchQueue.main.async {
-                self.isHealthKitAuthorized = success
-                completion(success, error)
+        return try await withCheckedThrowingContinuation { continuation in
+            healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { [weak self] success, error in
+                Task { @MainActor in
+                    self?.isHealthKitAuthorized = success
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume(returning: success)
+                    }
+                }
             }
         }
     }
@@ -69,42 +76,40 @@ class HealthKitManager: ObservableObject {
         let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!
         let status = healthStore.authorizationStatus(for: bloodGlucoseType)
         
-        DispatchQueue.main.async {
-            self.isHealthKitAuthorized = (status == .sharingAuthorized)
-        }
+        isHealthKitAuthorized = (status == .sharingAuthorized)
     }
     
     // MARK: - Read Methods
     
     // Read the most recent blood glucose value
-    func fetchLatestGlucose(completion: @escaping (Double?, Error?) -> Void) {
-        guard shouldRefreshData() else {
-            // Return cached value if available
-            completion(nil, nil)
-            return
-        }
-        
+    func fetchLatestGlucose() async throws -> Double? {
         guard let healthStore = healthStore,
               let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
-            completion(nil, nil)
-            return
+            return nil
         }
         
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        let query = HKSampleQuery(sampleType: glucoseType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { (query, samples, error) in
-            DispatchQueue.main.async {
-                guard let sample = samples?.first as? HKQuantitySample else {
-                    completion(nil, error)
-                    return
+        return try await withCheckedThrowingContinuation { continuation in
+            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+            let query = HKSampleQuery(sampleType: glucoseType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] (query, samples, error) in
+                Task { @MainActor in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    
+                    guard let sample = samples?.first as? HKQuantitySample else {
+                        continuation.resume(returning: nil)
+                        return
+                    }
+                    
+                    self?.lastFetchDate = Date()
+                    let glucoseValue = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .milli).unitDivided(by: HKUnit.liter()))
+                    continuation.resume(returning: glucoseValue)
                 }
-                
-                self.lastFetchDate = Date()
-                let glucoseValue = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .milli).unitDivided(by: HKUnit.liter()))
-                completion(glucoseValue, nil)
             }
+            
+            healthStore.execute(query)
         }
-        
-        healthStore.execute(query)
     }
     
     private func shouldRefreshData() -> Bool {
@@ -168,10 +173,9 @@ class HealthKitManager: ObservableObject {
     // MARK: - Write Methods
     
     // Save a blood glucose reading to HealthKit
-    func saveGlucoseReading(_ reading: GlucoseReading, completion: @escaping (Bool, Error?) -> Void) {
+    func saveGlucoseReading(_ reading: GlucoseReading) async throws {
         guard let healthStore = healthStore,
               let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
-            completion(false, nil)
             return
         }
         
@@ -195,15 +199,12 @@ class HealthKitManager: ObservableObject {
                                       end: reading.timestamp,
                                       metadata: metadata)
         
-        healthStore.save(sample) { (success, error) in
-            completion(success, error)
-        }
+        try await healthStore.save(sample)
     }
     
     // Save a food entry to HealthKit
-    func saveFoodEntry(_ entry: FoodEntry, completion: @escaping (Bool, Error?) -> Void) {
+    func saveFoodEntry(_ entry: FoodEntry) async throws {
         guard let healthStore = healthStore else {
-            completion(false, nil)
             return
         }
         
@@ -242,20 +243,16 @@ class HealthKitManager: ObservableObject {
             allSamples.append(fatSample)
         }
         
-        if allSamples.isEmpty {
-            completion(false, nil)
+        guard !allSamples.isEmpty else {
             return
         }
         
-        healthStore.save(allSamples) { (success, error) in
-            completion(success, error)
-        }
+        try await healthStore.save(allSamples)
     }
     
     // Save an exercise entry to HealthKit
-    func saveExerciseEntry(_ entry: ExerciseEntry, completion: @escaping (Bool, Error?) -> Void) {
+    func saveExerciseEntry(_ entry: ExerciseEntry) async throws {
         guard let healthStore = healthStore else {
-            completion(false, nil)
             return
         }
         
@@ -280,114 +277,152 @@ class HealthKitManager: ObservableObject {
                                 totalDistance: nil,
                                 metadata: metadata)
         
-        healthStore.save(workout) { (success, error) in
-            completion(success, error)
+        try await healthStore.save(workout)
+    }
+    
+    func importDataFromHealthKit(modelContext: ModelContext) async -> Bool {
+        return await withTaskGroup(of: Bool.self) { group in
+            // Import glucose readings
+            group.addTask {
+                do {
+                    guard let samples = try await self.fetchGlucoseReadingsAsync(forDays: 7) else {
+                        return false
+                    }
+                    
+                    // Process in small batches to reduce memory pressure
+                    let batchSize = 20
+                    let batches = stride(from: 0, to: samples.count, by: batchSize).map {
+                        Array(samples[$0..<min($0 + batchSize, samples.count)])
+                    }
+                    
+                    for batch in batches {
+                        let batchSuccess = autoreleasepool { () -> Bool in
+                            for sample in batch {
+                                let value = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .milli).unitDivided(by: HKUnit.liter()))
+                                let timestamp = sample.startDate
+                                let readingType: GlucoseReading.ReadingType = .random
+                                
+                                let reading = GlucoseReading(timestamp: timestamp, value: value, readingType: readingType)
+                                modelContext.insert(reading)
+                            }
+                            
+                            // Save after each batch to reduce memory footprint
+                            do {
+                                try modelContext.save()
+                                return true
+                            } catch {
+                                print("Error saving batch: \(error)")
+                                return false
+                            }
+                        }
+                        
+                        if !batchSuccess {
+                            return false
+                        }
+                    }
+                    return true
+                } catch {
+                    return false
+                }
+            }
+            
+            // Import workouts
+            group.addTask {
+                do {
+                    guard let workouts = try await self.fetchWorkoutsAsync(forDays: 7) else {
+                        return false
+                    }
+                    
+                    // Process in small batches
+                    let batchSize = 10
+                    let batches = stride(from: 0, to: workouts.count, by: batchSize).map {
+                        Array(workouts[$0..<min($0 + batchSize, workouts.count)])
+                    }
+                    
+                    for batch in batches {
+                        let batchSuccess = autoreleasepool { () -> Bool in
+                            for workout in batch {
+                                let type = self.exerciseTypeFromWorkout(workout)
+                                let startTime = workout.startDate
+                                let duration = workout.duration
+                                var caloriesBurned: Double? = nil
+                                
+                                if let energyBurned = workout.totalEnergyBurned {
+                                    caloriesBurned = energyBurned.doubleValue(for: .kilocalorie())
+                                }
+                                
+                                let intensity: ExerciseEntry.ExerciseIntensity = .moderate
+                                
+                                let exerciseEntry = ExerciseEntry(
+                                    type: type,
+                                    startTime: startTime,
+                                    duration: duration,
+                                    caloriesBurned: caloriesBurned,
+                                    intensity: intensity
+                                )
+                                
+                                modelContext.insert(exerciseEntry)
+                            }
+                            
+                            // Save after each batch
+                            do {
+                                try modelContext.save()
+                                return true
+                            } catch {
+                                print("Error saving batch: \(error)")
+                                return false
+                            }
+                        }
+                        
+                        if !batchSuccess {
+                            return false
+                        }
+                    }
+                    return true
+                } catch {
+                    return false
+                }
+            }
+            
+            // Wait for all tasks and return true only if all succeeded
+            var allSucceeded = true
+            for await result in group {
+                if !result {
+                    allSucceeded = false
+                }
+            }
+            return allSucceeded
         }
     }
     
-    func importDataFromHealthKit(modelContext: ModelContext, completion: @escaping (Bool) -> Void) {
-        let group = DispatchGroup()
-        var importSuccess = true
-        
-        // Import glucose readings - limit to 7 days and batch process
-        group.enter()
-        fetchGlucoseReadings(forDays: 7) { samples, error in
-            guard let samples = samples, error == nil else {
-                importSuccess = false
-                group.leave()
-                return
-            }
-            
-            // Process in small batches to reduce memory pressure
-            let batchSize = 20
-            let batches = stride(from: 0, to: samples.count, by: batchSize).map {
-                Array(samples[$0..<min($0 + batchSize, samples.count)])
-            }
-            
-            for batch in batches {
-                autoreleasepool {
-                    for sample in batch {
-                        let value = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .milli).unitDivided(by: HKUnit.liter()))
-                        let timestamp = sample.startDate
-                        let readingType: GlucoseReading.ReadingType = .random
-                        
-                        let reading = GlucoseReading(timestamp: timestamp, value: value, readingType: readingType)
-                        modelContext.insert(reading)
-                    }
-                    
-                    // Save after each batch to reduce memory footprint
-                    do {
-                        try modelContext.save()
-                    } catch {
-                        print("Error saving batch: \(error)")
-                        importSuccess = false
-                    }
+    // Async wrapper for fetchGlucoseReadings
+    private func fetchGlucoseReadingsAsync(forDays days: Int) async throws -> [HKQuantitySample]? {
+        return try await withCheckedThrowingContinuation { continuation in
+            fetchGlucoseReadings(forDays: days) { samples, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: samples)
                 }
             }
-            
-            group.leave()
         }
-        
-        // Import workouts - limit to 7 days and batch process
-        group.enter()
-        fetchWorkouts(forDays: 7) { workouts, error in
-            guard let workouts = workouts, error == nil else {
-                importSuccess = false
-                group.leave()
-                return
-            }
-            
-            // Process in small batches
-            let batchSize = 10
-            let batches = stride(from: 0, to: workouts.count, by: batchSize).map {
-                Array(workouts[$0..<min($0 + batchSize, workouts.count)])
-            }
-            
-            for batch in batches {
-                autoreleasepool {
-                    for workout in batch {
-                        let type = self.exerciseTypeFromWorkout(workout)
-                        let startTime = workout.startDate
-                        let duration = workout.duration
-                        var caloriesBurned: Double? = nil
-                        
-                        if let energyBurned = workout.totalEnergyBurned {
-                            caloriesBurned = energyBurned.doubleValue(for: .kilocalorie())
-                        }
-                        
-                        let intensity: ExerciseEntry.ExerciseIntensity = .moderate
-                        
-                        let exerciseEntry = ExerciseEntry(
-                            type: type,
-                            startTime: startTime,
-                            duration: duration,
-                            caloriesBurned: caloriesBurned,
-                            intensity: intensity
-                        )
-                        
-                        modelContext.insert(exerciseEntry)
-                    }
-                    
-                    // Save after each batch
-                    do {
-                        try modelContext.save()
-                    } catch {
-                        print("Error saving batch: \(error)")
-                        importSuccess = false
-                    }
+    }
+    
+    // Async wrapper for fetchWorkouts
+    private func fetchWorkoutsAsync(forDays days: Int) async throws -> [HKWorkout]? {
+        return try await withCheckedThrowingContinuation { continuation in
+            fetchWorkouts(forDays: days) { workouts, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: workouts)
                 }
             }
-            
-            group.leave()
-        }
-        
-        group.notify(queue: .main) {
-            completion(importSuccess)
         }
     }
     
     // Helper to map HKWorkoutActivityType back to string
-    private func exerciseTypeFromWorkout(_ workout: HKWorkout) -> String {
+    private nonisolated func exerciseTypeFromWorkout(_ workout: HKWorkout) -> String {
         switch workout.workoutActivityType {
         case .walking:
             return "Walking"

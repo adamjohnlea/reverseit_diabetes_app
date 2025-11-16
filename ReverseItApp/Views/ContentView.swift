@@ -4,7 +4,7 @@ import HealthKit
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var healthKitManager: HealthKitManager
+    @Environment(HealthKitManager.self) private var healthKitManager
     @State private var selectedTab = 0
     @Query private var userProfiles: [UserProfile]
     

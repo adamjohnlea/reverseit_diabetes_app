@@ -14,7 +14,7 @@ final class FoodEntry {
     var photo: Data? // Optional photo of the food
     var note: String?
     
-    @Relationship var glucoseReadings: [GlucoseReading]? = []
+    @Relationship(deleteRule: .nullify) var glucoseReadings: [GlucoseReading]? = []
     
     enum MealType: String, Codable, CaseIterable {
         case breakfast = "breakfast"

@@ -244,7 +244,7 @@ struct ExerciseEntryRow: View {
 struct AddExerciseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var healthKitManager: HealthKitManager
+    @Environment(HealthKitManager.self) private var healthKitManager
     
     // List of common exercise types
     private let exerciseTypes = [
@@ -375,10 +375,14 @@ struct AddExerciseView: View {
         
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {
-            healthKitManager.saveExerciseEntry(newExercise) { success, error in
-                if let error = error {
-                    healthSyncError = error
-                    showingHealthSyncAlert = true
+            Task {
+                do {
+                    try await healthKitManager.saveExerciseEntry(newExercise)
+                } catch {
+                    await MainActor.run {
+                        healthSyncError = error
+                        showingHealthSyncAlert = true
+                    }
                 }
             }
         }

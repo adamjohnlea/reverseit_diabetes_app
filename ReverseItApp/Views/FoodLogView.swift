@@ -221,7 +221,7 @@ struct FoodEntryRow: View {
 struct AddFoodView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var healthKitManager: HealthKitManager
+    @Environment(HealthKitManager.self) private var healthKitManager
     
     @State private var name = ""
     @State private var carbs = ""
@@ -384,10 +384,14 @@ struct AddFoodView: View {
         
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {
-            healthKitManager.saveFoodEntry(newEntry) { success, error in
-                if let error = error {
-                    healthSyncError = error
-                    showingHealthSyncAlert = true
+            Task {
+                do {
+                    try await healthKitManager.saveFoodEntry(newEntry)
+                } catch {
+                    await MainActor.run {
+                        healthSyncError = error
+                        showingHealthSyncAlert = true
+                    }
                 }
             }
         }

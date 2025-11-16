@@ -9,7 +9,7 @@ final class GlucoseReading {
     var note: String?
     var readingType: ReadingType
     
-    @Relationship var relatedFood: [FoodEntry]? = []
+    @Relationship(deleteRule: .nullify) var relatedFood: [FoodEntry]? = []
     
     enum ReadingType: String, Codable, CaseIterable {
         case fasting
@@ -75,9 +75,13 @@ final class GlucoseReading {
         self.readingType = readingType
     }
     
-    var isInRange: Bool {
-        // This would be customized based on user's targets
+    // Note: This uses default ranges. For user-specific ranges, use UserProfile.targetGlucoseMin/Max
+    var isInRangeDefault: Bool {
         return value >= 70 && value <= 140
+    }
+    
+    func isInRange(min: Double, max: Double) -> Bool {
+        return value >= min && value <= max
     }
 }
 

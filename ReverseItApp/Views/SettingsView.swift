@@ -5,7 +5,7 @@ import HealthKit
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var userProfiles: [UserProfile]
-    @EnvironmentObject private var healthKitManager: HealthKitManager
+    @Environment(HealthKitManager.self) private var healthKitManager
     
     // User profile settings
     @State private var name = ""
@@ -161,21 +161,36 @@ struct SettingsView: View {
     }
     
     private func requestHealthKitAccess() {
-        healthKitManager.requestAuthorization { success, error in
-            syncWithHealthApp = success
-            
-            if !success {
-                healthKitAlertTitle = "Health Access Denied"
-                healthKitAlertMessage = "Unable to access Apple Health. Please enable access in the Settings app."
-                showingHealthKitAlert = true
+        Task {
+            do {
+                let success = try await healthKitManager.requestAuthorization()
+                await MainActor.run {
+                    syncWithHealthApp = success
+                    
+                    if !success {
+                        healthKitAlertTitle = "Health Access Denied"
+                        healthKitAlertMessage = "Unable to access Apple Health. Please enable access in the Settings app."
+                        showingHealthKitAlert = true
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    healthKitAlertTitle = "Health Access Error"
+                    healthKitAlertMessage = error.localizedDescription
+                    showingHealthKitAlert = true
+                    syncWithHealthApp = false
+                }
             }
         }
     }
     
     private func requestHealthKitImport() {
-        healthKitManager.importDataFromHealthKit(modelContext: modelContext) { success in
-            importSuccessful = success
-            showingImportAlert = true
+        Task {
+            let success = await healthKitManager.importDataFromHealthKit(modelContext: modelContext)
+            await MainActor.run {
+                importSuccessful = success
+                showingImportAlert = true
+            }
         }
     }
     

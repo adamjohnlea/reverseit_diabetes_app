@@ -78,9 +78,12 @@ final class UserProfile {
 }
 
 extension UserProfile {
-    static func cleanupOldData(modelContext: ModelContext) {
+    @MainActor
+    static func cleanupOldData(modelContext: ModelContext) async throws {
         // Keep last 3 months of data
-        let threeMonthsAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date())!
+        guard let threeMonthsAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) else {
+            throw DataError.invalidDate
+        }
         
         let descriptor = FetchDescriptor<GlucoseReading>(
             predicate: #Predicate<GlucoseReading> { reading in
@@ -88,13 +91,9 @@ extension UserProfile {
             }
         )
         
-        do {
-            let oldReadings = try modelContext.fetch(descriptor)
-            oldReadings.forEach { modelContext.delete($0) }
-            try modelContext.save()
-        } catch {
-            print("Error cleaning up old data: \(error)")
-        }
+        let oldReadings = try modelContext.fetch(descriptor)
+        oldReadings.forEach { modelContext.delete($0) }
+        try modelContext.save()
     }
     
     func validateTargets() {
@@ -105,9 +104,23 @@ extension UserProfile {
         targetDailyExerciseMinutes = max(0, min(targetDailyExerciseMinutes, 360))
     }
     
+    enum DataError: LocalizedError {
+        case invalidDate
+        case fetchFailed
+        
+        var errorDescription: String? {
+            switch self {
+            case .invalidDate: return "Could not calculate date range"
+            case .fetchFailed: return "Failed to fetch data"
+            }
+        }
+    }
+    
     func glucoseProgress(modelContext: ModelContext, days: Int = 30) throws -> GlucoseProgress {
         let endDate = Date()
-        let startDate = Calendar.current.date(byAdding: .day, value: -days, to: endDate)!
+        guard let startDate = Calendar.current.date(byAdding: .day, value: -days, to: endDate) else {
+            throw DataError.invalidDate
+        }
         
         let descriptor = FetchDescriptor<GlucoseReading>(
             predicate: #Predicate<GlucoseReading> { reading in
@@ -117,11 +130,23 @@ extension UserProfile {
         
         let readings = try modelContext.fetch(descriptor)
         let totalReadings = readings.count
+        
+        // Handle case with no readings
+        guard totalReadings > 0 else {
+            return GlucoseProgress(
+                inRangePercentage: 0,
+                averageReading: 0,
+                totalReadings: 0,
+                daysAnalyzed: days
+            )
+        }
+        
         let inRangeCount = readings.filter { $0.value >= targetGlucoseMin && $0.value <= targetGlucoseMax }.count
+        let totalValue = readings.reduce(0.0) { $0 + $1.value }
         
         return GlucoseProgress(
             inRangePercentage: Double(inRangeCount) / Double(totalReadings) * 100,
-            averageReading: readings.reduce(0.0) { $0 + $1.value } / Double(totalReadings),
+            averageReading: totalValue / Double(totalReadings),
             totalReadings: totalReadings,
             daysAnalyzed: days
         )
@@ -182,11 +207,13 @@ extension UserProfile {
 }
 
 extension ModelContext {
-    func resetAllData() throws {
-        try delete(model: UserProfile.self)
+    @MainActor
+    func resetAllData() async throws {
+        // Delete in order to respect relationships
         try delete(model: GlucoseReading.self)
         try delete(model: FoodEntry.self)
         try delete(model: ExerciseEntry.self)
+        try delete(model: UserProfile.self)
         try save()
     }
 }

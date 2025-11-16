@@ -152,11 +152,15 @@ struct StatisticRow: View {
 struct AddGlucoseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(HealthKitManager.self) private var healthKitManager
     
     @State private var glucoseValue = ""
     @State private var note = ""
     @State private var readingType: GlucoseReading.ReadingType = .random
     @State private var timestamp = Date()
+    @State private var syncToHealth = true
+    @State private var showingHealthSyncAlert = false
+    @State private var healthSyncError: Error? = nil
     
     var body: some View {
         NavigationStack {
@@ -212,11 +216,6 @@ struct AddGlucoseView: View {
         }
     }
     
-    @EnvironmentObject private var healthKitManager: HealthKitManager
-    @State private var syncToHealth = true
-    @State private var showingHealthSyncAlert = false
-    @State private var healthSyncError: Error? = nil
-    
     private func saveReading() {
         guard let value = Double(glucoseValue) else { return }
         
@@ -231,10 +230,14 @@ struct AddGlucoseView: View {
         
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {
-            healthKitManager.saveGlucoseReading(newReading) { success, error in
-                if let error = error {
-                    healthSyncError = error
-                    showingHealthSyncAlert = true
+            Task {
+                do {
+                    try await healthKitManager.saveGlucoseReading(newReading)
+                } catch {
+                    await MainActor.run {
+                        healthSyncError = error
+                        showingHealthSyncAlert = true
+                    }
                 }
             }
         }

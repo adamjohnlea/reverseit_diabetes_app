@@ -11,7 +11,9 @@ struct GlucoseLogView: View {
         Array(readings.prefix(100))
     }
     @State private var showingAddSheet = false
-    
+    @State private var readingPendingDeletion: GlucoseReading?
+    @State private var errorMessage: String?
+
     var body: some View {
         NavigationStack {
             List {
@@ -65,7 +67,7 @@ struct GlucoseLogView: View {
                             }
                             .swipeActions {
                                 Button(role: .destructive) {
-                                    modelContext.delete(reading)
+                                    readingPendingDeletion = reading
                                 } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
@@ -84,6 +86,10 @@ struct GlucoseLogView: View {
                 }
             }
             .navigationTitle("Glucose Log")
+            .confirmDelete("Delete this glucose reading?", item: $readingPendingDeletion) { reading in
+                delete(reading)
+            }
+            .errorAlert($errorMessage)
             .toolbar {
                 Button(action: { showingAddSheet = true }) {
                     Image(systemName: "plus")
@@ -96,6 +102,15 @@ struct GlucoseLogView: View {
         }
     }
     
+    private func delete(_ reading: GlucoseReading) {
+        modelContext.delete(reading)
+        do {
+            try modelContext.save()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short

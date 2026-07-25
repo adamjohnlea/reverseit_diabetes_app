@@ -15,12 +15,20 @@ struct OnboardingView: View {
     @State private var alertMessage = ""
     @State private var isHealthKitAuthorizing = false
     @State private var useMetricSystem = true
+    @FocusState private var focusedField: ProfileField?
+
+    private enum ProfileField {
+        case name, age, weight, height
+    }
 
     private var isFormValid: Bool {
-        !name.isEmpty &&
-        !age.isEmpty && Int(age) != nil && Int(age)! > 0 && Int(age)! < 120 &&
-        !weight.isEmpty && Double(weight) != nil && Double(weight)! > 0 &&
-        !height.isEmpty && Double(height) != nil && Double(height)! > 0
+        guard let ageValue = Int(age),
+              let weightValue = Double(weight),
+              let heightValue = Double(height)
+        else {
+            return false
+        }
+        return !name.isEmpty && ageValue > 0 && ageValue < 120 && weightValue > 0 && heightValue > 0
     }
 
     var body: some View {
@@ -78,19 +86,33 @@ struct OnboardingView: View {
                             TextField("Name", text: $name)
                                 .textContentType(.name)
                                 .autocapitalization(.words)
-                            
+                                .focused($focusedField, equals: .name)
+
                             TextField("Age", text: $age)
                                 .keyboardType(.numberPad)
-                            
+                                .focused($focusedField, equals: .age)
+
                             TextField(useMetricSystem ? "Weight (kg)" : "Weight (lb)", text: $weight)
                                 .keyboardType(.decimalPad)
-                            
+                                .focused($focusedField, equals: .weight)
+
                             TextField(useMetricSystem ? "Height (cm)" : "Height (in)", text: $height)
                                 .keyboardType(.decimalPad)
+                                .focused($focusedField, equals: .height)
                         }
                         
                         Section(header: Text("Medical Information")) {
                             DatePicker("Diagnosis Date", selection: $diagnosisDate, in: ...Date(), displayedComponents: [.date])
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .keyboard) {
+                            HStack {
+                                Spacer()
+                                Button("Done") {
+                                    focusedField = nil
+                                }
+                            }
                         }
                     }
                     
@@ -261,7 +283,6 @@ struct OnboardingView: View {
                 currentPage = 2 // Move to HealthKit page
             }
         } catch {
-            print("Error saving user profile: \(error)")
             alertMessage = "Failed to save profile. Please try again."
             showAlert = true
         }
@@ -276,7 +297,8 @@ struct OnboardingView: View {
                 try modelContext.save()
             }
         } catch {
-            print("Error completing onboarding: \(error)")
+            alertMessage = "Failed to finish setup. Please try again."
+            showAlert = true
         }
     }
 }

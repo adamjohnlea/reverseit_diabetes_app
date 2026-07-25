@@ -10,9 +10,7 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if userProfiles.isEmpty || !userProfiles.first!.onboardingCompleted {
-                OnboardingView()
-            } else {
+            if let profile = userProfiles.first, profile.onboardingCompleted {
                 TabView(selection: $selectedTab) {
                     DashboardView()
                         .tabItem {
@@ -44,7 +42,8 @@ struct ContentView: View {
                         }
                         .tag(4)
                 }
-                .animation(.easeInOut, value: selectedTab)
+            } else {
+                OnboardingView()
             }
         }
     }

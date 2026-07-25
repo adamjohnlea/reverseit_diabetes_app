@@ -35,6 +35,7 @@ struct SettingsView: View {
     
     // Add reset confirmation state
     @State private var showingResetConfirm = false
+    @State private var errorMessage: String?
     
     var body: some View {
         NavigationStack {
@@ -66,7 +67,7 @@ struct SettingsView: View {
                                 do {
                                     try modelContext.save()
                                 } catch {
-                                    print("Error saving unit preference: \(error)")
+                                    errorMessage = error.localizedDescription
                                 }
                             }
                         }
@@ -157,6 +158,7 @@ struct SettingsView: View {
             } message: {
                 Text("This will delete all your data and restart the app. This action cannot be undone.")
             }
+            .errorAlert($errorMessage)
         }
     }
     
@@ -340,7 +342,7 @@ struct SettingsView: View {
         do {
             try modelContext.save()
         } catch {
-            print("Error saving profile: \(error)")
+            errorMessage = error.localizedDescription
         }
     }
     
@@ -371,14 +373,12 @@ struct SettingsView: View {
     }
     
     private func resetAppData() {
-        do {
-            try modelContext.delete(model: UserProfile.self)
-            try modelContext.delete(model: GlucoseReading.self)
-            try modelContext.delete(model: FoodEntry.self)
-            try modelContext.delete(model: ExerciseEntry.self)
-            try modelContext.save()
-        } catch {
-            print("Error resetting app data: \(error)")
+        Task {
+            do {
+                try await modelContext.resetAllData()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 }

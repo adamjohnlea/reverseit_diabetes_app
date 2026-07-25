@@ -9,7 +9,9 @@ struct ExerciseLogView: View {
     
     @State private var showingAddSheet = false
     @State private var selectedDate = Date()
-    
+    @State private var exercisePendingDeletion: ExerciseEntry?
+    @State private var errorMessage: String?
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -102,7 +104,7 @@ struct ExerciseLogView: View {
                                 ExerciseEntryRow(exercise: exercise)
                                     .swipeActions {
                                         Button(role: .destructive) {
-                                            modelContext.delete(exercise)
+                                            exercisePendingDeletion = exercise
                                         } label: {
                                             Label("Delete", systemImage: "trash")
                                         }
@@ -115,6 +117,10 @@ struct ExerciseLogView: View {
                 }
             }
             .navigationTitle("Exercise Log")
+            .confirmDelete("Delete this exercise?", item: $exercisePendingDeletion) { exercise in
+                delete(exercise)
+            }
+            .errorAlert($errorMessage)
             .toolbar {
                 Button(action: { showingAddSheet = true }) {
                     Image(systemName: "plus")
@@ -127,6 +133,15 @@ struct ExerciseLogView: View {
         }
     }
     
+    private func delete(_ exercise: ExerciseEntry) {
+        modelContext.delete(exercise)
+        do {
+            try modelContext.save()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     private var filteredExercises: [ExerciseEntry] {
         let calendar = Calendar.current
         return exercises.filter { calendar.isDate($0.startTime, inSameDayAs: selectedDate) }

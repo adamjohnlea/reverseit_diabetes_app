@@ -30,6 +30,10 @@
 		DECFEF4B30155B97007C97D8 /* ExerciseEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4A30155B97007C97D8 /* ExerciseEntryTests.swift */; };
 		DECFEF4D30155B9A007C97D8 /* ExerciseTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4C30155B9A007C97D8 /* ExerciseTypeTests.swift */; };
 		DECFEF4F30155BA8007C97D8 /* ModelQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4E30155BA8007C97D8 /* ModelQueryTests.swift */; };
+		DECFEF5230155F56007C97D8 /* ConfirmableDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5130155F56007C97D8 /* ConfirmableDelete.swift */; };
+		DECFEF5430155F5A007C97D8 /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5330155F5A007C97D8 /* ErrorAlert.swift */; };
+		DECFEF5630155FBA007C97D8 /* OnboardingFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5530155FBA007C97D8 /* OnboardingFlowUITests.swift */; };
+		DECFEF5830155FBE007C97D8 /* DeleteConfirmationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5730155FBE007C97D8 /* DeleteConfirmationUITests.swift */; };
 		EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF0A7BEB791801FABEE09D /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +79,10 @@
 		DECFEF4A30155B97007C97D8 /* ExerciseEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntryTests.swift; sourceTree = "<group>"; };
 		DECFEF4C30155B9A007C97D8 /* ExerciseTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTypeTests.swift; sourceTree = "<group>"; };
 		DECFEF4E30155BA8007C97D8 /* ModelQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelQueryTests.swift; sourceTree = "<group>"; };
+		DECFEF5130155F56007C97D8 /* ConfirmableDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmableDelete.swift; sourceTree = "<group>"; };
+		DECFEF5330155F5A007C97D8 /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
+		DECFEF5530155FBA007C97D8 /* OnboardingFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowUITests.swift; sourceTree = "<group>"; };
+		DECFEF5730155FBE007C97D8 /* DeleteConfirmationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmationUITests.swift; sourceTree = "<group>"; };
 		E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogView.swift; sourceTree = "<group>"; };
 		E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntry.swift; sourceTree = "<group>"; };
 		EF00942187A5F9C384D69EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -105,6 +113,7 @@
 				7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */,
 				5722274D1D9F9DA35BFB627E /* OnboardingView.swift */,
 				08EE708AF498E4F3709E77CF /* SettingsView.swift */,
+				DECFEF5030155F56007C97D8 /* Components */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -137,6 +146,8 @@
 			isa = PBXGroup;
 			children = (
 				6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */,
+				DECFEF5530155FBA007C97D8 /* OnboardingFlowUITests.swift */,
+				DECFEF5730155FBE007C97D8 /* DeleteConfirmationUITests.swift */,
 			);
 			path = ReverseItAppUITests;
 			sourceTree = "<group>";
@@ -166,6 +177,15 @@
 				DECFEF3E30155AAA007C97D8 /* BodyMeasurements.swift */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		DECFEF5030155F56007C97D8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DECFEF5130155F56007C97D8 /* ConfirmableDelete.swift */,
+				DECFEF5330155F5A007C97D8 /* ErrorAlert.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		FCB3E00DD8D0B8BC07360CCD /* ReverseItAppTests */ = {
@@ -292,11 +312,13 @@
 				733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */,
 				860E41C94CDE6C05562BC367 /* FoodEntry.swift in Sources */,
 				994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */,
+				DECFEF5230155F56007C97D8 /* ConfirmableDelete.swift in Sources */,
 				DECFEF4130155AB6007C97D8 /* ExerciseType.swift in Sources */,
 				924907CE22457B576B29328F /* GlucoseLogView.swift in Sources */,
 				2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */,
 				0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */,
 				5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */,
+				DECFEF5430155F5A007C97D8 /* ErrorAlert.swift in Sources */,
 				81588D4297680F710069B55E /* ReverseItApp.swift in Sources */,
 				DECFEF3D30155AA6007C97D8 /* StatusStyle.swift in Sources */,
 				8A2672B11E3745096AC5522E /* SettingsView.swift in Sources */,
@@ -322,6 +344,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DECFEF5630155FBA007C97D8 /* OnboardingFlowUITests.swift in Sources */,
+				DECFEF5830155FBE007C97D8 /* DeleteConfirmationUITests.swift in Sources */,
 				21C0BF6C579DC6CB52DE1C25 /* LaunchUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

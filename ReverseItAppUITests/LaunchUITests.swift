@@ -4,6 +4,7 @@ final class LaunchUITests: XCTestCase {
     @MainActor
     func testAppLaunches() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["-uitest-reset"]
         app.launch()
         XCTAssertEqual(app.state, .runningForeground)
     }

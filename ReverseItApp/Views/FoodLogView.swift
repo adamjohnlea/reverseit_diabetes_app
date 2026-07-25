@@ -9,7 +9,9 @@ struct FoodLogView: View {
     
     @State private var showingAddSheet = false
     @State private var selectedDate = Date()
-    
+    @State private var entryPendingDeletion: FoodEntry?
+    @State private var errorMessage: String?
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -76,7 +78,7 @@ struct FoodLogView: View {
                                 FoodEntryRow(entry: entry)
                                     .swipeActions {
                                         Button(role: .destructive) {
-                                            modelContext.delete(entry)
+                                            entryPendingDeletion = entry
                                         } label: {
                                             Label("Delete", systemImage: "trash")
                                         }
@@ -89,6 +91,10 @@ struct FoodLogView: View {
                 }
             }
             .navigationTitle("Food Log")
+            .confirmDelete("Delete this meal?", item: $entryPendingDeletion) { entry in
+                delete(entry)
+            }
+            .errorAlert($errorMessage)
             .toolbar {
                 Button(action: { showingAddSheet = true }) {
                     Image(systemName: "plus")
@@ -101,6 +107,15 @@ struct FoodLogView: View {
         }
     }
     
+    private func delete(_ entry: FoodEntry) {
+        modelContext.delete(entry)
+        do {
+            try modelContext.save()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     private var filteredEntries: [FoodEntry] {
         let calendar = Calendar.current
         return foodEntries.filter { calendar.isDate($0.timestamp, inSameDayAs: selectedDate) }

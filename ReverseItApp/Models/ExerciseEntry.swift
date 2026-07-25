@@ -66,12 +66,27 @@ final class ExerciseEntry {
         }
     }
     
-    var estimatedCalories: Double {
+    /// Constants of the standard MET energy formula:
+    /// kcal/min = METs × 3.5 × body weight (kg) ÷ 200.
+    enum MET {
+        /// Resting oxygen consumption in mL·kg⁻¹·min⁻¹ (1 MET by definition).
+        static let restingOxygenConsumption = 3.5
+        /// Milliliters of oxygen consumed per kilocalorie burned.
+        static let millilitersOfOxygenPerKilocalorie = 200.0
+    }
+
+    /// Estimated energy burned for this session using the standard MET formula,
+    /// preferring the measured `caloriesBurned` when the entry has one.
+    ///
+    /// - Parameter weightKg: The user's body weight in kilograms.
+    func estimatedCalories(weightKg: Double) -> Double {
         if let actual = caloriesBurned {
             return actual
         }
-        
-        return (durationInMinutes * intensity.metsMultiplier * 3.5) / 200.0
+
+        return durationInMinutes * intensity.metsMultiplier
+            * MET.restingOxygenConsumption * weightKg
+            / MET.millilitersOfOxygenPerKilocalorie
     }
 }
 
@@ -96,14 +111,14 @@ extension ExerciseEntry {
         return exercises.reduce(0) { $0 + $1.duration }
     }
     
-    static func totalCaloriesForDay(_ date: Date, modelContext: ModelContext) throws -> Double {
+    static func totalCaloriesForDay(_ date: Date, weightKg: Double, modelContext: ModelContext) throws -> Double {
         let exercises = try fetchExercisesForDay(date, modelContext: modelContext)
-        return exercises.reduce(0) { $0 + ($1.caloriesBurned ?? $1.estimatedCalories) }
+        return exercises.reduce(0) { $0 + $1.estimatedCalories(weightKg: weightKg) }
     }
-    
-    var activityLevel: ActivityLevel {
-        let caloriesPerHour = (caloriesBurned ?? estimatedCalories) / (duration / 3600)
-        
+
+    func activityLevel(weightKg: Double) -> ActivityLevel {
+        let caloriesPerHour = estimatedCalories(weightKg: weightKg) / (duration / 3600)
+
         switch caloriesPerHour {
         case ..<200: return .light
         case 200..<400: return .moderate

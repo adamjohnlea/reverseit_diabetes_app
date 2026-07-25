@@ -12,7 +12,7 @@ ReverseIt! is an iOS app (iOS 18+, Swift 6, strict concurrency) for type 2 diabe
 
 Targets: `ReverseItApp` (app), `ReverseItAppTests` (Swift Testing unit tests), `ReverseItAppUITests` (XCUIAutomation UI tests). One shared scheme: `ReverseItApp`.
 
-New source files under `ReverseItApp/`, `ReverseItAppTests/`, and `ReverseItAppUITests/` are picked up automatically (targets use directory source paths / buildable folders).
+The project uses **explicit file references** (not synchronized folders), so new source files must be registered in the pbxproj — create them with the `XcodeWrite` MCP tool (which registers them) rather than plain filesystem writes.
 
 ## Build Commands
 

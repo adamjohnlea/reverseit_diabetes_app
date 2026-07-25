@@ -29,29 +29,27 @@ final class GlucoseReading {
         }
     }
     
+    /// Clinical classification thresholds, in mg/dL.
+    enum Threshold {
+        static let low = 70.0
+        static let high = 180.0
+    }
+
     var readingStatus: ReadingStatus {
-        if value < 70 {
+        if value < Threshold.low {
             return .low
-        } else if value > 180 {
+        } else if value > Threshold.high {
             return .high
         } else {
             return .normal
         }
     }
-    
+
     enum ReadingStatus {
         case low
         case normal
         case high
-        
-        var color: String {
-            switch self {
-            case .low: return "blue"
-            case .normal: return "green"
-            case .high: return "red"
-            }
-        }
-        
+
         var description: String {
             switch self {
             case .low: return "Low"
@@ -73,11 +71,6 @@ final class GlucoseReading {
         self.value = value
         self.note = note
         self.readingType = readingType
-    }
-    
-    // Note: This uses default ranges. For user-specific ranges, use UserProfile.targetGlucoseMin/Max
-    var isInRangeDefault: Bool {
-        return value >= 70 && value <= 140
     }
     
     func isInRange(min: Double, max: Double) -> Bool {

@@ -90,19 +90,19 @@ final class FoodEntry {
         return true
     }
     
-    var formattedTimestamp: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: timestamp)
+    /// Hour-of-day boundaries used to bucket meals into day periods.
+    private enum MealPeriodHours {
+        static let morning = 5..<11
+        static let afternoon = 11..<16
+        static let evening = 16..<22
     }
-    
+
     var mealPeriod: String {
         let hour = Calendar.current.component(.hour, from: timestamp)
         switch hour {
-        case 5..<11: return "Morning"
-        case 11..<16: return "Afternoon"
-        case 16..<22: return "Evening"
+        case MealPeriodHours.morning: return "Morning"
+        case MealPeriodHours.afternoon: return "Afternoon"
+        case MealPeriodHours.evening: return "Evening"
         default: return "Night"
         }
     }
@@ -152,18 +152,25 @@ extension FoodEntry {
         return sum / Double(readings.count)
     }
     
+    /// Atwater general factors for converting macronutrient grams to kilocalories.
+    enum Energy {
+        static let caloriesPerGramOfCarbs = 4.0
+        static let caloriesPerGramOfProtein = 4.0
+        static let caloriesPerGramOfFat = 9.0
+    }
+
     var carbPercentage: Double {
         guard calories > 0 else { return 0 }
-        return (carbs * 4 / calories) * 100
+        return (carbs * Energy.caloriesPerGramOfCarbs / calories) * 100
     }
-    
+
     var proteinPercentage: Double {
         guard calories > 0 else { return 0 }
-        return (protein * 4 / calories) * 100
+        return (protein * Energy.caloriesPerGramOfProtein / calories) * 100
     }
-    
+
     var fatPercentage: Double {
         guard calories > 0 else { return 0 }
-        return (fat * 9 / calories) * 100
+        return (fat * Energy.caloriesPerGramOfFat / calories) * 100
     }
 }

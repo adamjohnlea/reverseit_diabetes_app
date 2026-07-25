@@ -1,8 +1,11 @@
 opt_in_rules:
   - force_unwrapping
 
+# Force unwraps are permitted in tests, so lint only app code.
 excluded:
   - ReverseItApp.xcodeproj
+  - ReverseItAppTests
+  - ReverseItAppUITests
 
 force_unwrapping:
   severity: error

@@ -96,12 +96,19 @@ extension UserProfile {
         try modelContext.save()
     }
     
+    /// Bounds within which each user-editable target must fall.
+    enum TargetLimits {
+        static let glucoseMin = 40.0...120.0
+        static let glucoseMax = 140.0...250.0
+        static let dailyCarbs = 0...500
+        static let dailyExerciseMinutes = 0...360
+    }
+
     func validateTargets() {
-        // Ensure targets are within reasonable ranges
-        targetGlucoseMin = max(40, min(targetGlucoseMin, 120))
-        targetGlucoseMax = max(140, min(targetGlucoseMax, 250))
-        targetDailyCarbs = max(0, min(targetDailyCarbs, 500))
-        targetDailyExerciseMinutes = max(0, min(targetDailyExerciseMinutes, 360))
+        targetGlucoseMin = targetGlucoseMin.clamped(to: TargetLimits.glucoseMin)
+        targetGlucoseMax = targetGlucoseMax.clamped(to: TargetLimits.glucoseMax)
+        targetDailyCarbs = targetDailyCarbs.clamped(to: TargetLimits.dailyCarbs)
+        targetDailyExerciseMinutes = targetDailyExerciseMinutes.clamped(to: TargetLimits.dailyExerciseMinutes)
     }
     
     enum DataError: LocalizedError {
@@ -181,15 +188,6 @@ extension UserProfile {
                 case .needsImprovement: return "Needs Improvement"
                 }
             }
-            
-            var color: String {
-                switch self {
-                case .excellent: return "green"
-                case .good: return "blue"
-                case .fair: return "yellow"
-                case .needsImprovement: return "red"
-                }
-            }
         }
     }
     
@@ -215,5 +213,11 @@ extension ModelContext {
         try delete(model: ExerciseEntry.self)
         try delete(model: UserProfile.self)
         try save()
+    }
+}
+
+private extension Comparable {
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        min(max(self, range.lowerBound), range.upperBound)
     }
 }

@@ -10,7 +10,6 @@
 		0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */; };
 		21C0BF6C579DC6CB52DE1C25 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */; };
 		2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0EF879D78D1A817387F248 /* GlucoseReading.swift */; };
-		43E749724437FE54137697ED /* SmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA73367295467605E7C45A5 /* SmokeTests.swift */; };
 		5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5722274D1D9F9DA35BFB627E /* OnboardingView.swift */; };
 		733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */; };
 		7ACFF396C8EA7EC570F0B5B8 /* ExerciseEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */; };
@@ -21,6 +20,16 @@
 		994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E9EA8BD8F74342ECD61D8 /* FoodLogView.swift */; };
 		A9B38B4F1E1DFEBBE921258E /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219990FF657DA029A6DCDFCD /* UserProfile.swift */; };
 		AE468A8D7F4EFC9466868253 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9BF898ABDA316E1B8D5C8B /* ContentView.swift */; };
+		DECFEF3D30155AA6007C97D8 /* StatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF3C30155AA6007C97D8 /* StatusStyle.swift */; };
+		DECFEF3F30155AAA007C97D8 /* BodyMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF3E30155AAA007C97D8 /* BodyMeasurements.swift */; };
+		DECFEF4130155AB6007C97D8 /* ExerciseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4030155AB6007C97D8 /* ExerciseType.swift */; };
+		DECFEF4330155B77007C97D8 /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4230155B77007C97D8 /* TestSupport.swift */; };
+		DECFEF4530155B84007C97D8 /* UserProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4430155B84007C97D8 /* UserProfileTests.swift */; };
+		DECFEF4730155B87007C97D8 /* GlucoseReadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4630155B87007C97D8 /* GlucoseReadingTests.swift */; };
+		DECFEF4930155B94007C97D8 /* FoodEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4830155B94007C97D8 /* FoodEntryTests.swift */; };
+		DECFEF4B30155B97007C97D8 /* ExerciseEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4A30155B97007C97D8 /* ExerciseEntryTests.swift */; };
+		DECFEF4D30155B9A007C97D8 /* ExerciseTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4C30155B9A007C97D8 /* ExerciseTypeTests.swift */; };
+		DECFEF4F30155BA8007C97D8 /* ModelQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF4E30155BA8007C97D8 /* ModelQueryTests.swift */; };
 		EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF0A7BEB791801FABEE09D /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,8 +64,17 @@
 		7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseLogView.swift; sourceTree = "<group>"; };
 		860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseItApp.swift; sourceTree = "<group>"; };
 		8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReverseItApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9FA73367295467605E7C45A5 /* SmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmokeTests.swift; sourceTree = "<group>"; };
 		C0C9C3124625C294D00645F1 /* FoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEntry.swift; sourceTree = "<group>"; };
+		DECFEF3C30155AA6007C97D8 /* StatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusStyle.swift; sourceTree = "<group>"; };
+		DECFEF3E30155AAA007C97D8 /* BodyMeasurements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMeasurements.swift; sourceTree = "<group>"; };
+		DECFEF4030155AB6007C97D8 /* ExerciseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseType.swift; sourceTree = "<group>"; };
+		DECFEF4230155B77007C97D8 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
+		DECFEF4430155B84007C97D8 /* UserProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTests.swift; sourceTree = "<group>"; };
+		DECFEF4630155B87007C97D8 /* GlucoseReadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseReadingTests.swift; sourceTree = "<group>"; };
+		DECFEF4830155B94007C97D8 /* FoodEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEntryTests.swift; sourceTree = "<group>"; };
+		DECFEF4A30155B97007C97D8 /* ExerciseEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntryTests.swift; sourceTree = "<group>"; };
+		DECFEF4C30155B9A007C97D8 /* ExerciseTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTypeTests.swift; sourceTree = "<group>"; };
+		DECFEF4E30155BA8007C97D8 /* ModelQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelQueryTests.swift; sourceTree = "<group>"; };
 		E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogView.swift; sourceTree = "<group>"; };
 		E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntry.swift; sourceTree = "<group>"; };
 		EF00942187A5F9C384D69EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -72,6 +90,7 @@
 				C0C9C3124625C294D00645F1 /* FoodEntry.swift */,
 				0F0EF879D78D1A817387F248 /* GlucoseReading.swift */,
 				219990FF657DA029A6DCDFCD /* UserProfile.swift */,
+				DECFEF4030155AB6007C97D8 /* ExerciseType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -99,6 +118,7 @@
 				23B6061B5E4E04B1C4A619FD /* Models */,
 				710E98172EC3AA16151FC3D5 /* Services */,
 				32CD1876439FFC958CC845D1 /* Views */,
+				DECFEF3B30155AA6007C97D8 /* Support */,
 			);
 			path = ReverseItApp;
 			sourceTree = "<group>";
@@ -139,10 +159,25 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		DECFEF3B30155AA6007C97D8 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				DECFEF3C30155AA6007C97D8 /* StatusStyle.swift */,
+				DECFEF3E30155AAA007C97D8 /* BodyMeasurements.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		FCB3E00DD8D0B8BC07360CCD /* ReverseItAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				9FA73367295467605E7C45A5 /* SmokeTests.swift */,
+				DECFEF4230155B77007C97D8 /* TestSupport.swift */,
+				DECFEF4430155B84007C97D8 /* UserProfileTests.swift */,
+				DECFEF4630155B87007C97D8 /* GlucoseReadingTests.swift */,
+				DECFEF4830155B94007C97D8 /* FoodEntryTests.swift */,
+				DECFEF4A30155B97007C97D8 /* ExerciseEntryTests.swift */,
+				DECFEF4C30155B9A007C97D8 /* ExerciseTypeTests.swift */,
+				DECFEF4E30155BA8007C97D8 /* ModelQueryTests.swift */,
 			);
 			path = ReverseItAppTests;
 			sourceTree = "<group>";
@@ -251,16 +286,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE468A8D7F4EFC9466868253 /* ContentView.swift in Sources */,
+				DECFEF3F30155AAA007C97D8 /* BodyMeasurements.swift in Sources */,
 				EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */,
 				7ACFF396C8EA7EC570F0B5B8 /* ExerciseEntry.swift in Sources */,
 				733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */,
 				860E41C94CDE6C05562BC367 /* FoodEntry.swift in Sources */,
 				994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */,
+				DECFEF4130155AB6007C97D8 /* ExerciseType.swift in Sources */,
 				924907CE22457B576B29328F /* GlucoseLogView.swift in Sources */,
 				2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */,
 				0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */,
 				5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */,
 				81588D4297680F710069B55E /* ReverseItApp.swift in Sources */,
+				DECFEF3D30155AA6007C97D8 /* StatusStyle.swift in Sources */,
 				8A2672B11E3745096AC5522E /* SettingsView.swift in Sources */,
 				A9B38B4F1E1DFEBBE921258E /* UserProfile.swift in Sources */,
 			);
@@ -270,7 +308,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43E749724437FE54137697ED /* SmokeTests.swift in Sources */,
+				DECFEF4B30155B97007C97D8 /* ExerciseEntryTests.swift in Sources */,
+				DECFEF4530155B84007C97D8 /* UserProfileTests.swift in Sources */,
+				DECFEF4F30155BA8007C97D8 /* ModelQueryTests.swift in Sources */,
+				DECFEF4930155B94007C97D8 /* FoodEntryTests.swift in Sources */,
+				DECFEF4D30155B9A007C97D8 /* ExerciseTypeTests.swift in Sources */,
+				DECFEF4330155B77007C97D8 /* TestSupport.swift in Sources */,
+				DECFEF4730155B87007C97D8 /* GlucoseReadingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

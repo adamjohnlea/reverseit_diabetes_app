@@ -131,8 +131,9 @@ struct OnboardingView: View {
                         Button(healthKitManager.isHealthKitAuthorized ? "Continue" : "Allow Health Access") {
                             if healthKitManager.isHealthKitAuthorized {
                                 Task {
-                                    let success = await healthKitManager.importDataFromHealthKit(modelContext: modelContext)
-                                    if !success {
+                                    do {
+                                        try await healthKitManager.importDataFromHealthKit(modelContext: modelContext)
+                                    } catch {
                                         alertMessage = "Failed to import health data. You can try again later in settings."
                                         showAlert = true
                                     }

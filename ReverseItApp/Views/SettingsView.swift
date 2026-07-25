@@ -186,11 +186,13 @@ struct SettingsView: View {
     
     private func requestHealthKitImport() {
         Task {
-            let success = await healthKitManager.importDataFromHealthKit(modelContext: modelContext)
-            await MainActor.run {
-                importSuccessful = success
-                showingImportAlert = true
+            do {
+                try await healthKitManager.importDataFromHealthKit(modelContext: modelContext)
+                importSuccessful = true
+            } catch {
+                importSuccessful = false
             }
+            showingImportAlert = true
         }
     }
     

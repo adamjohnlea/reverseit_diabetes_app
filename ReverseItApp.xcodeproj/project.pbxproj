@@ -63,7 +63,7 @@
 		6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseLogView.swift; sourceTree = "<group>"; };
 		860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseItApp.swift; sourceTree = "<group>"; };
-		8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReverseItApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReverseItApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0C9C3124625C294D00645F1 /* FoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEntry.swift; sourceTree = "<group>"; };
 		DECFEF3C30155AA6007C97D8 /* StatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusStyle.swift; sourceTree = "<group>"; };
 		DECFEF3E30155AAA007C97D8 /* BodyMeasurements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMeasurements.swift; sourceTree = "<group>"; };
@@ -514,7 +514,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.diabetesapp;
 				SDKROOT = iphoneos;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -553,7 +553,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.diabetesapp;
 				SDKROOT = iphoneos;
 				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

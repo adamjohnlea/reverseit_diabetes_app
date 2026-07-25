@@ -22,8 +22,6 @@ struct ReverseItApp: App {
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            // If there's a schema migration issue, try to create a fresh container
-            print("Model container creation failed: \(error)")
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()

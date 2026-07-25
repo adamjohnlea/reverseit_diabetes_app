@@ -3,12 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */; };
+		21C0BF6C579DC6CB52DE1C25 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */; };
 		2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0EF879D78D1A817387F248 /* GlucoseReading.swift */; };
+		43E749724437FE54137697ED /* SmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA73367295467605E7C45A5 /* SmokeTests.swift */; };
 		5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5722274D1D9F9DA35BFB627E /* OnboardingView.swift */; };
 		733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */; };
 		7ACFF396C8EA7EC570F0B5B8 /* ExerciseEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */; };
@@ -22,7 +24,25 @@
 		EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF0A7BEB791801FABEE09D /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		426E7B972AA182DA246E88A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC6D3FF64E473E891E32EF93 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 831AE609096A4AC1B1C7FACB;
+			remoteInfo = ReverseItApp;
+		};
+		E646EEAA9E158FC5E5130558 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC6D3FF64E473E891E32EF93 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 831AE609096A4AC1B1C7FACB;
+			remoteInfo = ReverseItApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		00EF50631BD65C453EE7BF44 /* ReverseItAppTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReverseItAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08EE708AF498E4F3709E77CF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0F0EF879D78D1A817387F248 /* GlucoseReading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseReading.swift; sourceTree = "<group>"; };
 		1C9BF898ABDA316E1B8D5C8B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -31,14 +51,17 @@
 		431E9EA8BD8F74342ECD61D8 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
 		4FBF0A7BEB791801FABEE09D /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		5722274D1D9F9DA35BFB627E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		7895DF1326CEBA93B4DF19E1 /* GlucoseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseLogView.swift; sourceTree = "<group>"; };
 		860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseItApp.swift; sourceTree = "<group>"; };
-		8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReverseItApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReverseItApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FA73367295467605E7C45A5 /* SmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmokeTests.swift; sourceTree = "<group>"; };
 		C0C9C3124625C294D00645F1 /* FoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEntry.swift; sourceTree = "<group>"; };
 		E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogView.swift; sourceTree = "<group>"; };
 		E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntry.swift; sourceTree = "<group>"; };
 		EF00942187A5F9C384D69EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		F4D4F248E89C9BF87EBE111E /* ReverseItAppUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReverseItAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -84,14 +107,26 @@
 			isa = PBXGroup;
 			children = (
 				33602058979C99E192833C20 /* ReverseItApp */,
+				FCB3E00DD8D0B8BC07360CCD /* ReverseItAppTests */,
+				6BD3D218F49EDA08DFC7EB9E /* ReverseItAppUITests */,
 				6CAB7B523697A5781015B460 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		6BD3D218F49EDA08DFC7EB9E /* ReverseItAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */,
+			);
+			path = ReverseItAppUITests;
 			sourceTree = "<group>";
 		};
 		6CAB7B523697A5781015B460 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				8B30379C6F73DCA1EDF150E6 /* ReverseItApp.app */,
+				00EF50631BD65C453EE7BF44 /* ReverseItAppTests.xctest */,
+				F4D4F248E89C9BF87EBE111E /* ReverseItAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,9 +139,53 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		FCB3E00DD8D0B8BC07360CCD /* ReverseItAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				9FA73367295467605E7C45A5 /* SmokeTests.swift */,
+			);
+			path = ReverseItAppTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1F5862B2A6251CB88093C84C /* ReverseItAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B99257C46DB6E627B6EF8055 /* Build configuration list for PBXNativeTarget "ReverseItAppTests" */;
+			buildPhases = (
+				B5552834C3A47FEFEF750D0E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0B0F5315180CC453C9A5FFF8 /* PBXTargetDependency */,
+			);
+			name = ReverseItAppTests;
+			packageProductDependencies = (
+			);
+			productName = ReverseItAppTests;
+			productReference = 00EF50631BD65C453EE7BF44 /* ReverseItAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7A557FB2FC4C5C291DF3CB4E /* ReverseItAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D73291D2C3CB4BFBB2062C1D /* Build configuration list for PBXNativeTarget "ReverseItAppUITests" */;
+			buildPhases = (
+				CF04ED4B61144A9899E56943 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1088CB35E3C1FCC69819C1F6 /* PBXTargetDependency */,
+			);
+			name = ReverseItAppUITests;
+			packageProductDependencies = (
+			);
+			productName = ReverseItAppUITests;
+			productReference = F4D4F248E89C9BF87EBE111E /* ReverseItAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		831AE609096A4AC1B1C7FACB /* ReverseItApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 96F63DDDF706A84498FF3627 /* Build configuration list for PBXNativeTarget "ReverseItApp" */;
@@ -132,9 +211,20 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1F5862B2A6251CB88093C84C = {
+						DevelopmentTeam = S927NCGL3V;
+					};
+					7A557FB2FC4C5C291DF3CB4E = {
+						DevelopmentTeam = S927NCGL3V;
+						TestTargetID = 831AE609096A4AC1B1C7FACB;
+					};
+					831AE609096A4AC1B1C7FACB = {
+						DevelopmentTeam = S927NCGL3V;
+					};
+				};
 			};
 			buildConfigurationList = EC75049C976FEB94DBF349AC /* Build configuration list for PBXProject "ReverseItApp" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -143,10 +233,14 @@
 			);
 			mainGroup = 40814960CB88E3B439203CEA;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 6CAB7B523697A5781015B460 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				831AE609096A4AC1B1C7FACB /* ReverseItApp */,
+				1F5862B2A6251CB88093C84C /* ReverseItAppTests */,
+				7A557FB2FC4C5C291DF3CB4E /* ReverseItAppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -172,7 +266,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5552834C3A47FEFEF750D0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43E749724437FE54137697ED /* SmokeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF04ED4B61144A9899E56943 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21C0BF6C579DC6CB52DE1C25 /* LaunchUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0B0F5315180CC453C9A5FFF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 831AE609096A4AC1B1C7FACB /* ReverseItApp */;
+			targetProxy = E646EEAA9E158FC5E5130558 /* PBXContainerItemProxy */;
+		};
+		1088CB35E3C1FCC69819C1F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 831AE609096A4AC1B1C7FACB /* ReverseItApp */;
+			targetProxy = 426E7B972AA182DA246E88A1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1F4179FCAF860A2CD77ECBE7 /* Debug */ = {
@@ -226,7 +349,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -237,6 +360,25 @@
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
+		};
+		6283C128A1D0CBA85C79A930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = S927NCGL3V;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.ReverseItAppTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReverseItApp.app/ReverseItApp";
+			};
+			name = Release;
 		};
 		72CF38C4FD7A39CE8768F3E2 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -283,7 +425,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -291,6 +433,25 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7AC6E60BACA5332D29733B65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = S927NCGL3V;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.ReverseItAppUITests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReverseItApp;
 			};
 			name = Release;
 		};
@@ -308,7 +469,28 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.diabetesapp;
 				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C59A9324B1CBD728B139AF88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = S927NCGL3V;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.ReverseItAppUITests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReverseItApp;
 			};
 			name = Debug;
 		};
@@ -326,9 +508,30 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.diabetesapp;
 				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		EA7697A2BF5D3EE11116FBFC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = S927NCGL3V;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.reverseit.ReverseItAppTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReverseItApp.app/ReverseItApp";
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
@@ -338,6 +541,24 @@
 			buildConfigurations = (
 				B84275758650D92E6714C236 /* Debug */,
 				E58CA532A741DD822710745C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B99257C46DB6E627B6EF8055 /* Build configuration list for PBXNativeTarget "ReverseItAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA7697A2BF5D3EE11116FBFC /* Debug */,
+				6283C128A1D0CBA85C79A930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D73291D2C3CB4BFBB2062C1D /* Build configuration list for PBXNativeTarget "ReverseItAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C59A9324B1CBD728B139AF88 /* Debug */,
+				7AC6E60BACA5332D29733B65 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

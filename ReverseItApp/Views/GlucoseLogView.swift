@@ -162,6 +162,7 @@ struct AddGlucoseView: View {
     @State private var syncToHealth = true
     @State private var showingHealthSyncAlert = false
     @State private var healthSyncError: Error?
+    @State private var saveError: String?
 
     var body: some View {
         NavigationStack {
@@ -214,6 +215,7 @@ struct AddGlucoseView: View {
             } message: {
                 Text("Failed to sync glucose reading to Apple Health: \(healthSyncError?.localizedDescription ?? "Unknown error")")
             }
+            .errorAlert($saveError)
         }
     }
 
@@ -228,6 +230,12 @@ struct AddGlucoseView: View {
         )
 
         modelContext.insert(newReading)
+        do {
+            try modelContext.save()
+        } catch {
+            saveError = error.localizedDescription
+            return
+        }
 
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {

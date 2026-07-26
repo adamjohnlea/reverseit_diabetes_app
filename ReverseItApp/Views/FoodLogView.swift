@@ -248,6 +248,7 @@ struct AddFoodView: View {
     @State private var syncToHealth = true
     @State private var showingHealthSyncAlert = false
     @State private var healthSyncError: Error?
+    @State private var saveError: String?
 
     var body: some View {
         NavigationStack {
@@ -346,6 +347,7 @@ struct AddFoodView: View {
             } message: {
                 Text("Failed to sync food entry to Apple Health: \(healthSyncError?.localizedDescription ?? "Unknown error")")
             }
+            .errorAlert($saveError)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -387,6 +389,12 @@ struct AddFoodView: View {
         )
 
         modelContext.insert(newEntry)
+        do {
+            try modelContext.save()
+        } catch {
+            saveError = error.localizedDescription
+            return
+        }
 
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {

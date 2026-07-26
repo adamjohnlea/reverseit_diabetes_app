@@ -273,6 +273,7 @@ struct AddExerciseView: View {
     @State private var syncToHealth = true
     @State private var showingHealthSyncAlert = false
     @State private var healthSyncError: Error?
+    @State private var saveError: String?
 
     var body: some View {
         NavigationStack {
@@ -353,6 +354,7 @@ struct AddExerciseView: View {
             } message: {
                 Text("Failed to sync exercise to Apple Health: \(healthSyncError?.localizedDescription ?? "Unknown error")")
             }
+            .errorAlert($saveError)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -378,6 +380,12 @@ struct AddExerciseView: View {
         )
 
         modelContext.insert(newExercise)
+        do {
+            try modelContext.save()
+        } catch {
+            saveError = error.localizedDescription
+            return
+        }
 
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {

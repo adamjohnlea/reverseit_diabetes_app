@@ -1,0 +1,9 @@
+{
+  "id" : "a8d44c04-9f18-4846-8fc4-5f98eead27e4",
+  "targets" : [
+    {
+      "id" : "d92b1238-2307-41f2-acb7-4bfd8832a0ec",
+      "name" : "ReverseItApp"
+    }
+  ]
+}

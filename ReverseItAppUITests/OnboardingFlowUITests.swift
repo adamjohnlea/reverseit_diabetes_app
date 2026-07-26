@@ -8,7 +8,7 @@ final class OnboardingFlowUITests: XCTestCase {
         app.launch()
 
         // Welcome page
-        XCTAssertTrue(app.staticTexts["Welcome to ReverseIt!"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Welcome to ManageIt!"].waitForExistence(timeout: 5))
         app.buttons["Get Started"].tap()
 
         // Profile page

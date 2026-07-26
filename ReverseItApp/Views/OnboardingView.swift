@@ -52,17 +52,23 @@ struct OnboardingView: View {
                         .padding()
                         .symbolEffect(.pulse)
 
-                    Text("Welcome to ReverseIt!")
+                    Text("Welcome to ManageIt!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.primary)
 
-                    Text("Your journey to reverse type 2 diabetes starts here")
+                    Text("Take control of your type 2 diabetes, one day at a time")
                         .font(.headline)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
 
                     Spacer()
+
+                    Text("ManageIt! is a tracking and educational tool. It does not provide medical advice, diagnosis, or treatment and is not a substitute for professional healthcare. Always consult your doctor before changing your diet, exercise, medication, or diabetes management plan.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
 
                     Button("Get Started") {
                         withAnimation {
@@ -151,7 +157,7 @@ struct OnboardingView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
 
-                    Text("ReverseIt works best when it can access your health data. This helps us track your progress automatically.")
+                    Text("ManageIt! works best when it can access your health data. This helps us track your progress automatically.")
                         .multilineTextAlignment(.center)
                         .padding()
 

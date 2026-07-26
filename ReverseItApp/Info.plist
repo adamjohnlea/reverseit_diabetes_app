@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ReverseIt!</string>
+	<string>ManageIt!</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,11 +23,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>ReverseIt uses the camera to scan nutrition-facts labels and fill in food details.</string>
+	<string>ManageIt! uses the camera to scan nutrition-facts labels so it can fill in food details for you.</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>ReverseIt requires access to your health data to help track your progress</string>
+	<string>ManageIt! reads your glucose, nutrition, weight, and workout data from Apple Health so it can show your progress and keep your log up to date.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>ReverseIt needs to save health data to track your progress</string>
+	<string>ManageIt! saves the glucose readings, meals, and workouts you log to Apple Health so your health data stays consistent across your apps.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

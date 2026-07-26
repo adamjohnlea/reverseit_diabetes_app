@@ -456,13 +456,13 @@ struct AboutView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text("About ReverseIt!")
+                Text("About ManageIt!")
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
-                Text("ReverseIt! is designed to help people reverse type 2 diabetes through lifestyle changes, diet tracking, and regular monitoring of health metrics.")
+                Text("ManageIt! is designed to help people better manage and control type 2 diabetes through lifestyle changes, diet tracking, and regular monitoring of health metrics.")
 
-                Text("Recent research has shown that type 2 diabetes can be reversed in many cases through proper diet, exercise, and weight management. This app provides the tools you need to track your progress and make informed decisions about your health.")
+                Text("Research shows that type 2 diabetes can often be well managed — with blood sugar kept within a healthy range — through proper diet, exercise, and weight management. This app provides the tools you need to track your progress and make informed decisions about your health.")
 
                 Text("Key Features:")
                     .font(.headline)
@@ -474,6 +474,11 @@ struct AboutView: View {
                     FeatureRow(icon: "chart.line.uptrend.xyaxis", text: "Progress visualization")
                     FeatureRow(icon: "icloud", text: "Cross-device syncing")
                 }
+
+                Text("Medical Disclaimer")
+                    .font(.headline)
+
+                Text("ManageIt! is a tracking and educational tool. It does not provide medical advice, diagnosis, or treatment and is not a substitute for professional healthcare. Always consult a qualified healthcare provider before making changes to your diet, exercise, medication, or diabetes management plan.")
 
                 Text("Version 1.0")
                     .font(.caption)
@@ -548,13 +553,13 @@ struct PrivacyView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
-                Text("Your privacy is important to us. This policy outlines what data ReverseIt collects and how it's used.")
+                Text("Your privacy is important to us. This policy outlines what data ManageIt! collects and how it's used.")
 
                 Group {
                     Text("Data Collection")
                         .font(.headline)
 
-                    Text("ReverseIt collects the health data you enter, including glucose readings, food entries, and exercise information. This data is stored securely and never sold to third parties.")
+                    Text("ManageIt! collects the health data you enter, including glucose readings, food entries, and exercise information. This data is stored securely and never sold to third parties.")
                 }
 
                 Group {
@@ -568,7 +573,7 @@ struct PrivacyView: View {
                     Text("Apple Health Integration")
                         .font(.headline)
 
-                    Text("With your permission, ReverseIt can read from and write to Apple Health. This integration helps provide a more complete picture of your health.")
+                    Text("With your permission, ManageIt! can read from and write to Apple Health. This integration helps provide a more complete picture of your health.")
                 }
 
                 Text("Last updated: May 2025")

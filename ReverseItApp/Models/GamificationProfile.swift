@@ -74,10 +74,12 @@ extension GamificationProfile {
     /// Aggregates every logged entry into per-day activity, keyed by start-of-day.
     ///
     /// Goal-completion flags (`hitExerciseGoal`, `withinCarbGoal`) are evaluated
-    /// against the goals on `userProfile`.
+    /// against the goals in effect on each day (see `GoalPeriod`), falling back
+    /// to `userProfile`'s current goals for days no recorded period covers.
     ///
     /// - Parameters:
-    ///   - userProfile: The profile holding the daily carb and exercise goals.
+    ///   - userProfile: The fallback profile whose current goals apply to days
+    ///     no recorded `GoalPeriod` covers.
     ///   - modelContext: The context to read entries from.
     func dailyActivities(
         userProfile: UserProfile,
@@ -106,12 +108,14 @@ extension GamificationProfile {
             durationByDay[day, default: 0] += exercise.duration
         }
 
-        let exerciseGoalSeconds = Double(userProfile.targetDailyExerciseMinutes * 60)
-        let carbGoal = Double(userProfile.targetDailyCarbs)
+        let goalPeriods = try modelContext.fetch(
+            FetchDescriptor<GoalPeriod>(sortBy: [SortDescriptor(\.effectiveFrom)])
+        )
         for day in Array(byDay.keys) {
             guard var activity = byDay[day] else { continue }
-            activity.withinCarbGoal = activity.mealCount > 0 && (carbsByDay[day] ?? 0) <= carbGoal
-            activity.hitExerciseGoal = (durationByDay[day] ?? 0) >= exerciseGoalSeconds
+            let targets = GoalPeriod.effectiveTargets(for: day, periods: goalPeriods, fallback: userProfile)
+            activity.withinCarbGoal = activity.mealCount > 0 && (carbsByDay[day] ?? 0) <= Double(targets.carbs)
+            activity.hitExerciseGoal = (durationByDay[day] ?? 0) >= Double(targets.exerciseMinutes * 60)
             byDay[day] = activity
         }
         return byDay

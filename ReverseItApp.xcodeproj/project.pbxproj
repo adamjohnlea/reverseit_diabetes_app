@@ -65,6 +65,8 @@
 		DECFEF913015D3ED007C97D8 /* StreakReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF903015D3ED007C97D8 /* StreakReminderScheduler.swift */; };
 		DECFEF933015D469007C97D8 /* StreakReminderSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF923015D469007C97D8 /* StreakReminderSchedulerTests.swift */; };
 		DECFEF953015D476007C97D8 /* GamificationMaintenanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF943015D476007C97D8 /* GamificationMaintenanceTests.swift */; };
+		DECFEF97301650F0007C97D8 /* GamificationAdversarialFindingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF96301650F0007C97D8 /* GamificationAdversarialFindingsTests.swift */; };
+		DECFEF99301653B9007C97D8 /* GoalPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF98301653B9007C97D8 /* GoalPeriod.swift */; };
 		EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF0A7BEB791801FABEE09D /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
@@ -145,6 +147,8 @@
 		DECFEF903015D3ED007C97D8 /* StreakReminderScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakReminderScheduler.swift; sourceTree = "<group>"; };
 		DECFEF923015D469007C97D8 /* StreakReminderSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakReminderSchedulerTests.swift; sourceTree = "<group>"; };
 		DECFEF943015D476007C97D8 /* GamificationMaintenanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationMaintenanceTests.swift; sourceTree = "<group>"; };
+		DECFEF96301650F0007C97D8 /* GamificationAdversarialFindingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationAdversarialFindingsTests.swift; sourceTree = "<group>"; };
+		DECFEF98301653B9007C97D8 /* GoalPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPeriod.swift; sourceTree = "<group>"; };
 		E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogView.swift; sourceTree = "<group>"; };
 		E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntry.swift; sourceTree = "<group>"; };
 		EF00942187A5F9C384D69EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 				DECFEF4030155AB6007C97D8 /* ExerciseType.swift */,
 				DECFEF6A3015CB97007C97D8 /* GamificationProfile.swift */,
 				DECFEF743015CD4F007C97D8 /* EarnedAchievement.swift */,
+				DECFEF98301653B9007C97D8 /* GoalPeriod.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 				DECFEF8E3015D149007C97D8 /* GamificationCelebrationTests.swift */,
 				DECFEF923015D469007C97D8 /* StreakReminderSchedulerTests.swift */,
 				DECFEF943015D476007C97D8 /* GamificationMaintenanceTests.swift */,
+				DECFEF96301650F0007C97D8 /* GamificationAdversarialFindingsTests.swift */,
 			);
 			path = ReverseItAppTests;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				DECFEF6B3015CB97007C97D8 /* GamificationProfile.swift in Sources */,
 				DECFEF893015D0B5007C97D8 /* RewardRefresh.swift in Sources */,
 				860E41C94CDE6C05562BC367 /* FoodEntry.swift in Sources */,
+				DECFEF99301653B9007C97D8 /* GoalPeriod.swift in Sources */,
 				994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */,
 				DECFEF7B3015CD96007C97D8 /* GamificationProfile+Progress.swift in Sources */,
 				DECFEF833015CEBD007C97D8 /* RewardSummaryCard.swift in Sources */,
@@ -464,6 +471,7 @@
 				DECFEF7F3015CDBF007C97D8 /* GamificationAchievementsTests.swift in Sources */,
 				DECFEF733015CC0C007C97D8 /* GamificationProfileTests.swift in Sources */,
 				DECFEF8D3015D138007C97D8 /* GamificationTrendTests.swift in Sources */,
+				DECFEF97301650F0007C97D8 /* GamificationAdversarialFindingsTests.swift in Sources */,
 				DECFEF6D3015CBE7007C97D8 /* GamificationPointsTests.swift in Sources */,
 				DECFEF4B30155B97007C97D8 /* ExerciseEntryTests.swift in Sources */,
 				DECFEF4530155B84007C97D8 /* UserProfileTests.swift in Sources */,

@@ -385,12 +385,30 @@ struct SettingsView: View {
         profile.diagnosisDate = diagnosisDate
         profile.targetGlucoseMin = Double(targetGlucoseMin) ?? 70.0
         profile.targetGlucoseMax = Double(targetGlucoseMax) ?? 140.0
-        profile.targetDailyCarbs = Int(targetDailyCarbs) ?? 150
-        profile.targetDailyExerciseMinutes = Int(targetDailyExerciseMinutes) ?? 30
+
+        // Record any carb/exercise goal change as a dated period so past days
+        // keep the goal they were logged under. Capture the old targets before
+        // overwriting them.
+        let previousCarbs = profile.targetDailyCarbs
+        let previousExerciseMinutes = profile.targetDailyExerciseMinutes
+        let newCarbs = Int(targetDailyCarbs) ?? 150
+        let newExerciseMinutes = Int(targetDailyExerciseMinutes) ?? 30
+
+        profile.targetDailyCarbs = newCarbs
+        profile.targetDailyExerciseMinutes = newExerciseMinutes
         profile.lastUpdated = Date()
         profile.useMetricSystem = !useImperial
 
         do {
+            if newCarbs != previousCarbs || newExerciseMinutes != previousExerciseMinutes {
+                try GoalPeriod.recordChange(
+                    previousCarbs: previousCarbs,
+                    previousExerciseMinutes: previousExerciseMinutes,
+                    newCarbs: newCarbs,
+                    newExerciseMinutes: newExerciseMinutes,
+                    modelContext: modelContext
+                )
+            }
             try modelContext.save()
         } catch {
             errorMessage = error.localizedDescription

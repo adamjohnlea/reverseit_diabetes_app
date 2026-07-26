@@ -13,7 +13,9 @@ A comprehensive iOS application designed to help individuals with type 2 diabete
 - [App Structure](#app-structure)
 - [Data Models](#data-models)
 - [Apple Health Integration](#apple-health-integration)
+- [Testing](#testing)
 - [Usage Guide](#usage-guide)
+- [Accessibility & Localization](#accessibility--localization)
 - [Privacy & Security](#privacy--security)
 - [Contributing](#contributing)
 - [License](#license)
@@ -78,18 +80,15 @@ Built with Swift 6 and leveraging the latest Apple technologies (SwiftUI, SwiftD
 
 - **Health Insights**
   - BMI calculation and categorization
-  - Diabetes duration tracking
-  - Average glucose calculations
+  - Days-since-diagnosis tracking on the dashboard
+  - Average / lowest / highest glucose statistics
   - Macro percentage breakdowns
-  - Glucose impact analysis
 
 ### Apple Health Integration
 
 - **Bidirectional Sync**
-  - Import historical glucose data
-  - Import nutrition and workout data
-  - Export all tracked data to Apple Health
-  - Real-time synchronization
+  - Import recent glucose readings and workouts from Apple Health
+  - Export glucose, nutrition, and workout entries to Apple Health as they are logged
 
 - **Supported Health Data Types**
   - Blood glucose levels
@@ -101,20 +100,24 @@ Built with Swift 6 and leveraging the latest Apple technologies (SwiftUI, SwiftD
 ### User Experience
 
 - **Onboarding Flow**
-  - Three-step setup process
-  - Profile creation
-  - HealthKit authorization
+  - Three-page setup: welcome, profile creation, optional HealthKit authorization
+  - Input validation with clear error messages
 
 - **Customization**
   - Metric (kg, cm) or Imperial (lb, in) units
   - Personalized health goals
-  - Flexible date filtering
-  - Swipe-to-delete actions
+  - Per-day filtering of food and exercise logs
+
+- **Safe, Accessible Interactions**
+  - Confirmation dialogs before deleting any entry
+  - VoiceOver labels and combined-element rows throughout
+  - Dynamic Type support and semantic colors that adapt to light/dark mode
+  - Errors surfaced to the user, never silently swallowed
 
 - **Data Management**
   - Local, on-device storage with SwiftData
   - Import from and export to Apple Health
-  - Reset option for fresh start
+  - Reset-all-data option for a fresh start
 
 ## Screenshots
 
@@ -124,24 +127,25 @@ _Coming soon_
 
 ### Frameworks & Libraries
 
-- **SwiftUI** - Modern declarative UI framework for all views
+- **SwiftUI** - Declarative UI framework for all views
 - **SwiftData** - Apple's persistence framework, storing all data on-device
-- **Swift Charts** - Native charting for data visualization
-- **HealthKit** - Apple Health ecosystem integration (import/export)
+- **Swift Charts** - Native charting (line/point glucose trends, macro donut, weekly exercise bars)
+- **HealthKit** - Apple Health integration via the modern async query descriptors and `HKWorkoutBuilder`
+- **String Catalog** - `Localizable.xcstrings` for localization (English source)
 
 ### Swift Language Features
 
-- **Swift 6** - Latest version with strict concurrency checking
-- **Observation Framework** - Modern state management with @Observable
-- **Async/Await** - Modern concurrency for asynchronous operations
-- **MainActor** - Thread safety for UI updates
+- **Swift 6 language mode** - Complete strict-concurrency checking enabled
+- **Observation framework** - `@Observable` for state, not Combine/`ObservableObject`
+- **Async/await** - all asynchronous work, including HealthKit reads/writes
+- **`@MainActor`** - UI and the HealthKit manager are main-actor isolated; `Sendable` DTOs cross actor boundaries
 
-### Architecture Patterns
+### Architecture
 
-- **MVVM-inspired** - Views observe SwiftData models
-- **Singleton Pattern** - HealthKitManager shared instance
-- **Dependency Injection** - Environment-based data sharing
-- **Query-based Data** - @Query property wrapper for reactive data
+- **No view-model layer** - views read data with `@Query` and call logic that lives directly on the SwiftData `@Model` types (see `UserProfile.glucoseProgress(modelContext:)`, `FoodEntry.totalCarbsForDay(_:modelContext:)`)
+- **Shared helpers in `Support/`** - status→color mapping (`StatusStyle`) and metric/imperial conversion (`BodyMeasurements`) kept out of the models and views
+- **`HealthKitManager`** - a `@MainActor @Observable` singleton injected via the SwiftUI environment
+- **Reusable view modifiers** - `confirmDelete(...)` and `errorAlert(...)` give one code path for destructive actions and error surfacing
 
 ## Requirements
 
@@ -173,7 +177,7 @@ _App Store release coming soon_
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/reverseit_diabetes_app.git
+git clone https://github.com/adamjohnlea/reverseit_diabetes_app.git
 cd reverseit_diabetes_app
 ```
 
@@ -211,8 +215,11 @@ reverseit_diabetes_app/
 ├── ReverseItAppTests/             # Swift Testing unit tests
 ├── ReverseItAppUITests/           # XCUIAutomation UI tests
 ├── Makefile                       # build / test / ui-test / lint
+├── .swiftlint.yml                 # Lint configuration
 └── README.md                      # This file
 ```
+
+> The Xcode project (`ReverseItApp.xcodeproj`) is the source of truth and is committed to the repo. The project was originally generated with XcodeGen, but `project.yml` has been removed — edit the project directly in Xcode.
 
 ## Data Models
 
@@ -227,9 +234,11 @@ Stores user demographics, health information, and personalized goals.
 - Computed: BMI, BMI category, diabetes duration
 
 **Key Methods:**
-- `glucoseProgress()` - Calculate in-range percentage
-- `validateTargets()` - Ensure goals are reasonable
-- `cleanupOldData()` - Remove readings older than 3 months
+- `glucoseProgress(modelContext:days:)` - In-range percentage and average over a window
+- `isOnTrackWithDailyCarbs(modelContext:)` / `isOnTrackWithExercise(modelContext:)` - Goal checks for today
+- `validateTargets()` - Clamp goals to sensible bounds
+
+Imperial display values are provided by `weightInPounds` / `heightInInches` accessors (in `Support/BodyMeasurements.swift`) over the canonical metric storage.
 
 ### GlucoseReading
 
@@ -243,9 +252,9 @@ Tracks blood glucose measurements over time.
 - Relationship to food entries
 
 **Key Methods:**
-- `status` - Classification (low, normal, high)
-- `colorForReading` - Visual color coding
-- `isInRange()` - Check against user targets
+- `readingStatus` - Classification (low, normal, high); its color comes from the `StatusStyle` extension
+- `isInRange(min:max:)` - Check against the user's target range
+- `fetchLatestReadings(_:modelContext:)` / `averageForPeriod(start:end:modelContext:)` - Queries
 
 ### FoodEntry
 
@@ -260,9 +269,10 @@ Logs meals and nutritional intake.
 - Relationship to glucose readings
 
 **Key Methods:**
-- `macroPercentages()` - Calculate macro distribution
-- `dailyTotals()` - Sum for specific date
-- `glucoseImpact()` - Correlate with glucose readings
+- `macroPercentages` / `carbPercentage` / `proteinPercentage` / `fatPercentage` - Macro distribution (Atwater factors)
+- `validate()` - Reject empty names and negative values
+- `totalCarbsForDay(_:modelContext:)` / `totalCaloriesForDay(_:modelContext:)` - Daily sums
+- `glucoseImpact(timeWindow:)` - Correlate a meal with nearby glucose readings
 
 ### ExerciseEntry
 
@@ -276,9 +286,12 @@ Tracks physical activity sessions.
 - Optional notes
 
 **Key Methods:**
-- `estimatedCalories()` - Calculate using MET values
-- `durationFormatted` - Human-readable duration
-- `dailyTotal()` - Sum for specific date
+- `estimatedCalories(weightKg:)` - MET-based estimate (uses measured calories when available)
+- `formattedDuration` - Human-readable duration (e.g. "1h 5m")
+- `progressTowardDailyGoal(targetMinutes:)` - Fraction of the daily goal, capped at 1.0
+- `totalDurationForDay(_:modelContext:)` - Daily sum
+
+Exercise types are modeled by the `ExerciseType` enum, which maps bidirectionally to `HKWorkoutActivityType` and matches free-text names for imported workouts.
 
 ## Apple Health Integration
 
@@ -301,10 +314,23 @@ The app requests permission to read and write the following HealthKit data types
 
 ### Sync Features
 
-- **Automatic Import**: Import historical health data on first authorization
-- **Manual Import**: Trigger import from Settings
-- **Continuous Sync**: Automatically write new entries to Apple Health
-- **Toggle Control**: Enable/disable sync per data type
+- **Manual import**: Pull the last 7 days of glucose readings and workouts from Apple Health via Settings → "Import Data from Apple Health"
+- **Export on save**: When "Sync with Apple Health" is enabled, each glucose reading, meal, and workout you log is written to Apple Health (each add screen also has a per-entry sync toggle)
+- **Graceful degradation**: On devices without HealthKit, sync options are hidden and all sync methods no-op
+
+## Testing
+
+The project has separate unit and UI test targets and a `make`-based workflow.
+
+- **Unit tests** (`ReverseItAppTests`, Swift Testing) cover the model logic: BMI and category boundaries, target clamping, glucose status thresholds and in-range/progress math, macro and calorie calculations, MET-based calorie estimation, metric/imperial round-trips, the `ExerciseType` ↔ HealthKit mapping, and day-boundary SwiftData queries (run against an in-memory `ModelContainer`).
+- **UI tests** (`ReverseItAppUITests`, XCUIAutomation) cover the onboarding flow, launching into a seeded state, and swipe-to-delete confirmation. The app accepts `-uitest-reset` (empty in-memory store) and `-uitest-seeded` (profile + sample reading) launch arguments for deterministic runs.
+
+```bash
+make test      # unit tests
+make ui-test   # UI tests (takes over the simulator)
+```
+
+Verified on both the deployment floor (iOS 18.6 simulator) and the latest OS (iOS 27 simulator).
 
 ## Usage Guide
 
@@ -343,6 +369,13 @@ The app requests permission to read and write the following HealthKit data types
 - **Goals**: Start with achievable targets and adjust gradually
 - **Review**: Weekly review of progress to identify patterns
 
+## Accessibility & Localization
+
+- **VoiceOver**: interactive elements are real `Button`s with accessibility labels; list rows are combined into single, meaningfully-labeled elements (e.g. a glucose row announces its type, value, and status rather than color alone), and swipe-to-delete is mirrored by a VoiceOver custom action.
+- **Dynamic Type**: text uses system text styles so it scales with the user's preferred size.
+- **Color**: status and UI colors are semantic system colors that adapt to light and dark mode; no hard-coded RGB.
+- **Localization**: all user-facing strings are in `Localizable.xcstrings` and auto-extracted at build time. English is the only language today, but the app is ready to translate (model display strings use `LocalizedStringResource`, errors use `String(localized:)`).
+
 ## Privacy & Security
 
 ### Data Storage
@@ -376,11 +409,12 @@ Contributions are welcome! Please follow these guidelines:
 
 ### Code Standards
 
-- Follow Swift API Design Guidelines
-- Use SwiftLint for code formatting
-- Write unit tests for new features
-- Update documentation as needed
-- Ensure Swift 6 concurrency compliance
+- Follow the Swift API Design Guidelines
+- `make lint` (SwiftLint, `--strict`) must pass — force-unwraps are an error in app code
+- Builds are warning-free (`SWIFT_TREAT_WARNINGS_AS_ERRORS` is on); keep them that way
+- Add or update tests for behavior changes; `make test` must pass
+- No force-unwraps, no silently swallowed errors — surface failures to the user
+- Ensure Swift 6 strict-concurrency compliance
 
 ## License
 
@@ -395,9 +429,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For questions, issues, or feature requests:
-- Open an issue on GitHub
-- Contact: your.email@example.com
+For questions, issues, or feature requests, open an issue at
+[github.com/adamjohnlea/reverseit_diabetes_app](https://github.com/adamjohnlea/reverseit_diabetes_app/issues).
 
 ## Disclaimer
 

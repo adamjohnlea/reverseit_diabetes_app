@@ -49,7 +49,7 @@ struct DashboardView: View {
                         
                         Text(dateFormatted())
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
@@ -98,16 +98,16 @@ struct DashboardView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Weekly Glucose Trend")
                             .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
                             .padding(.horizontal)
                         
                         if glucoseReadings.isEmpty {
                             Text("No data yet. Add glucose readings to see your trend.")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding()
                         } else {
-                            // Limit to 15 most recent readings for the chart
-                            GlucoseChartView(readings: Array(glucoseReadings.prefix(15)))
+                            GlucoseChartView(readings: weeklyReadings, targetRange: targetRange)
                                 .frame(height: 200)
                                 .padding(.horizontal)
                         }
@@ -156,30 +156,29 @@ struct DashboardView: View {
         }
     }
     
+    /// The 15 most recent readings from the last 7 days, for the weekly chart.
+    private var weeklyReadings: [GlucoseReading] {
+        let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+        return glucoseReadings.prefix(15).filter { $0.timestamp >= cutoff }
+    }
+
+    private var targetRange: ClosedRange<Double>? {
+        guard let profile = userProfiles.first else { return nil }
+        return profile.targetGlucoseMin...profile.targetGlucoseMax
+    }
+
     private func dateFormatted() -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        return formatter.string(from: Date())
+        Date.now.formatted(date: .complete, time: .omitted)
     }
-    
+
+    // The @Query is already sorted newest-first.
     private func latestGlucoseReading() -> String {
-        if let latest = glucoseReadings.sorted(by: { $0.timestamp > $1.timestamp }).first {
-            return String(format: "%.0f", latest.value)
-        }
-        return "--"
+        guard let latest = glucoseReadings.first else { return "--" }
+        return String(format: "%.0f", latest.value)
     }
-    
+
     private func glucoseStatusColor() -> Color {
-        if let latest = glucoseReadings.sorted(by: { $0.timestamp > $1.timestamp }).first {
-            if latest.value < 70 {
-                return .red
-            } else if latest.value > 180 {
-                return .orange
-            } else {
-                return .green
-            }
-        }
-        return .gray
+        glucoseReadings.first?.readingStatus.color ?? .gray
     }
     
     private func dailyCarbsTotal() -> String {
@@ -214,12 +213,12 @@ struct DashboardCard: View {
             HStack {
                 Image(systemName: systemImage)
                     .font(.title2)
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                     .symbolEffect(.pulse, options: .repeating, value: isAnimating)
                 
                 Text(title)
                     .font(.headline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             
             HStack(alignment: .lastTextBaseline) {
@@ -229,13 +228,15 @@ struct DashboardCard: View {
                 
                 Text(unit)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 12)
             .fill(Color(.secondarySystemGroupedBackground)))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value) \(unit)")
     }
 }
 
@@ -248,7 +249,7 @@ struct QuickActionButton: View {
         VStack {
             Image(systemName: systemImage)
                 .font(.title2)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .frame(width: 50, height: 50)
                 .background(color)
                 .clipShape(Circle())
@@ -256,7 +257,7 @@ struct QuickActionButton: View {
             
             Text(title)
                 .font(.caption)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
@@ -265,44 +266,57 @@ struct QuickActionButton: View {
     }
 }
 
+/// Shared glucose chart used by the Dashboard and the Glucose Log.
+///
+/// Renders exactly the readings it is given (callers decide the window),
+/// with an optional shaded band for the user's target range and point
+/// colors matching each reading's status.
 struct GlucoseChartView: View {
     let readings: [GlucoseReading]
-    
-    var filteredReadings: [GlucoseReading] {
-        // Get last 7 days of readings
-        let calendar = Calendar.current
-        let startDate = calendar.date(byAdding: .day, value: -7, to: Date())!
-        
-        return readings.filter { $0.timestamp >= startDate }
-            .sorted { $0.timestamp < $1.timestamp }
+    var targetRange: ClosedRange<Double>?
+
+    private var sortedReadings: [GlucoseReading] {
+        readings.sorted { $0.timestamp < $1.timestamp }
     }
-    
+
     var body: some View {
-        Chart(filteredReadings, id: \.id) { reading in
-            LineMark(
-                x: .value("Date", reading.timestamp),
-                y: .value("Glucose", reading.value)
-            )
-            .foregroundStyle(Color.pink.gradient)
-            
-            PointMark(
-                x: .value("Date", reading.timestamp),
-                y: .value("Glucose", reading.value)
-            )
-            .foregroundStyle(Color.pink)
+        Chart {
+            if let targetRange {
+                RectangleMark(
+                    yStart: .value("Target Min", targetRange.lowerBound),
+                    yEnd: .value("Target Max", targetRange.upperBound)
+                )
+                .foregroundStyle(.green.opacity(0.1))
+            }
+
+            ForEach(sortedReadings) { reading in
+                LineMark(
+                    x: .value("Date", reading.timestamp),
+                    y: .value("Glucose", reading.value)
+                )
+                .foregroundStyle(Color.pink.gradient)
+
+                PointMark(
+                    x: .value("Date", reading.timestamp),
+                    y: .value("Glucose", reading.value)
+                )
+                .foregroundStyle(reading.readingStatus.color)
+            }
         }
         .chartYScale(domain: 50...250)
+        .chartYAxisLabel("mg/dL")
         .chartXAxis {
-            AxisMarks(values: .automatic) { value in
+            AxisMarks(values: .automatic) { _ in
                 AxisGridLine()
                 AxisValueLabel(format: .dateTime.weekday())
             }
         }
         .chartYAxis {
-            AxisMarks(values: .automatic) { value in
+            AxisMarks(values: .automatic) { _ in
                 AxisGridLine()
                 AxisValueLabel()
             }
         }
+        .accessibilityLabel("Glucose trend chart")
     }
 }

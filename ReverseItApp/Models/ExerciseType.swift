@@ -23,6 +23,28 @@ enum ExerciseType: String, CaseIterable, Sendable {
     case elliptical = "Elliptical"
     case other = "Other Exercise"
 
+    /// SF Symbol representing this activity.
+    var systemImageName: String {
+        switch self {
+        case .walking: "figure.walk"
+        case .running: "figure.run"
+        case .cycling: "figure.outdoor.cycle"
+        case .swimming: "figure.pool.swim"
+        case .yoga: "figure.yoga"
+        case .hiit: "figure.highintensity.intervaltraining"
+        case .weightTraining: "dumbbell.fill"
+        case .pilates: "figure.pilates"
+        case .dance: "figure.dance"
+        case .hiking: "figure.hiking"
+        case .tennis: "figure.tennis"
+        case .basketball: "figure.basketball"
+        case .soccer: "figure.indoor.soccer"
+        case .rowing: "figure.rower"
+        case .elliptical: "figure.elliptical"
+        case .other: "heart.fill"
+        }
+    }
+
     var workoutActivityType: HKWorkoutActivityType {
         switch self {
         case .walking: .walking

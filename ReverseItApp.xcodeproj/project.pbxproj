@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DECFEF6130160002007C97D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DECFEF6030160001007C97D8 /* Assets.xcassets */; };
 		0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */; };
 		21C0BF6C579DC6CB52DE1C25 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6178A0CE52D3EB194D5A030E /* LaunchUITests.swift */; };
 		2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0EF879D78D1A817387F248 /* GlucoseReading.swift */; };
@@ -56,6 +57,7 @@
 
 /* Begin PBXFileReference section */
 		00EF50631BD65C453EE7BF44 /* ReverseItAppTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReverseItAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DECFEF6030160001007C97D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08EE708AF498E4F3709E77CF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0F0EF879D78D1A817387F248 /* GlucoseReading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseReading.swift; sourceTree = "<group>"; };
 		1C9BF898ABDA316E1B8D5C8B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				EF00942187A5F9C384D69EA8 /* Info.plist */,
 				2BBD898F491C85DF3E0BAFA1 /* ReverseIt.entitlements */,
 				860D09FCD17F4A93C5D3C6BF /* ReverseItApp.swift */,
+				DECFEF6030160001007C97D8 /* Assets.xcassets */,
 				23B6061B5E4E04B1C4A619FD /* Models */,
 				710E98172EC3AA16151FC3D5 /* Services */,
 				32CD1876439FFC958CC845D1 /* Views */,
@@ -246,6 +249,7 @@
 			buildConfigurationList = 96F63DDDF706A84498FF3627 /* Build configuration list for PBXNativeTarget "ReverseItApp" */;
 			buildPhases = (
 				282B0C0173FC1D6F0611BC03 /* Sources */,
+				DECFEF6230160003007C97D8 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -299,6 +303,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DECFEF6230160003007C97D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECFEF6130160002007C97D8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		282B0C0173FC1D6F0611BC03 /* Sources */ = {
@@ -527,6 +542,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ReverseItApp/ReverseIt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = S927NCGL3V;
@@ -566,6 +582,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ReverseItApp/ReverseIt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = S927NCGL3V;

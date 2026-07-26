@@ -51,24 +51,27 @@ struct ExerciseLogView: View {
                                 
                                 VStack(spacing: 5) {
                                     Text("\(totalMinutes) min")
-                                        .font(.system(size: 36, weight: .bold))
+                                        .font(.largeTitle.bold())
                                     
                                     Text("of \(targetMinutes) min")
                                         .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                                        .foregroundStyle(.secondary)
                                 }
                             }
                             .frame(height: 200)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("Exercise progress: \(totalMinutes) of \(targetMinutes) minutes")
                             
                             // Calories burned
                             if totalCaloriesBurned > 0 {
                                 HStack(spacing: 8) {
                                     Image(systemName: "flame.fill")
-                                        .foregroundColor(.orange)
+                                        .foregroundStyle(.orange)
                                     
                                     Text("\(Int(totalCaloriesBurned)) calories burned")
                                         .font(.headline)
                                 }
+                                .accessibilityElement(children: .combine)
                             }
                         }
                         .padding()
@@ -85,6 +88,8 @@ struct ExerciseLogView: View {
                             .cornerRadius(4)
                         }
                         .frame(height: 180)
+                        .chartYAxisLabel("min")
+                        .accessibilityLabel("Weekly exercise minutes chart")
                         .chartXAxis {
                             AxisMarks(values: .stride(by: .day)) { _ in
                                 AxisValueLabel(format: .dateTime.weekday())
@@ -96,12 +101,15 @@ struct ExerciseLogView: View {
                     Section {
                         if filteredExercises.isEmpty {
                             Text("No exercises logged for this date")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding()
                         } else {
                             ForEach(filteredExercises) { exercise in
                                 ExerciseEntryRow(exercise: exercise)
+                                    .accessibilityAction(named: "Delete") {
+                                        exercisePendingDeletion = exercise
+                                    }
                                     .swipeActions {
                                         Button(role: .destructive) {
                                             exercisePendingDeletion = exercise
@@ -122,8 +130,11 @@ struct ExerciseLogView: View {
             }
             .errorAlert($errorMessage)
             .toolbar {
-                Button(action: { showingAddSheet = true }) {
-                    Image(systemName: "plus")
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: { showingAddSheet = true }) {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add Exercise")
                 }
             }
             .sheet(isPresented: $showingAddSheet) {
@@ -161,8 +172,10 @@ struct ExerciseLogView: View {
         return min(Double(totalMinutes) / Double(targetMinutes), 1.0)
     }
     
+    // Uses measured calories when present, otherwise the MET estimate.
     private var totalCaloriesBurned: Double {
-        filteredExercises.reduce(0) { $0 + ($1.caloriesBurned ?? 0) }
+        let weightKg = userProfiles.first?.weight ?? 0
+        return filteredExercises.reduce(0) { $0 + $1.estimatedCalories(weightKg: weightKg) }
     }
     
     struct DayExerciseData {
@@ -190,18 +203,19 @@ struct ExerciseEntryRow: View {
         HStack {
             exerciseIcon
                 .font(.title2)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .frame(width: 40, height: 40)
                 .background(exerciseColor)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                .accessibilityHidden(true)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(exercise.type)
                     .font(.headline)
                 
-                Text(formattedTime(exercise.startTime))
+                Text(exercise.startTime.formatted(date: .omitted, time: .shortened))
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .padding(.leading, 8)
             
@@ -215,30 +229,16 @@ struct ExerciseEntryRow: View {
                 if let calories = exercise.caloriesBurned {
                     Text("\(Int(calories)) cal")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
         .padding(.vertical, 4)
+        .accessibilityElement(children: .combine)
     }
     
     private var exerciseIcon: Image {
-        let type = exercise.type.lowercased()
-        if type.contains("walk") {
-            return Image(systemName: "figure.walk")
-        } else if type.contains("run") || type.contains("jog") {
-            return Image(systemName: "figure.run")
-        } else if type.contains("bike") || type.contains("cycle") {
-            return Image(systemName: "figure.outdoor.cycle")
-        } else if type.contains("swim") {
-            return Image(systemName: "figure.pool.swim")
-        } else if type.contains("yoga") {
-            return Image(systemName: "figure.yoga")
-        } else if type.contains("gym") || type.contains("weight") {
-            return Image(systemName: "dumbbell.fill")
-        } else {
-            return Image(systemName: "heart.fill")
-        }
+        Image(systemName: exercise.exerciseType.systemImageName)
     }
     
     private var exerciseColor: Color {
@@ -249,11 +249,6 @@ struct ExerciseEntryRow: View {
         }
     }
     
-    private func formattedTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
-    }
 }
 
 struct AddExerciseView: View {
@@ -261,12 +256,8 @@ struct AddExerciseView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(HealthKitManager.self) private var healthKitManager
     
-    // List of common exercise types
-    private let exerciseTypes = [
-        "Walking", "Running", "Cycling", "Swimming", "Yoga", 
-        "Weight Training", "HIIT", "Pilates", "Dance", "Hiking", 
-        "Tennis", "Basketball", "Soccer", "Rowing", "Elliptical"
-    ]
+    // Every supported type except the free-text fallback.
+    private let exerciseTypes = ExerciseType.allCases.filter { $0 != .other }.map(\.rawValue)
     
     @State private var type = "Walking"
     @State private var customType = ""

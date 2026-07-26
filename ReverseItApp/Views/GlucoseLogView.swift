@@ -5,6 +5,7 @@ import Charts
 struct GlucoseLogView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \GlucoseReading.timestamp, order: .reverse, animation: .default) private var readings: [GlucoseReading]
+    @Query private var userProfiles: [UserProfile]
     
     // Limit visible readings to reduce memory usage
     private var visibleReadings: [GlucoseReading] {
@@ -21,24 +22,11 @@ struct GlucoseLogView: View {
                 Section {
                     if visibleReadings.isEmpty {
                         Text("No glucose readings yet. Add your first reading to start tracking.")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .frame(height: 200)
                     } else {
-                        Chart(visibleReadings.prefix(15), id: \.id) { reading in
-                            LineMark(
-                                x: .value("Date", reading.timestamp),
-                                y: .value("Glucose", reading.value)
-                            )
-                            .foregroundStyle(Color.pink.gradient)
-                            
-                            PointMark(
-                                x: .value("Date", reading.timestamp),
-                                y: .value("Glucose", reading.value)
-                            )
-                            .foregroundStyle(Color.pink)
-                        }
-                        .frame(height: 200)
-                        .chartYScale(domain: 50...250)
+                        GlucoseChartView(readings: Array(visibleReadings.prefix(15)), targetRange: targetRange)
+                            .frame(height: 200)
                     }
                 }
                 
@@ -46,24 +34,31 @@ struct GlucoseLogView: View {
                 Section("Recent Readings") {
                     if visibleReadings.isEmpty {
                         Text("No glucose readings yet")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     } else {
                         ForEach(visibleReadings) { reading in
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(formattedDate(reading.timestamp))
+                                    Text(reading.timestamp.formatted(date: .numeric, time: .shortened))
                                         .font(.headline)
-                                    Text(reading.readingType.rawValue.capitalized)
+                                    Text(reading.readingType.description)
                                         .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                                        .foregroundStyle(.secondary)
                                 }
-                                
+
                                 Spacer()
-                                
+
                                 Text("\(Int(reading.value)) mg/dL")
                                     .font(.title3)
                                     .fontWeight(.bold)
-                                    .foregroundColor(glucoseColor(reading.value))
+                                    .foregroundStyle(reading.readingStatus.color)
+                            }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel(
+                                "\(reading.readingType.description), \(Int(reading.value)) mg/dL, \(reading.readingStatus.description)"
+                            )
+                            .accessibilityAction(named: "Delete") {
+                                readingPendingDeletion = reading
                             }
                             .swipeActions {
                                 Button(role: .destructive) {
@@ -91,8 +86,11 @@ struct GlucoseLogView: View {
             }
             .errorAlert($errorMessage)
             .toolbar {
-                Button(action: { showingAddSheet = true }) {
-                    Image(systemName: "plus")
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: { showingAddSheet = true }) {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add Glucose Reading")
                 }
             }
             .sheet(isPresented: $showingAddSheet) {
@@ -100,6 +98,11 @@ struct GlucoseLogView: View {
                     .presentationDetents([.medium])
             }
         }
+    }
+
+    private var targetRange: ClosedRange<Double>? {
+        guard let profile = userProfiles.first else { return nil }
+        return profile.targetGlucoseMin...profile.targetGlucoseMax
     }
     
     private func delete(_ reading: GlucoseReading) {
@@ -111,23 +114,6 @@ struct GlucoseLogView: View {
         }
     }
 
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
-    }
-    
-    private func glucoseColor(_ value: Double) -> Color {
-        if value < 70 {
-            return .red
-        } else if value > 180 {
-            return .orange
-        } else {
-            return .green
-        }
-    }
-    
     private func averageGlucose() -> String {
         if readings.isEmpty { return "--" }
         let sum = readings.reduce(0) { $0 + $1.value }
@@ -156,7 +142,7 @@ struct StatisticRow: View {
     var body: some View {
         HStack {
             Text(title)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             Spacer()
             Text(value)
                 .fontWeight(.semibold)

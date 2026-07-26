@@ -46,7 +46,7 @@ struct SettingsView: View {
                         profileFields(profile: profile)
                     } else {
                         Text("No profile found")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 
@@ -78,7 +78,7 @@ struct SettingsView: View {
                 Section(header: Text("Apple Health Integration")) {
                     if HKHealthStore.isHealthDataAvailable() {
                         Toggle("Sync with Apple Health", isOn: $syncWithHealthApp)
-                            .onChange(of: syncWithHealthApp) { oldValue, newValue in
+                            .onChange(of: syncWithHealthApp) { _, newValue in
                                 if newValue {
                                     requestHealthKitAccess()
                                 }
@@ -91,10 +91,10 @@ struct SettingsView: View {
                         
                         Text("Syncing with Apple Health allows you to share glucose readings, meals, and exercise data with the Health app.")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     } else {
                         Text("Apple Health is not available on this device.")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 
@@ -129,7 +129,7 @@ struct SettingsView: View {
                 }
                 
                 // Add Danger Zone section at the bottom
-                Section(header: Text("Danger Zone").foregroundColor(.red)) {
+                Section(header: Text("Danger Zone").foregroundStyle(.red)) {
                     Button("Reset App Data", role: .destructive) {
                         showingResetConfirm = true
                     }
@@ -211,7 +211,7 @@ struct SettingsView: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 100)
             Text("years")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         
         HStack {
@@ -222,7 +222,7 @@ struct SettingsView: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 100)
             Text(useImperial ? "lbs" : "kg")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         
         HStack {
@@ -233,7 +233,7 @@ struct SettingsView: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 100)
             Text(useImperial ? "in" : "cm")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         
         DatePicker("Diagnosis Date", selection: $diagnosisDate, displayedComponents: [.date])
@@ -254,7 +254,7 @@ struct SettingsView: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 40)
             Text("mg/dL")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         
         HStack {
@@ -265,7 +265,7 @@ struct SettingsView: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 80)
             Text("g")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         
         HStack {
@@ -276,7 +276,7 @@ struct SettingsView: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 80)
             Text("min")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
     }
     
@@ -288,15 +288,9 @@ struct SettingsView: View {
         
         // Values are stored in metric (kg, cm)
         if useImperial {
-            // Convert kg to lbs
-            let weightInLbs = profile.weight * 2.20462
-            weight = String(format: "%.1f", weightInLbs)
-            
-            // Convert cm to inches
-            let heightInInches = profile.height / 2.54
-            height = String(format: "%.1f", heightInInches)
+            weight = String(format: "%.1f", profile.weightInPounds)
+            height = String(format: "%.1f", profile.heightInInches)
         } else {
-            // No conversion needed
             weight = String(format: "%.1f", profile.weight)
             height = String(format: "%.1f", profile.height)
         }
@@ -319,14 +313,10 @@ struct SettingsView: View {
         let weightValue = Double(weight) ?? 0.0
         let heightValue = Double(height) ?? 0.0
         
-        // Convert to metric for storage if using imperial
         if useImperial {
-            // Convert lbs to kg (1 lb = 0.453592 kg)
-            profile.weight = weightValue * 0.453592
-            // Convert inches to cm (1 inch = 2.54 cm)
-            profile.height = heightValue * 2.54
+            profile.weightInPounds = weightValue
+            profile.heightInInches = heightValue
         } else {
-            // Already in metric, store as is
             profile.weight = weightValue
             profile.height = heightValue
         }
@@ -354,8 +344,8 @@ struct SettingsView: View {
         let currentHeight: Double
         
         if useImperial {
-            currentWeight = (Double(weight) ?? 0.0) * 0.453592  // Convert lbs to kg
-            currentHeight = (Double(height) ?? 0.0) * 2.54      // Convert inches to cm
+            currentWeight = BodyMeasurement.kilograms(fromPounds: Double(weight) ?? 0.0)
+            currentHeight = BodyMeasurement.centimeters(fromInches: Double(height) ?? 0.0)
         } else {
             currentWeight = Double(weight) ?? 0.0
             currentHeight = Double(height) ?? 0.0
@@ -408,7 +398,7 @@ struct AboutView: View {
                 
                 Text("Version 1.0")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .padding()
         }
@@ -424,7 +414,7 @@ struct FeatureRow: View {
     var body: some View {
         HStack(spacing: 15) {
             Image(systemName: icon)
-                .foregroundColor(.blue)
+                .foregroundStyle(.blue)
                 .frame(width: 30)
             
             Text(text)
@@ -504,7 +494,7 @@ struct PrivacyView: View {
                 
                 Text("Last updated: May 2025")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .padding()
         }

@@ -70,12 +70,15 @@ struct FoodLogView: View {
                     Section {
                         if filteredEntries.isEmpty {
                             Text("No meals logged for this date")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding()
                         } else {
                             ForEach(filteredEntries) { entry in
                                 FoodEntryRow(entry: entry)
+                                    .accessibilityAction(named: "Delete") {
+                                        entryPendingDeletion = entry
+                                    }
                                     .swipeActions {
                                         Button(role: .destructive) {
                                             entryPendingDeletion = entry
@@ -96,8 +99,11 @@ struct FoodLogView: View {
             }
             .errorAlert($errorMessage)
             .toolbar {
-                Button(action: { showingAddSheet = true }) {
-                    Image(systemName: "plus")
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: { showingAddSheet = true }) {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add Food")
                 }
             }
             .sheet(isPresented: $showingAddSheet) {
@@ -145,17 +151,17 @@ struct NutrientCard: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             
             HStack(alignment: .lastTextBaseline, spacing: 4) {
                 Text(String(format: "%.0f", value))
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                 
                 Text(unit)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             
             if let goalValue = goal {
@@ -167,6 +173,7 @@ struct NutrientCard: View {
         .padding(10)
         .background(RoundedRectangle(cornerRadius: 10)
             .fill(Color(.tertiarySystemGroupedBackground)))
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -180,18 +187,18 @@ struct FoodEntryRow: View {
                     Text(entry.name)
                         .font(.headline)
                     
-                    Text(mealTypeLabel())
+                    Text(entry.mealType.description)
                         .font(.caption)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(mealTypeColor().opacity(0.2))
-                        .foregroundColor(mealTypeColor())
+                        .foregroundStyle(mealTypeColor())
                         .clipShape(Capsule())
                 }
                 
-                Text(formattedTime(entry.timestamp))
+                Text(entry.timestamp.formatted(date: .omitted, time: .shortened))
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             
             Spacer()
@@ -199,22 +206,14 @@ struct FoodEntryRow: View {
             VStack(alignment: .trailing, spacing: 4) {
                 Text("\(Int(entry.carbs))g carbs")
                     .font(.subheadline)
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.blue)
                 
                 Text("\(Int(entry.calories)) kcal")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
-    }
-    
-    private func mealTypeLabel() -> String {
-        switch entry.mealType {
-        case .breakfast: return "Breakfast"
-        case .lunch: return "Lunch"
-        case .dinner: return "Dinner"
-        case .snack: return "Snack"
-        }
+        .accessibilityElement(children: .combine)
     }
     
     private func mealTypeColor() -> Color {
@@ -226,11 +225,6 @@ struct FoodEntryRow: View {
         }
     }
     
-    private func formattedTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
-    }
 }
 
 struct AddFoodView: View {
@@ -280,7 +274,7 @@ struct AddFoodView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
                         Text("g")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     
                     HStack {
@@ -291,7 +285,7 @@ struct AddFoodView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
                         Text("g")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     
                     HStack {
@@ -302,7 +296,7 @@ struct AddFoodView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
                         Text("g")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     
                     HStack {
@@ -312,14 +306,14 @@ struct AddFoodView: View {
                             Text(calculatedCalories)
                                 .frame(width: 80, alignment: .trailing)
                             Text("kcal")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         } else {
                             TextField("0", text: $calories)
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 80)
                             Text("kcal")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                     
@@ -363,26 +357,23 @@ struct AddFoodView: View {
     }
     
     private var calculatedCalories: String {
+        return String(format: "%.0f", computedCalories())
+    }
+    
+    private func computedCalories() -> Double {
         let carbsVal = Double(carbs) ?? 0
         let proteinVal = Double(protein) ?? 0
         let fatVal = Double(fat) ?? 0
-        
-        // 4 calories per gram of carbs and protein, 9 calories per gram of fat
-        let total = (carbsVal * 4) + (proteinVal * 4) + (fatVal * 9)
-        return String(format: "%.0f", total)
+        return carbsVal * FoodEntry.Energy.caloriesPerGramOfCarbs
+            + proteinVal * FoodEntry.Energy.caloriesPerGramOfProtein
+            + fatVal * FoodEntry.Energy.caloriesPerGramOfFat
     }
-    
+
     private func saveEntry() {
         let carbsVal = Double(carbs) ?? 0
         let proteinVal = Double(protein) ?? 0
         let fatVal = Double(fat) ?? 0
-        let caloriesVal: Double
-        
-        if calculateCalories {
-            caloriesVal = (carbsVal * 4) + (proteinVal * 4) + (fatVal * 9)
-        } else {
-            caloriesVal = Double(calories) ?? 0
-        }
+        let caloriesVal = calculateCalories ? computedCalories() : (Double(calories) ?? 0)
         
         let newEntry = FoodEntry(
             name: name,

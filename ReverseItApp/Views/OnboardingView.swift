@@ -21,6 +21,15 @@ struct OnboardingView: View {
         case name, age, weight, height
     }
 
+    /// Sanity bounds for profile input, in each unit system.
+    private enum InputLimits {
+        static let maxWeightKg = 500.0
+        static let maxWeightLb = 1000.0
+        static let maxHeightCm = 300.0
+        static let maxHeightIn = 120.0
+        static let maxAge = 120
+    }
+
     private var isFormValid: Bool {
         guard let ageValue = Int(age),
               let weightValue = Double(weight),
@@ -28,7 +37,7 @@ struct OnboardingView: View {
         else {
             return false
         }
-        return !name.isEmpty && ageValue > 0 && ageValue < 120 && weightValue > 0 && heightValue > 0
+        return !name.isEmpty && ageValue > 0 && ageValue < InputLimits.maxAge && weightValue > 0 && heightValue > 0
     }
 
     var body: some View {
@@ -39,14 +48,14 @@ struct OnboardingView: View {
                     Image(systemName: "heart.circle.fill")
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .foregroundColor(.pink)
+                        .foregroundStyle(.pink)
                         .padding()
                         .symbolEffect(.pulse)
                     
                     Text("Welcome to ReverseIt!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                     
                     Text("Your journey to reverse type 2 diabetes starts here")
                         .font(.headline)
@@ -85,7 +94,7 @@ struct OnboardingView: View {
                         Section(header: Text("Personal Information")) {
                             TextField("Name", text: $name)
                                 .textContentType(.name)
-                                .autocapitalization(.words)
+                                .textInputAutocapitalization(.words)
                                 .focused($focusedField, equals: .name)
 
                             TextField("Age", text: $age)
@@ -135,7 +144,7 @@ struct OnboardingView: View {
                     Image(systemName: "heart.text.square.fill")
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                         .padding()
                     
                     Text("Health Data Access")
@@ -192,7 +201,7 @@ struct OnboardingView: View {
             .indexViewStyle(.page(backgroundDisplayMode: .always))
         }
         .background(Color(.systemGroupedBackground))
-        .edgesIgnoringSafeArea([.bottom])
+        .ignoresSafeArea(edges: .bottom)
         .alert("Error", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -201,7 +210,7 @@ struct OnboardingView: View {
     }
 
     private func validateAndCreateProfile() -> Bool {
-        guard let ageInt = Int(age), ageInt > 0, ageInt < 120 else {
+        guard let ageInt = Int(age), ageInt > 0, ageInt < InputLimits.maxAge else {
             alertMessage = "Please enter a valid age between 1 and 120"
             showAlert = true
             return false
@@ -214,13 +223,13 @@ struct OnboardingView: View {
         }
         
         if useMetricSystem {
-            guard weightDouble < 500 else {
+            guard weightDouble < InputLimits.maxWeightKg else {
                 alertMessage = "Please enter a valid weight in kg"
                 showAlert = true
                 return false
             }
         } else {
-            guard weightDouble < 1000 else {
+            guard weightDouble < InputLimits.maxWeightLb else {
                 alertMessage = "Please enter a valid weight in lb"
                 showAlert = true
                 return false
@@ -234,13 +243,13 @@ struct OnboardingView: View {
         }
         
         if useMetricSystem {
-            guard heightDouble < 300 else {
+            guard heightDouble < InputLimits.maxHeightCm else {
                 alertMessage = "Please enter a valid height in cm"
                 showAlert = true
                 return false
             }
         } else {
-            guard heightDouble < 120 else {
+            guard heightDouble < InputLimits.maxHeightIn else {
                 alertMessage = "Please enter a valid height in inches"
                 showAlert = true
                 return false
@@ -251,29 +260,20 @@ struct OnboardingView: View {
     }
 
     private func createUserProfile() {
-        // If using imperial units, convert to metric for storage
-        let weightInKg: Double
-        let heightInCm: Double
-        
-        if useMetricSystem {
-            weightInKg = Double(weight) ?? 0.0
-            heightInCm = Double(height) ?? 0.0
-        } else {
-            // Convert lbs to kg
-            weightInKg = (Double(weight) ?? 0.0) * 0.453592
-            // Convert inches to cm
-            heightInCm = (Double(height) ?? 0.0) * 2.54
-        }
-        
         let newProfile = UserProfile(
             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
             age: Int(age) ?? 0,
-            weight: weightInKg,    // Stored in kg
-            height: heightInCm,    // Stored in cm
             diagnosisDate: diagnosisDate,
             useMetricSystem: useMetricSystem,
             onboardingCompleted: false
         )
+        if useMetricSystem {
+            newProfile.weight = Double(weight) ?? 0.0
+            newProfile.height = Double(height) ?? 0.0
+        } else {
+            newProfile.weightInPounds = Double(weight) ?? 0.0
+            newProfile.heightInInches = Double(height) ?? 0.0
+        }
         
         modelContext.insert(newProfile)
         

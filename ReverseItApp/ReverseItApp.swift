@@ -14,7 +14,9 @@ struct ReverseItApp: App {
             UserProfile.self,
             GlucoseReading.self,
             FoodEntry.self,
-            ExerciseEntry.self
+            ExerciseEntry.self,
+            GamificationProfile.self,
+            EarnedAchievement.self
         ])
         let arguments = ProcessInfo.processInfo.arguments
         let isUITest = arguments.contains("-uitest-reset") || arguments.contains("-uitest-seeded")

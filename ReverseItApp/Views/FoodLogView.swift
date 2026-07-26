@@ -1,6 +1,8 @@
 import SwiftUI
 import SwiftData
 import Charts
+import PhotosUI
+import UIKit
 
 struct FoodLogView: View {
     @Environment(\.modelContext) private var modelContext
@@ -250,6 +252,13 @@ struct AddFoodView: View {
     @State private var healthSyncError: Error?
     @State private var saveError: String?
 
+    // Nutrition-label scanning
+    @State private var showingCamera = false
+    @State private var showingPhotosPicker = false
+    @State private var photosPickerItem: PhotosPickerItem?
+    @State private var isScanning = false
+    @State private var scanError: String?
+
     var body: some View {
         NavigationStack {
             Form {
@@ -264,6 +273,35 @@ struct AddFoodView: View {
                     }
 
                     DatePicker("Time", selection: $timestamp, displayedComponents: [.date, .hourAndMinute])
+                }
+
+                Section {
+                    Menu {
+                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                            Button {
+                                showingCamera = true
+                            } label: {
+                                Label("Take Photo", systemImage: "camera")
+                            }
+                        }
+                        Button {
+                            showingPhotosPicker = true
+                        } label: {
+                            Label("Choose from Library", systemImage: "photo.on.rectangle")
+                        }
+                    } label: {
+                        Label("Scan Nutrition Label", systemImage: "text.viewfinder")
+                    }
+                    .disabled(isScanning)
+                    .accessibilityLabel("Scan nutrition label")
+
+                    if isScanning {
+                        HStack(spacing: 8) {
+                            ProgressView()
+                            Text("Scanning…")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
                 }
 
                 Section(header: Text("Nutrition")) {
@@ -348,6 +386,28 @@ struct AddFoodView: View {
                 Text("Failed to sync food entry to Apple Health: \(healthSyncError?.localizedDescription ?? "Unknown error")")
             }
             .errorAlert($saveError)
+            .errorAlert($scanError)
+            .sheet(isPresented: $showingCamera) {
+                CameraPicker { data in
+                    Task { await runScan(data) }
+                }
+            }
+            .photosPicker(isPresented: $showingPhotosPicker, selection: $photosPickerItem, matching: .images)
+            .onChange(of: photosPickerItem) { _, newItem in
+                guard let newItem else { return }
+                Task {
+                    do {
+                        if let data = try await newItem.loadTransferable(type: Data.self) {
+                            await runScan(data)
+                        } else {
+                            scanError = String(localized: "Couldn't load the selected image.")
+                        }
+                    } catch {
+                        scanError = error.localizedDescription
+                    }
+                    photosPickerItem = nil
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -411,5 +471,37 @@ struct AddFoodView: View {
         }
 
         dismiss()
+    }
+
+    @MainActor
+    private func runScan(_ imageData: Data) async {
+        isScanning = true
+        defer { isScanning = false }
+        do {
+            let nutrition = try await NutritionLabelScanner.scan(imageData: imageData)
+            apply(nutrition)
+        } catch {
+            scanError = error.localizedDescription
+        }
+    }
+
+    /// Writes scanned values into the form fields, leaving unrecognized fields untouched so
+    /// the user can still type them. When the label states calories, automatic calculation
+    /// is turned off so the label's value is kept; otherwise calories keep computing from macros.
+    @MainActor
+    private func apply(_ nutrition: ScannedNutrition) {
+        if let carbsValue = nutrition.carbs { carbs = Self.decimalString(carbsValue) }
+        if let proteinValue = nutrition.protein { protein = Self.decimalString(proteinValue) }
+        if let fatValue = nutrition.fat { fat = Self.decimalString(fatValue) }
+        if let caloriesValue = nutrition.calories {
+            calculateCalories = false
+            calories = Self.decimalString(caloriesValue)
+        }
+        // `name` is intentionally left for the user — nutrition labels carry no food name.
+    }
+
+    /// Formats a scanned value for a decimal-pad text field, dropping a redundant ".0".
+    private static func decimalString(_ value: Double) -> String {
+        value == value.rounded() ? String(Int(value)) : String(value)
     }
 }

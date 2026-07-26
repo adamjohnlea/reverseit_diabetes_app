@@ -5,6 +5,7 @@ import HealthKit
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var userProfiles: [UserProfile]
+    @Query private var gamificationProfiles: [GamificationProfile]
     @Environment(HealthKitManager.self) private var healthKitManager
 
     // User profile settings
@@ -22,7 +23,6 @@ struct SettingsView: View {
 
     // App settings
     @State private var useImperial = false
-    @State private var allowNotifications = true
     @State private var syncWithHealthApp = false
     @State private var importFromHealthApp = false
 
@@ -71,7 +71,19 @@ struct SettingsView: View {
                                 }
                             }
                         }
-                    Toggle("Enable Notifications", isOn: $allowNotifications)
+                }
+
+                // Rewards
+                Section(header: Text("Rewards")) {
+                    if let gamification = gamificationProfiles.first {
+                        Toggle("Streak Reminders", isOn: streakReminderBinding(gamification))
+                        Text("A gentle evening reminder if you haven't logged anything that day.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Start logging to enable streak reminders.")
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 // Health integration
@@ -159,6 +171,55 @@ struct SettingsView: View {
                 Text("This will delete all your data and restart the app. This action cannot be undone.")
             }
             .errorAlert($errorMessage)
+        }
+    }
+
+    private func streakReminderBinding(_ gamification: GamificationProfile) -> Binding<Bool> {
+        Binding(
+            get: { gamification.streakRemindersEnabled },
+            set: { isOn in
+                if isOn {
+                    enableStreakReminders(for: gamification)
+                } else {
+                    gamification.streakRemindersEnabled = false
+                    saveContext()
+                    Task { await StreakReminderScheduler.refresh(enabled: false, hasLoggedToday: false) }
+                }
+            }
+        )
+    }
+
+    private func enableStreakReminders(for gamification: GamificationProfile) {
+        Task {
+            let granted = await StreakReminderScheduler.requestAuthorization()
+            if granted {
+                gamification.streakRemindersEnabled = true
+                saveContext()
+                await StreakReminderScheduler.refresh(enabled: true, hasLoggedToday: todayIsLogged(gamification))
+            } else {
+                gamification.streakRemindersEnabled = false
+                healthKitAlertTitle = String(localized: "Notifications Disabled")
+                healthKitAlertMessage = String(localized: "To receive streak reminders, enable notifications for ReverseIt in the Settings app.")
+                showingHealthKitAlert = true
+            }
+        }
+    }
+
+    private func todayIsLogged(_ gamification: GamificationProfile) -> Bool {
+        do {
+            return try gamification.currentStreak(modelContext: modelContext).isActiveToday
+        } catch {
+            // Non-critical: a read failure here at worst schedules an extra
+            // reminder, which the next scene change will correct.
+            return false
+        }
+    }
+
+    private func saveContext() {
+        do {
+            try modelContext.save()
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 

@@ -28,6 +28,7 @@ struct DashboardView: View {
 
     @Query private var todayFoodEntries: [FoodEntry]
     @Query private var todayExerciseEntries: [ExerciseEntry]
+    @Query private var gamificationProfiles: [GamificationProfile]
 
     init() {
         // Initialize queries with predicates
@@ -36,6 +37,9 @@ struct DashboardView: View {
     }
 
     @State private var isAnimating = false
+    @State private var rewardSummary: RewardSummary?
+    @State private var celebration: Celebration?
+    @State private var errorMessage: String?
 
     var body: some View {
         NavigationStack {
@@ -94,6 +98,17 @@ struct DashboardView: View {
                     }
                     .padding(.horizontal)
 
+                    // Rewards Summary
+                    if let rewardSummary {
+                        NavigationLink {
+                            RewardsView()
+                        } label: {
+                            RewardSummaryCard(summary: rewardSummary)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.horizontal)
+                    }
+
                     // Weekly Glucose Chart
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Weekly Glucose Trend")
@@ -120,11 +135,34 @@ struct DashboardView: View {
             }
             .navigationTitle("Dashboard")
             .background(Color(.systemGroupedBackground))
+            .errorAlert($errorMessage)
+            .sheet(item: $celebration) { celebration in
+                CelebrationView(celebration: celebration)
+            }
             .onAppear {
                 withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
                     isAnimating = true
                 }
+                refreshRewards()
             }
+        }
+    }
+
+    /// Ensures a `GamificationProfile` exists, awards any newly-earned
+    /// achievements, and refreshes the summary shown on the reward card.
+    private func refreshRewards() {
+        guard let userProfile = userProfiles.first else { return }
+        let gamification = gamificationProfiles.first ?? {
+            let created = GamificationProfile()
+            modelContext.insert(created)
+            return created
+        }()
+        do {
+            let refresh = try gamification.refreshRewards(userProfile: userProfile, modelContext: modelContext)
+            rewardSummary = refresh.summary
+            celebration = refresh.celebration
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 

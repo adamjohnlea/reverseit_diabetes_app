@@ -34,8 +34,37 @@
 		DECFEF5430155F5A007C97D8 /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5330155F5A007C97D8 /* ErrorAlert.swift */; };
 		DECFEF5630155FBA007C97D8 /* OnboardingFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5530155FBA007C97D8 /* OnboardingFlowUITests.swift */; };
 		DECFEF5830155FBE007C97D8 /* DeleteConfirmationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5730155FBE007C97D8 /* DeleteConfirmationUITests.swift */; };
+		DECFEF5C3015C369007C97D8 /* NutritionLabelParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5B3015C369007C97D8 /* NutritionLabelParser.swift */; };
+		DECFEF5E3015C376007C97D8 /* NutritionLabelScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5D3015C376007C97D8 /* NutritionLabelScanner.swift */; };
+		DECFEF603015C38E007C97D8 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF5F3015C38E007C97D8 /* CameraPicker.swift */; };
 		DECFEF6130160002007C97D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DECFEF6030160001007C97D8 /* Assets.xcassets */; };
+		DECFEF623015C425007C97D8 /* NutritionLabelParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF613015C425007C97D8 /* NutritionLabelParserTests.swift */; };
+		DECFEF653015CB5E007C97D8 /* PointsRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF643015CB5E007C97D8 /* PointsRules.swift */; };
+		DECFEF673015CB6D007C97D8 /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF663015CB6D007C97D8 /* Levels.swift */; };
+		DECFEF693015CB7D007C97D8 /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF683015CB7D007C97D8 /* StreakCalculator.swift */; };
+		DECFEF6B3015CB97007C97D8 /* GamificationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF6A3015CB97007C97D8 /* GamificationProfile.swift */; };
+		DECFEF6D3015CBE7007C97D8 /* GamificationPointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF6C3015CBE7007C97D8 /* GamificationPointsTests.swift */; };
+		DECFEF6F3015CBF2007C97D8 /* GamificationLevelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF6E3015CBF2007C97D8 /* GamificationLevelsTests.swift */; };
+		DECFEF713015CBFE007C97D8 /* GamificationStreakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF703015CBFE007C97D8 /* GamificationStreakTests.swift */; };
 		DECFEF7130170002007C97D8 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DECFEF7030170001007C97D8 /* Localizable.xcstrings */; };
+		DECFEF733015CC0C007C97D8 /* GamificationProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF723015CC0C007C97D8 /* GamificationProfileTests.swift */; };
+		DECFEF753015CD4F007C97D8 /* EarnedAchievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF743015CD4F007C97D8 /* EarnedAchievement.swift */; };
+		DECFEF773015CD67007C97D8 /* Achievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF763015CD67007C97D8 /* Achievements.swift */; };
+		DECFEF793015CD7D007C97D8 /* WeeklyChallenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF783015CD7D007C97D8 /* WeeklyChallenges.swift */; };
+		DECFEF7B3015CD96007C97D8 /* GamificationProfile+Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF7A3015CD96007C97D8 /* GamificationProfile+Progress.swift */; };
+		DECFEF7D3015CDAE007C97D8 /* GamificationWeeklyChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF7C3015CDAE007C97D8 /* GamificationWeeklyChallengeTests.swift */; };
+		DECFEF7F3015CDBF007C97D8 /* GamificationAchievementsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF7E3015CDBF007C97D8 /* GamificationAchievementsTests.swift */; };
+		DECFEF813015CE9D007C97D8 /* RewardSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF803015CE9D007C97D8 /* RewardSummary.swift */; };
+		DECFEF833015CEBD007C97D8 /* RewardSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF823015CEBD007C97D8 /* RewardSummaryCard.swift */; };
+		DECFEF853015CEE6007C97D8 /* RewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF843015CEE6007C97D8 /* RewardsView.swift */; };
+		DECFEF873015CF2E007C97D8 /* GamificationRewardSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF863015CF2E007C97D8 /* GamificationRewardSummaryTests.swift */; };
+		DECFEF893015D0B5007C97D8 /* RewardRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF883015D0B5007C97D8 /* RewardRefresh.swift */; };
+		DECFEF8B3015D0BF007C97D8 /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF8A3015D0BF007C97D8 /* CelebrationView.swift */; };
+		DECFEF8D3015D138007C97D8 /* GamificationTrendTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF8C3015D138007C97D8 /* GamificationTrendTests.swift */; };
+		DECFEF8F3015D149007C97D8 /* GamificationCelebrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF8E3015D149007C97D8 /* GamificationCelebrationTests.swift */; };
+		DECFEF913015D3ED007C97D8 /* StreakReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF903015D3ED007C97D8 /* StreakReminderScheduler.swift */; };
+		DECFEF933015D469007C97D8 /* StreakReminderSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF923015D469007C97D8 /* StreakReminderSchedulerTests.swift */; };
+		DECFEF953015D476007C97D8 /* GamificationMaintenanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFEF943015D476007C97D8 /* GamificationMaintenanceTests.swift */; };
 		EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF0A7BEB791801FABEE09D /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,8 +114,37 @@
 		DECFEF5330155F5A007C97D8 /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
 		DECFEF5530155FBA007C97D8 /* OnboardingFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowUITests.swift; sourceTree = "<group>"; };
 		DECFEF5730155FBE007C97D8 /* DeleteConfirmationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmationUITests.swift; sourceTree = "<group>"; };
+		DECFEF5B3015C369007C97D8 /* NutritionLabelParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionLabelParser.swift; sourceTree = "<group>"; };
+		DECFEF5D3015C376007C97D8 /* NutritionLabelScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionLabelScanner.swift; sourceTree = "<group>"; };
+		DECFEF5F3015C38E007C97D8 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
 		DECFEF6030160001007C97D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DECFEF613015C425007C97D8 /* NutritionLabelParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionLabelParserTests.swift; sourceTree = "<group>"; };
+		DECFEF643015CB5E007C97D8 /* PointsRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsRules.swift; sourceTree = "<group>"; };
+		DECFEF663015CB6D007C97D8 /* Levels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; };
+		DECFEF683015CB7D007C97D8 /* StreakCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculator.swift; sourceTree = "<group>"; };
+		DECFEF6A3015CB97007C97D8 /* GamificationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationProfile.swift; sourceTree = "<group>"; };
+		DECFEF6C3015CBE7007C97D8 /* GamificationPointsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationPointsTests.swift; sourceTree = "<group>"; };
+		DECFEF6E3015CBF2007C97D8 /* GamificationLevelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationLevelsTests.swift; sourceTree = "<group>"; };
+		DECFEF703015CBFE007C97D8 /* GamificationStreakTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationStreakTests.swift; sourceTree = "<group>"; };
 		DECFEF7030170001007C97D8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		DECFEF723015CC0C007C97D8 /* GamificationProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationProfileTests.swift; sourceTree = "<group>"; };
+		DECFEF743015CD4F007C97D8 /* EarnedAchievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnedAchievement.swift; sourceTree = "<group>"; };
+		DECFEF763015CD67007C97D8 /* Achievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievements.swift; sourceTree = "<group>"; };
+		DECFEF783015CD7D007C97D8 /* WeeklyChallenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyChallenges.swift; sourceTree = "<group>"; };
+		DECFEF7A3015CD96007C97D8 /* GamificationProfile+Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamificationProfile+Progress.swift"; sourceTree = "<group>"; };
+		DECFEF7C3015CDAE007C97D8 /* GamificationWeeklyChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationWeeklyChallengeTests.swift; sourceTree = "<group>"; };
+		DECFEF7E3015CDBF007C97D8 /* GamificationAchievementsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationAchievementsTests.swift; sourceTree = "<group>"; };
+		DECFEF803015CE9D007C97D8 /* RewardSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardSummary.swift; sourceTree = "<group>"; };
+		DECFEF823015CEBD007C97D8 /* RewardSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardSummaryCard.swift; sourceTree = "<group>"; };
+		DECFEF843015CEE6007C97D8 /* RewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsView.swift; sourceTree = "<group>"; };
+		DECFEF863015CF2E007C97D8 /* GamificationRewardSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationRewardSummaryTests.swift; sourceTree = "<group>"; };
+		DECFEF883015D0B5007C97D8 /* RewardRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardRefresh.swift; sourceTree = "<group>"; };
+		DECFEF8A3015D0BF007C97D8 /* CelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelebrationView.swift; sourceTree = "<group>"; };
+		DECFEF8C3015D138007C97D8 /* GamificationTrendTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationTrendTests.swift; sourceTree = "<group>"; };
+		DECFEF8E3015D149007C97D8 /* GamificationCelebrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationCelebrationTests.swift; sourceTree = "<group>"; };
+		DECFEF903015D3ED007C97D8 /* StreakReminderScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakReminderScheduler.swift; sourceTree = "<group>"; };
+		DECFEF923015D469007C97D8 /* StreakReminderSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakReminderSchedulerTests.swift; sourceTree = "<group>"; };
+		DECFEF943015D476007C97D8 /* GamificationMaintenanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamificationMaintenanceTests.swift; sourceTree = "<group>"; };
 		E0A531B31C9444AF39B768E6 /* ExerciseLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogView.swift; sourceTree = "<group>"; };
 		E3A41632C40BFBD420FF91E2 /* ExerciseEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEntry.swift; sourceTree = "<group>"; };
 		EF00942187A5F9C384D69EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -103,6 +161,8 @@
 				0F0EF879D78D1A817387F248 /* GlucoseReading.swift */,
 				219990FF657DA029A6DCDFCD /* UserProfile.swift */,
 				DECFEF4030155AB6007C97D8 /* ExerciseType.swift */,
+				DECFEF6A3015CB97007C97D8 /* GamificationProfile.swift */,
+				DECFEF743015CD4F007C97D8 /* EarnedAchievement.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -118,6 +178,7 @@
 				5722274D1D9F9DA35BFB627E /* OnboardingView.swift */,
 				08EE708AF498E4F3709E77CF /* SettingsView.swift */,
 				DECFEF5030155F56007C97D8 /* Components */,
+				DECFEF843015CEE6007C97D8 /* RewardsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -172,6 +233,9 @@
 			isa = PBXGroup;
 			children = (
 				F3754FB5BFCB0C333414AC3E /* HealthKitManager.swift */,
+				DECFEF5B3015C369007C97D8 /* NutritionLabelParser.swift */,
+				DECFEF5D3015C376007C97D8 /* NutritionLabelScanner.swift */,
+				DECFEF903015D3ED007C97D8 /* StreakReminderScheduler.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -181,6 +245,7 @@
 			children = (
 				DECFEF3C30155AA6007C97D8 /* StatusStyle.swift */,
 				DECFEF3E30155AAA007C97D8 /* BodyMeasurements.swift */,
+				DECFEF633015CB5E007C97D8 /* Gamification */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -190,8 +255,26 @@
 			children = (
 				DECFEF5130155F56007C97D8 /* ConfirmableDelete.swift */,
 				DECFEF5330155F5A007C97D8 /* ErrorAlert.swift */,
+				DECFEF5F3015C38E007C97D8 /* CameraPicker.swift */,
+				DECFEF823015CEBD007C97D8 /* RewardSummaryCard.swift */,
+				DECFEF8A3015D0BF007C97D8 /* CelebrationView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		DECFEF633015CB5E007C97D8 /* Gamification */ = {
+			isa = PBXGroup;
+			children = (
+				DECFEF643015CB5E007C97D8 /* PointsRules.swift */,
+				DECFEF663015CB6D007C97D8 /* Levels.swift */,
+				DECFEF683015CB7D007C97D8 /* StreakCalculator.swift */,
+				DECFEF763015CD67007C97D8 /* Achievements.swift */,
+				DECFEF783015CD7D007C97D8 /* WeeklyChallenges.swift */,
+				DECFEF7A3015CD96007C97D8 /* GamificationProfile+Progress.swift */,
+				DECFEF803015CE9D007C97D8 /* RewardSummary.swift */,
+				DECFEF883015D0B5007C97D8 /* RewardRefresh.swift */,
+			);
+			path = Gamification;
 			sourceTree = "<group>";
 		};
 		FCB3E00DD8D0B8BC07360CCD /* ReverseItAppTests */ = {
@@ -204,6 +287,18 @@
 				DECFEF4A30155B97007C97D8 /* ExerciseEntryTests.swift */,
 				DECFEF4C30155B9A007C97D8 /* ExerciseTypeTests.swift */,
 				DECFEF4E30155BA8007C97D8 /* ModelQueryTests.swift */,
+				DECFEF613015C425007C97D8 /* NutritionLabelParserTests.swift */,
+				DECFEF6C3015CBE7007C97D8 /* GamificationPointsTests.swift */,
+				DECFEF6E3015CBF2007C97D8 /* GamificationLevelsTests.swift */,
+				DECFEF703015CBFE007C97D8 /* GamificationStreakTests.swift */,
+				DECFEF723015CC0C007C97D8 /* GamificationProfileTests.swift */,
+				DECFEF7C3015CDAE007C97D8 /* GamificationWeeklyChallengeTests.swift */,
+				DECFEF7E3015CDBF007C97D8 /* GamificationAchievementsTests.swift */,
+				DECFEF863015CF2E007C97D8 /* GamificationRewardSummaryTests.swift */,
+				DECFEF8C3015D138007C97D8 /* GamificationTrendTests.swift */,
+				DECFEF8E3015D149007C97D8 /* GamificationCelebrationTests.swift */,
+				DECFEF923015D469007C97D8 /* StreakReminderSchedulerTests.swift */,
+				DECFEF943015D476007C97D8 /* GamificationMaintenanceTests.swift */,
 			);
 			path = ReverseItAppTests;
 			sourceTree = "<group>";
@@ -324,24 +419,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DECFEF673015CB6D007C97D8 /* Levels.swift in Sources */,
+				DECFEF8B3015D0BF007C97D8 /* CelebrationView.swift in Sources */,
+				DECFEF773015CD67007C97D8 /* Achievements.swift in Sources */,
+				DECFEF913015D3ED007C97D8 /* StreakReminderScheduler.swift in Sources */,
+				DECFEF5C3015C369007C97D8 /* NutritionLabelParser.swift in Sources */,
 				AE468A8D7F4EFC9466868253 /* ContentView.swift in Sources */,
 				DECFEF3F30155AAA007C97D8 /* BodyMeasurements.swift in Sources */,
 				EE187BAEC0409A819D7D239D /* DashboardView.swift in Sources */,
 				7ACFF396C8EA7EC570F0B5B8 /* ExerciseEntry.swift in Sources */,
 				733CA9ED3AFC4CE4081781BA /* ExerciseLogView.swift in Sources */,
+				DECFEF6B3015CB97007C97D8 /* GamificationProfile.swift in Sources */,
+				DECFEF893015D0B5007C97D8 /* RewardRefresh.swift in Sources */,
 				860E41C94CDE6C05562BC367 /* FoodEntry.swift in Sources */,
 				994BA5FE0F8121BDCB29C753 /* FoodLogView.swift in Sources */,
+				DECFEF7B3015CD96007C97D8 /* GamificationProfile+Progress.swift in Sources */,
+				DECFEF833015CEBD007C97D8 /* RewardSummaryCard.swift in Sources */,
 				DECFEF5230155F56007C97D8 /* ConfirmableDelete.swift in Sources */,
 				DECFEF4130155AB6007C97D8 /* ExerciseType.swift in Sources */,
+				DECFEF653015CB5E007C97D8 /* PointsRules.swift in Sources */,
+				DECFEF603015C38E007C97D8 /* CameraPicker.swift in Sources */,
 				924907CE22457B576B29328F /* GlucoseLogView.swift in Sources */,
 				2DDF74B9EAA6A5B9E45B0CB8 /* GlucoseReading.swift in Sources */,
 				0E25619D83444A40E5883421 /* HealthKitManager.swift in Sources */,
 				5C84E2511777C22C2250401C /* OnboardingView.swift in Sources */,
 				DECFEF5430155F5A007C97D8 /* ErrorAlert.swift in Sources */,
+				DECFEF793015CD7D007C97D8 /* WeeklyChallenges.swift in Sources */,
 				81588D4297680F710069B55E /* ReverseItApp.swift in Sources */,
+				DECFEF813015CE9D007C97D8 /* RewardSummary.swift in Sources */,
+				DECFEF5E3015C376007C97D8 /* NutritionLabelScanner.swift in Sources */,
 				DECFEF3D30155AA6007C97D8 /* StatusStyle.swift in Sources */,
+				DECFEF753015CD4F007C97D8 /* EarnedAchievement.swift in Sources */,
+				DECFEF693015CB7D007C97D8 /* StreakCalculator.swift in Sources */,
 				8A2672B11E3745096AC5522E /* SettingsView.swift in Sources */,
 				A9B38B4F1E1DFEBBE921258E /* UserProfile.swift in Sources */,
+				DECFEF853015CEE6007C97D8 /* RewardsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,13 +461,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DECFEF7F3015CDBF007C97D8 /* GamificationAchievementsTests.swift in Sources */,
+				DECFEF733015CC0C007C97D8 /* GamificationProfileTests.swift in Sources */,
+				DECFEF8D3015D138007C97D8 /* GamificationTrendTests.swift in Sources */,
+				DECFEF6D3015CBE7007C97D8 /* GamificationPointsTests.swift in Sources */,
 				DECFEF4B30155B97007C97D8 /* ExerciseEntryTests.swift in Sources */,
 				DECFEF4530155B84007C97D8 /* UserProfileTests.swift in Sources */,
 				DECFEF4F30155BA8007C97D8 /* ModelQueryTests.swift in Sources */,
 				DECFEF4930155B94007C97D8 /* FoodEntryTests.swift in Sources */,
+				DECFEF6F3015CBF2007C97D8 /* GamificationLevelsTests.swift in Sources */,
+				DECFEF953015D476007C97D8 /* GamificationMaintenanceTests.swift in Sources */,
+				DECFEF8F3015D149007C97D8 /* GamificationCelebrationTests.swift in Sources */,
 				DECFEF4D30155B9A007C97D8 /* ExerciseTypeTests.swift in Sources */,
+				DECFEF713015CBFE007C97D8 /* GamificationStreakTests.swift in Sources */,
+				DECFEF873015CF2E007C97D8 /* GamificationRewardSummaryTests.swift in Sources */,
 				DECFEF4330155B77007C97D8 /* TestSupport.swift in Sources */,
+				DECFEF623015C425007C97D8 /* NutritionLabelParserTests.swift in Sources */,
 				DECFEF4730155B87007C97D8 /* GlucoseReadingTests.swift in Sources */,
+				DECFEF7D3015CDAE007C97D8 /* GamificationWeeklyChallengeTests.swift in Sources */,
+				DECFEF933015D469007C97D8 /* StreakReminderSchedulerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +581,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -536,6 +661,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -558,6 +684,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReverseItApp/ReverseIt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ReverseItApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -578,6 +705,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -600,6 +728,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReverseItApp/ReverseIt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ReverseItApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -620,6 +749,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -10,7 +10,9 @@ enum TestSupport {
             UserProfile.self,
             GlucoseReading.self,
             FoodEntry.self,
-            ExerciseEntry.self
+            ExerciseEntry.self,
+            GamificationProfile.self,
+            EarnedAchievement.self
         ])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [configuration])

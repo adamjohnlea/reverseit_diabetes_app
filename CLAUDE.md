@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ReverseIt! is an iOS app (iOS 18+, Swift 6, strict concurrency) for type 2 diabetes management: glucose, food, and exercise tracking with Apple Health sync. SwiftUI + SwiftData + HealthKit + Swift Charts.
+ReverseIt! is an iOS app (iOS 26+, Swift 6, strict concurrency) for type 2 diabetes management: glucose, food, and exercise tracking with Apple Health sync. SwiftUI + SwiftData + HealthKit + Swift Charts.
 
 ## Project Management
 

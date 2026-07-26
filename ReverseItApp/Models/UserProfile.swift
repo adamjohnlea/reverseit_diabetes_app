@@ -85,6 +85,18 @@ extension UserProfile {
             throw DataError.invalidDate
         }
 
+        // Preserve lifetime points across pruning: bank whatever the
+        // soon-to-be-deleted data currently contributes, so the total stays
+        // monotonic even after old readings are removed.
+        let gamification = try modelContext.fetch(FetchDescriptor<GamificationProfile>()).first
+        let userProfile = try modelContext.fetch(FetchDescriptor<UserProfile>()).first
+        let derivedBefore: Int?
+        if let gamification, let userProfile {
+            derivedBefore = try gamification.derivedPoints(userProfile: userProfile, modelContext: modelContext)
+        } else {
+            derivedBefore = nil
+        }
+
         let descriptor = FetchDescriptor<GlucoseReading>(
             predicate: #Predicate<GlucoseReading> { reading in
                 reading.timestamp < threeMonthsAgo
@@ -94,6 +106,12 @@ extension UserProfile {
         let oldReadings = try modelContext.fetch(descriptor)
         oldReadings.forEach { modelContext.delete($0) }
         try modelContext.save()
+
+        if let gamification, let userProfile, let derivedBefore {
+            let derivedAfter = try gamification.derivedPoints(userProfile: userProfile, modelContext: modelContext)
+            gamification.lifetimePointsCheckpoint += (derivedBefore - derivedAfter)
+            try modelContext.save()
+        }
     }
 
     /// Bounds within which each user-editable target must fall.

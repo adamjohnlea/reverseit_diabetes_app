@@ -5,7 +5,7 @@ import HealthKit
 @main
 struct ReverseItApp: App {
     @State private var healthKitManager = HealthKitManager.shared
-    
+
     /// UI tests pass `-uitest-reset` for an empty in-memory store, or
     /// `-uitest-seeded` for an in-memory store with a completed profile and
     /// sample data. Production launches always use the persistent store.
@@ -39,7 +39,7 @@ struct ReverseItApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()

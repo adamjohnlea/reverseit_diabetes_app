@@ -6,7 +6,7 @@ struct ExerciseLogView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ExerciseEntry.startTime, order: .reverse, animation: .default) private var exercises: [ExerciseEntry]
     @Query private var userProfiles: [UserProfile]
-    
+
     @State private var showingAddSheet = false
     @State private var selectedDate = Date()
     @State private var exercisePendingDeletion: ExerciseEntry?
@@ -24,7 +24,7 @@ struct ExerciseLogView: View {
                 .datePickerStyle(.compact)
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground))
-                
+
                 List {
                     // Summary and progress
                     Section {
@@ -36,7 +36,7 @@ struct ExerciseLogView: View {
                                         Color(.systemGray5),
                                         lineWidth: 15
                                     )
-                                
+
                                 Circle()
                                     .trim(from: 0, to: progressFraction)
                                     .stroke(
@@ -48,11 +48,11 @@ struct ExerciseLogView: View {
                                     )
                                     .rotationEffect(.degrees(-90))
                                     .animation(.easeOut, value: progressFraction)
-                                
+
                                 VStack(spacing: 5) {
                                     Text("\(totalMinutes) min")
                                         .font(.largeTitle.bold())
-                                    
+
                                     Text("of \(targetMinutes) min")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
@@ -61,13 +61,13 @@ struct ExerciseLogView: View {
                             .frame(height: 200)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel("Exercise progress: \(totalMinutes) of \(targetMinutes) minutes")
-                            
+
                             // Calories burned
                             if totalCaloriesBurned > 0 {
                                 HStack(spacing: 8) {
                                     Image(systemName: "flame.fill")
                                         .foregroundStyle(.orange)
-                                    
+
                                     Text("\(Int(totalCaloriesBurned)) calories burned")
                                         .font(.headline)
                                 }
@@ -76,7 +76,7 @@ struct ExerciseLogView: View {
                         }
                         .padding()
                     }
-                    
+
                     // Weekly progress chart
                     Section(header: Text("Weekly Progress")) {
                         Chart(lastSevenDays, id: \.day) { dayData in
@@ -96,7 +96,7 @@ struct ExerciseLogView: View {
                             }
                         }
                     }
-                    
+
                     // Exercises for selected date
                     Section {
                         if filteredExercises.isEmpty {
@@ -143,7 +143,7 @@ struct ExerciseLogView: View {
             }
         }
     }
-    
+
     private func delete(_ exercise: ExerciseEntry) {
         modelContext.delete(exercise)
         do {
@@ -157,38 +157,38 @@ struct ExerciseLogView: View {
         let calendar = Calendar.current
         return exercises.filter { calendar.isDate($0.startTime, inSameDayAs: selectedDate) }
     }
-    
+
     private var targetMinutes: Int {
         return userProfiles.first?.targetDailyExerciseMinutes ?? 30
     }
-    
+
     private var totalMinutes: Int {
         let minutes = filteredExercises.reduce(0) { $0 + Int($1.durationInMinutes) }
         return minutes
     }
-    
+
     private var progressFraction: Double {
         if targetMinutes == 0 { return 0 }
         return min(Double(totalMinutes) / Double(targetMinutes), 1.0)
     }
-    
+
     // Uses measured calories when present, otherwise the MET estimate.
     private var totalCaloriesBurned: Double {
         let weightKg = userProfiles.first?.weight ?? 0
         return filteredExercises.reduce(0) { $0 + $1.estimatedCalories(weightKg: weightKg) }
     }
-    
+
     struct DayExerciseData {
         let day: Date
         let minutes: Int
     }
-    
+
     private var lastSevenDays: [DayExerciseData] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        
+
         return (0..<7).map { dayOffset -> DayExerciseData in
-            let day = calendar.date(byAdding: .day, value: -dayOffset, to: today)!
+            let day = calendar.date(byAdding: .day, value: -dayOffset, to: today) ?? today
             let dayExercises = exercises.filter { calendar.isDate($0.startTime, inSameDayAs: day) }
             let minutes = dayExercises.reduce(0) { $0 + Int($1.durationInMinutes) }
             return DayExerciseData(day: day, minutes: minutes)
@@ -198,7 +198,7 @@ struct ExerciseLogView: View {
 
 struct ExerciseEntryRow: View {
     let exercise: ExerciseEntry
-    
+
     var body: some View {
         HStack {
             exerciseIcon
@@ -208,24 +208,24 @@ struct ExerciseEntryRow: View {
                 .background(exerciseColor)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .accessibilityHidden(true)
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(exercise.type)
                     .font(.headline)
-                
+
                 Text(exercise.startTime.formatted(date: .omitted, time: .shortened))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             .padding(.leading, 8)
-            
+
             Spacer()
-            
+
             VStack(alignment: .trailing, spacing: 4) {
                 Text("\(Int(exercise.durationInMinutes)) min")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                
+
                 if let calories = exercise.caloriesBurned {
                     Text("\(Int(calories)) cal")
                         .font(.caption)
@@ -236,11 +236,11 @@ struct ExerciseEntryRow: View {
         .padding(.vertical, 4)
         .accessibilityElement(children: .combine)
     }
-    
+
     private var exerciseIcon: Image {
         Image(systemName: exercise.exerciseType.systemImageName)
     }
-    
+
     private var exerciseColor: Color {
         switch exercise.intensity {
         case .light: return .blue
@@ -248,17 +248,17 @@ struct ExerciseEntryRow: View {
         case .vigorous: return .orange
         }
     }
-    
+
 }
 
 struct AddExerciseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(HealthKitManager.self) private var healthKitManager
-    
+
     // Every supported type except the free-text fallback.
     private let exerciseTypes = ExerciseType.allCases.filter { $0 != .other }.map(\.rawValue)
-    
+
     @State private var type = "Walking"
     @State private var customType = ""
     @State private var useCustomType = false
@@ -268,12 +268,12 @@ struct AddExerciseView: View {
     @State private var caloriesBurned = ""
     @State private var intensity: ExerciseEntry.ExerciseIntensity = .moderate
     @State private var note = ""
-    
+
     // HealthKit integration
     @State private var syncToHealth = true
     @State private var showingHealthSyncAlert = false
-    @State private var healthSyncError: Error? = nil
-    
+    @State private var healthSyncError: Error?
+
     var body: some View {
         NavigationStack {
             Form {
@@ -287,11 +287,11 @@ struct AddExerciseView: View {
                             }
                         }
                     }
-                    
+
                     Toggle("Custom exercise type", isOn: $useCustomType)
-                    
+
                     DatePicker("Start Time", selection: $startTime, displayedComponents: [.date, .hourAndMinute])
-                    
+
                     HStack {
                         Text("Duration")
                         Spacer()
@@ -302,7 +302,7 @@ struct AddExerciseView: View {
                         }
                         .pickerStyle(.wheel)
                         .frame(width: 70)
-                        
+
                         Picker("", selection: $durationMinutes) {
                             ForEach(0..<60) { minute in
                                 Text("\(minute) min").tag(minute)
@@ -311,13 +311,13 @@ struct AddExerciseView: View {
                         .pickerStyle(.wheel)
                         .frame(width: 70)
                     }
-                    
+
                     Picker("Intensity", selection: $intensity) {
                         Text("Light").tag(ExerciseEntry.ExerciseIntensity.light)
                         Text("Moderate").tag(ExerciseEntry.ExerciseIntensity.moderate)
                         Text("Vigorous").tag(ExerciseEntry.ExerciseIntensity.vigorous)
                     }
-                    
+
                     HStack {
                         Text("Calories Burned")
                         Spacer()
@@ -326,18 +326,18 @@ struct AddExerciseView: View {
                             .multilineTextAlignment(.trailing)
                     }
                 }
-                
+
                 Section {
                     TextField("Notes", text: $note, axis: .vertical)
                         .lineLimit(3)
                 }
-                
+
                 if healthKitManager.isHealthKitAuthorized {
                     Section {
                         Toggle("Sync to Apple Health", isOn: $syncToHealth)
                     }
                 }
-                
+
                 Section {
                     Button("Save Exercise") {
                         saveExercise()
@@ -362,12 +362,12 @@ struct AddExerciseView: View {
             }
         }
     }
-    
+
     private func saveExercise() {
         let exerciseType = useCustomType ? customType : type
         let duration = TimeInterval((durationHours * 3600) + (durationMinutes * 60))
         let calories = caloriesBurned.isEmpty ? nil : Double(caloriesBurned)
-        
+
         let newExercise = ExerciseEntry(
             type: exerciseType,
             startTime: startTime,
@@ -376,9 +376,9 @@ struct AddExerciseView: View {
             intensity: intensity,
             note: note.isEmpty ? nil : note
         )
-        
+
         modelContext.insert(newExercise)
-        
+
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {
             Task {
@@ -392,7 +392,7 @@ struct AddExerciseView: View {
                 }
             }
         }
-        
+
         dismiss()
     }
 }

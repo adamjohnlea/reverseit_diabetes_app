@@ -6,7 +6,7 @@ struct FoodLogView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \FoodEntry.timestamp, order: .reverse, animation: .default) private var foodEntries: [FoodEntry]
     @Query private var userProfiles: [UserProfile]
-    
+
     @State private var showingAddSheet = false
     @State private var selectedDate = Date()
     @State private var entryPendingDeletion: FoodEntry?
@@ -24,19 +24,19 @@ struct FoodLogView: View {
                 .datePickerStyle(.compact)
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground))
-                
+
                 List {
                     // Daily Summary
                     Section {
                         HStack(spacing: 20) {
                             NutrientCard(title: "Carbs", value: totalCarbsForSelectedDate(), goal: userProfiles.first?.targetDailyCarbs ?? 150, unit: "g", color: .blue)
-                            
+
                             NutrientCard(title: "Protein", value: totalProteinForSelectedDate(), goal: nil, unit: "g", color: .green)
-                            
+
                             NutrientCard(title: "Fat", value: totalFatForSelectedDate(), goal: nil, unit: "g", color: .orange)
                         }
                         .padding(.vertical, 8)
-                        
+
                         // Nutrition chart
                         Chart {
                             SectorMark(
@@ -46,7 +46,7 @@ struct FoodLogView: View {
                             )
                             .cornerRadius(5)
                             .foregroundStyle(.blue)
-                            
+
                             SectorMark(
                                 angle: .value("Value", totalProteinForSelectedDate()),
                                 innerRadius: .ratio(0.6),
@@ -54,7 +54,7 @@ struct FoodLogView: View {
                             )
                             .cornerRadius(5)
                             .foregroundStyle(.green)
-                            
+
                             SectorMark(
                                 angle: .value("Value", totalFatForSelectedDate()),
                                 innerRadius: .ratio(0.6),
@@ -65,7 +65,7 @@ struct FoodLogView: View {
                         }
                         .frame(height: 200)
                     }
-                    
+
                     // Meals for selected date
                     Section {
                         if filteredEntries.isEmpty {
@@ -112,7 +112,7 @@ struct FoodLogView: View {
             }
         }
     }
-    
+
     private func delete(_ entry: FoodEntry) {
         modelContext.delete(entry)
         do {
@@ -126,15 +126,15 @@ struct FoodLogView: View {
         let calendar = Calendar.current
         return foodEntries.filter { calendar.isDate($0.timestamp, inSameDayAs: selectedDate) }
     }
-    
+
     private func totalCarbsForSelectedDate() -> Double {
         filteredEntries.reduce(0) { $0 + $1.carbs }
     }
-    
+
     private func totalProteinForSelectedDate() -> Double {
         filteredEntries.reduce(0) { $0 + $1.protein }
     }
-    
+
     private func totalFatForSelectedDate() -> Double {
         filteredEntries.reduce(0) { $0 + $1.fat }
     }
@@ -146,24 +146,24 @@ struct NutrientCard: View {
     let goal: Int?
     let unit: String
     let color: Color
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            
+
             HStack(alignment: .lastTextBaseline, spacing: 4) {
                 Text(String(format: "%.0f", value))
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(color)
-                
+
                 Text(unit)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
+
             if let goalValue = goal {
                 ProgressView(value: min(value, Double(goalValue)), total: Double(goalValue))
                     .progressViewStyle(.linear)
@@ -179,14 +179,14 @@ struct NutrientCard: View {
 
 struct FoodEntryRow: View {
     let entry: FoodEntry
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(entry.name)
                         .font(.headline)
-                    
+
                     Text(entry.mealType.description)
                         .font(.caption)
                         .padding(.horizontal, 6)
@@ -195,19 +195,19 @@ struct FoodEntryRow: View {
                         .foregroundStyle(mealTypeColor())
                         .clipShape(Capsule())
                 }
-                
+
                 Text(entry.timestamp.formatted(date: .omitted, time: .shortened))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
+
             Spacer()
-            
+
             VStack(alignment: .trailing, spacing: 4) {
                 Text("\(Int(entry.carbs))g carbs")
                     .font(.subheadline)
                     .foregroundStyle(.blue)
-                
+
                 Text("\(Int(entry.calories)) kcal")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -215,7 +215,7 @@ struct FoodEntryRow: View {
         }
         .accessibilityElement(children: .combine)
     }
-    
+
     private func mealTypeColor() -> Color {
         switch entry.mealType {
         case .breakfast: return .purple
@@ -224,14 +224,14 @@ struct FoodEntryRow: View {
         case .snack: return .orange
         }
     }
-    
+
 }
 
 struct AddFoodView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(HealthKitManager.self) private var healthKitManager
-    
+
     @State private var name = ""
     @State private var carbs = ""
     @State private var protein = ""
@@ -240,31 +240,31 @@ struct AddFoodView: View {
     @State private var mealType: FoodEntry.MealType = .lunch
     @State private var timestamp = Date()
     @State private var note = ""
-    
+
     // For automatic calculation
     @State private var calculateCalories = true
-    
+
     // HealthKit integration
     @State private var syncToHealth = true
     @State private var showingHealthSyncAlert = false
-    @State private var healthSyncError: Error? = nil
-    
+    @State private var healthSyncError: Error?
+
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     TextField("Food Name", text: $name)
-                    
+
                     Picker("Meal Type", selection: $mealType) {
                         Text("Breakfast").tag(FoodEntry.MealType.breakfast)
                         Text("Lunch").tag(FoodEntry.MealType.lunch)
                         Text("Dinner").tag(FoodEntry.MealType.dinner)
                         Text("Snack").tag(FoodEntry.MealType.snack)
                     }
-                    
+
                     DatePicker("Time", selection: $timestamp, displayedComponents: [.date, .hourAndMinute])
                 }
-                
+
                 Section(header: Text("Nutrition")) {
                     HStack {
                         Text("Carbs")
@@ -276,7 +276,7 @@ struct AddFoodView: View {
                         Text("g")
                             .foregroundStyle(.secondary)
                     }
-                    
+
                     HStack {
                         Text("Protein")
                         Spacer()
@@ -287,7 +287,7 @@ struct AddFoodView: View {
                         Text("g")
                             .foregroundStyle(.secondary)
                     }
-                    
+
                     HStack {
                         Text("Fat")
                         Spacer()
@@ -298,7 +298,7 @@ struct AddFoodView: View {
                         Text("g")
                             .foregroundStyle(.secondary)
                     }
-                    
+
                     HStack {
                         Text("Calories")
                         Spacer()
@@ -316,21 +316,21 @@ struct AddFoodView: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    
+
                     Toggle("Calculate calories automatically", isOn: $calculateCalories)
                 }
-                
+
                 Section {
                     TextField("Notes", text: $note, axis: .vertical)
                         .lineLimit(3)
                 }
-                
+
                 if healthKitManager.isHealthKitAuthorized {
                     Section {
                         Toggle("Sync to Apple Health", isOn: $syncToHealth)
                     }
                 }
-                
+
                 Section {
                     Button("Save Food Entry") {
                         saveEntry()
@@ -355,11 +355,11 @@ struct AddFoodView: View {
             }
         }
     }
-    
+
     private var calculatedCalories: String {
         return String(format: "%.0f", computedCalories())
     }
-    
+
     private func computedCalories() -> Double {
         let carbsVal = Double(carbs) ?? 0
         let proteinVal = Double(protein) ?? 0
@@ -374,7 +374,7 @@ struct AddFoodView: View {
         let proteinVal = Double(protein) ?? 0
         let fatVal = Double(fat) ?? 0
         let caloriesVal = calculateCalories ? computedCalories() : (Double(calories) ?? 0)
-        
+
         let newEntry = FoodEntry(
             name: name,
             timestamp: timestamp,
@@ -385,9 +385,9 @@ struct AddFoodView: View {
             mealType: mealType,
             note: note.isEmpty ? nil : note
         )
-        
+
         modelContext.insert(newEntry)
-        
+
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {
             Task {
@@ -401,7 +401,7 @@ struct AddFoodView: View {
                 }
             }
         }
-        
+
         dismiss()
     }
 }

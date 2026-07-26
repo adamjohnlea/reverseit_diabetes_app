@@ -6,37 +6,37 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var userProfiles: [UserProfile]
     @Environment(HealthKitManager.self) private var healthKitManager
-    
+
     // User profile settings
     @State private var name = ""
     @State private var age = ""
     @State private var weight = ""
     @State private var height = ""
     @State private var diagnosisDate = Date()
-    
+
     // Goal settings
     @State private var targetGlucoseMin = ""
     @State private var targetGlucoseMax = ""
     @State private var targetDailyCarbs = ""
     @State private var targetDailyExerciseMinutes = ""
-    
+
     // App settings
     @State private var useImperial = false
     @State private var allowNotifications = true
     @State private var syncWithHealthApp = false
     @State private var importFromHealthApp = false
-    
+
     // Alerts
     @State private var showingHealthKitAlert = false
     @State private var healthKitAlertTitle = ""
     @State private var healthKitAlertMessage = ""
     @State private var showingImportAlert = false
     @State private var importSuccessful = false
-    
+
     // Add reset confirmation state
     @State private var showingResetConfirm = false
     @State private var errorMessage: String?
-    
+
     var body: some View {
         NavigationStack {
             Form {
@@ -49,14 +49,14 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                
+
                 // Goal settings
                 Section(header: Text("Health Goals")) {
                     if let profile = userProfiles.first {
                         goalFields(profile: profile)
                     }
                 }
-                
+
                 // App settings
                 Section(header: Text("App Settings")) {
                     Toggle("Use Imperial Units", isOn: $useImperial)
@@ -73,7 +73,7 @@ struct SettingsView: View {
                         }
                     Toggle("Enable Notifications", isOn: $allowNotifications)
                 }
-                
+
                 // Health integration
                 Section(header: Text("Apple Health Integration")) {
                     if HKHealthStore.isHealthDataAvailable() {
@@ -83,12 +83,12 @@ struct SettingsView: View {
                                     requestHealthKitAccess()
                                 }
                             }
-                            
+
                         Button("Import Data from Apple Health") {
                             requestHealthKitImport()
                         }
                         .disabled(!healthKitManager.isHealthKitAuthorized)
-                        
+
                         Text("Syncing with Apple Health allows you to share glucose readings, meals, and exercise data with the Health app.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -97,7 +97,7 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                
+
                 // About
                 Section(header: Text("About")) {
                     NavigationLink {
@@ -105,20 +105,20 @@ struct SettingsView: View {
                     } label: {
                         Text("About ReverseIt!")
                     }
-                    
+
                     NavigationLink {
                         HelpView()
                     } label: {
                         Text("Help & Support")
                     }
-                    
+
                     NavigationLink {
                         PrivacyView()
                     } label: {
                         Text("Privacy Policy")
                     }
                 }
-                
+
                 // Save button
                 Section {
                     Button("Save Changes") {
@@ -127,7 +127,7 @@ struct SettingsView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .disabled(!hasChanges())
                 }
-                
+
                 // Add Danger Zone section at the bottom
                 Section(header: Text("Danger Zone").foregroundStyle(.red)) {
                     Button("Reset App Data", role: .destructive) {
@@ -161,14 +161,14 @@ struct SettingsView: View {
             .errorAlert($errorMessage)
         }
     }
-    
+
     private func requestHealthKitAccess() {
         Task {
             do {
                 let success = try await healthKitManager.requestAuthorization()
                 await MainActor.run {
                     syncWithHealthApp = success
-                    
+
                     if !success {
                         healthKitAlertTitle = "Health Access Denied"
                         healthKitAlertMessage = "Unable to access Apple Health. Please enable access in the Settings app."
@@ -185,7 +185,7 @@ struct SettingsView: View {
             }
         }
     }
-    
+
     private func requestHealthKitImport() {
         Task {
             do {
@@ -197,12 +197,12 @@ struct SettingsView: View {
             showingImportAlert = true
         }
     }
-    
+
     @ViewBuilder
     private func profileFields(profile: UserProfile) -> some View {
         TextField("Name", text: $name)
             .textContentType(.name)
-        
+
         HStack {
             Text("Age")
             Spacer()
@@ -213,7 +213,7 @@ struct SettingsView: View {
             Text("years")
                 .foregroundStyle(.secondary)
         }
-        
+
         HStack {
             Text("Weight")
             Spacer()
@@ -224,7 +224,7 @@ struct SettingsView: View {
             Text(useImperial ? "lbs" : "kg")
                 .foregroundStyle(.secondary)
         }
-        
+
         HStack {
             Text("Height")
             Spacer()
@@ -235,10 +235,10 @@ struct SettingsView: View {
             Text(useImperial ? "in" : "cm")
                 .foregroundStyle(.secondary)
         }
-        
+
         DatePicker("Diagnosis Date", selection: $diagnosisDate, displayedComponents: [.date])
     }
-    
+
     @ViewBuilder
     private func goalFields(profile: UserProfile) -> some View {
         HStack {
@@ -256,7 +256,7 @@ struct SettingsView: View {
             Text("mg/dL")
                 .foregroundStyle(.secondary)
         }
-        
+
         HStack {
             Text("Daily Carb Target")
             Spacer()
@@ -267,7 +267,7 @@ struct SettingsView: View {
             Text("g")
                 .foregroundStyle(.secondary)
         }
-        
+
         HStack {
             Text("Daily Exercise Target")
             Spacer()
@@ -279,13 +279,13 @@ struct SettingsView: View {
                 .foregroundStyle(.secondary)
         }
     }
-    
+
     private func loadProfile() {
         guard let profile = userProfiles.first else { return }
-        
+
         name = profile.name
         age = "\(profile.age)"
-        
+
         // Values are stored in metric (kg, cm)
         if useImperial {
             weight = String(format: "%.1f", profile.weightInPounds)
@@ -294,25 +294,25 @@ struct SettingsView: View {
             weight = String(format: "%.1f", profile.weight)
             height = String(format: "%.1f", profile.height)
         }
-        
+
         diagnosisDate = profile.diagnosisDate
         targetGlucoseMin = "\(Int(profile.targetGlucoseMin))"
         targetGlucoseMax = "\(Int(profile.targetGlucoseMax))"
         targetDailyCarbs = "\(profile.targetDailyCarbs)"
         targetDailyExerciseMinutes = "\(profile.targetDailyExerciseMinutes)"
-        
+
         useImperial = !profile.useMetricSystem
     }
 
     private func saveProfile() {
         guard let profile = userProfiles.first else { return }
-        
+
         profile.name = name
         profile.age = Int(age) ?? 0
-        
+
         let weightValue = Double(weight) ?? 0.0
         let heightValue = Double(height) ?? 0.0
-        
+
         if useImperial {
             profile.weightInPounds = weightValue
             profile.heightInInches = heightValue
@@ -320,7 +320,7 @@ struct SettingsView: View {
             profile.weight = weightValue
             profile.height = heightValue
         }
-        
+
         profile.diagnosisDate = diagnosisDate
         profile.targetGlucoseMin = Double(targetGlucoseMin) ?? 70.0
         profile.targetGlucoseMax = Double(targetGlucoseMax) ?? 140.0
@@ -328,21 +328,21 @@ struct SettingsView: View {
         profile.targetDailyExerciseMinutes = Int(targetDailyExerciseMinutes) ?? 30
         profile.lastUpdated = Date()
         profile.useMetricSystem = !useImperial
-        
+
         do {
             try modelContext.save()
         } catch {
             errorMessage = error.localizedDescription
         }
     }
-    
+
     private func hasChanges() -> Bool {
         guard let profile = userProfiles.first else { return false }
-        
+
         // Get current values in metric for comparison
         let currentWeight: Double
         let currentHeight: Double
-        
+
         if useImperial {
             currentWeight = BodyMeasurement.kilograms(fromPounds: Double(weight) ?? 0.0)
             currentHeight = BodyMeasurement.centimeters(fromInches: Double(height) ?? 0.0)
@@ -350,7 +350,7 @@ struct SettingsView: View {
             currentWeight = Double(weight) ?? 0.0
             currentHeight = Double(height) ?? 0.0
         }
-        
+
         return name != profile.name ||
                Int(age) != profile.age ||
                abs(currentWeight - profile.weight) > 0.01 ||    // Use small epsilon for float comparison
@@ -361,7 +361,7 @@ struct SettingsView: View {
                Int(targetDailyCarbs) != profile.targetDailyCarbs ||
                Int(targetDailyExerciseMinutes) != profile.targetDailyExerciseMinutes
     }
-    
+
     private func resetAppData() {
         Task {
             do {
@@ -380,14 +380,14 @@ struct AboutView: View {
                 Text("About ReverseIt!")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                
+
                 Text("ReverseIt! is designed to help people reverse type 2 diabetes through lifestyle changes, diet tracking, and regular monitoring of health metrics.")
-                
+
                 Text("Recent research has shown that type 2 diabetes can be reversed in many cases through proper diet, exercise, and weight management. This app provides the tools you need to track your progress and make informed decisions about your health.")
-                
+
                 Text("Key Features:")
                     .font(.headline)
-                
+
                 VStack(alignment: .leading, spacing: 10) {
                     FeatureRow(icon: "fork.knife", text: "Food and carb tracking")
                     FeatureRow(icon: "figure.walk", text: "Exercise monitoring")
@@ -395,7 +395,7 @@ struct AboutView: View {
                     FeatureRow(icon: "chart.line.uptrend.xyaxis", text: "Progress visualization")
                     FeatureRow(icon: "icloud", text: "Cross-device syncing")
                 }
-                
+
                 Text("Version 1.0")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -410,13 +410,13 @@ struct AboutView: View {
 struct FeatureRow: View {
     let icon: String
     let text: String
-    
+
     var body: some View {
         HStack(spacing: 15) {
             Image(systemName: icon)
                 .foregroundStyle(.blue)
                 .frame(width: 30)
-            
+
             Text(text)
         }
     }
@@ -430,28 +430,28 @@ struct HelpView: View {
                     Text("Tap on the Glucose tab and use the + button to add a new reading. You can specify when the reading was taken and add notes.")
                         .padding(.vertical)
                 }
-                
+
                 DisclosureGroup("How do I log my meals?") {
                     Text("Go to the Food Log tab and tap + to add a new meal. Enter the name, nutrition details, and meal type.")
                         .padding(.vertical)
                 }
-                
+
                 DisclosureGroup("Can I change my daily targets?") {
                     Text("Yes! Go to Settings and update your health goals to match your doctor's recommendations.")
                         .padding(.vertical)
                 }
-                
+
                 DisclosureGroup("Does this sync with Apple Health?") {
                     Text("Yes, when you enable Health sync in Settings, your exercise and glucose data will sync with Apple Health.")
                         .padding(.vertical)
                 }
             }
-            
+
             Section(header: Text("Contact Support")) {
                 Button(action: {}) {
                     Label("Email Support", systemImage: "envelope")
                 }
-                
+
                 Button(action: {}) {
                     Label("Visit Website", systemImage: "globe")
                 }
@@ -468,30 +468,30 @@ struct PrivacyView: View {
                 Text("Privacy Policy")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                
+
                 Text("Your privacy is important to us. This policy outlines what data ReverseIt collects and how it's used.")
-                
+
                 Group {
                     Text("Data Collection")
                         .font(.headline)
-                    
+
                     Text("ReverseIt collects the health data you enter, including glucose readings, food entries, and exercise information. This data is stored securely and never sold to third parties.")
                 }
-                
+
                 Group {
                     Text("Data Storage")
                         .font(.headline)
-                    
+
                     Text("Your data is primarily stored on your device. When you enable iCloud syncing, your data is encrypted and stored in your personal iCloud account to enable access across your devices.")
                 }
-                
+
                 Group {
                     Text("Apple Health Integration")
                         .font(.headline)
-                    
+
                     Text("With your permission, ReverseIt can read from and write to Apple Health. This integration helps provide a more complete picture of your health.")
                 }
-                
+
                 Text("Last updated: May 2025")
                     .font(.caption)
                     .foregroundStyle(.secondary)

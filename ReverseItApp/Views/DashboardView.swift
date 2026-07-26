@@ -6,37 +6,37 @@ struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var userProfiles: [UserProfile]
     @Query(sort: \GlucoseReading.timestamp, order: .reverse) private var glucoseReadings: [GlucoseReading]
-    
+
     // Use explicit predicates to limit data loaded
     private var todayPredicate: Predicate<FoodEntry> {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date())
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? startOfDay.addingTimeInterval(86_400)
         return #Predicate<FoodEntry> { entry in
             entry.timestamp >= startOfDay && entry.timestamp < endOfDay
         }
     }
-    
+
     private var todayExercisePredicate: Predicate<ExerciseEntry> {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: Date())
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? startOfDay.addingTimeInterval(86_400)
         return #Predicate<ExerciseEntry> { entry in
             entry.startTime >= startOfDay && entry.startTime < endOfDay
         }
     }
-    
+
     @Query private var todayFoodEntries: [FoodEntry]
     @Query private var todayExerciseEntries: [ExerciseEntry]
-    
+
     init() {
         // Initialize queries with predicates
         _todayFoodEntries = Query(filter: todayPredicate)
         _todayExerciseEntries = Query(filter: todayExercisePredicate)
     }
-    
+
     @State private var isAnimating = false
-    
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -46,14 +46,14 @@ struct DashboardView: View {
                         Text("Hello, \(userProfiles.first?.name ?? "Friend")")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                        
+
                         Text(dateFormatted())
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
-                    
+
                     // Quick Stats
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
                         DashboardCard(
@@ -64,7 +64,7 @@ struct DashboardView: View {
                             color: glucoseStatusColor(),
                             isAnimating: isAnimating
                         )
-                        
+
                         DashboardCard(
                             title: "Daily Carbs",
                             value: dailyCarbsTotal(),
@@ -73,7 +73,7 @@ struct DashboardView: View {
                             color: .blue,
                             isAnimating: isAnimating
                         )
-                        
+
                         DashboardCard(
                             title: "Exercise",
                             value: dailyExerciseMinutes(),
@@ -82,7 +82,7 @@ struct DashboardView: View {
                             color: .green,
                             isAnimating: isAnimating
                         )
-                        
+
                         DashboardCard(
                             title: "Progress",
                             value: daysOfJourney(),
@@ -93,14 +93,14 @@ struct DashboardView: View {
                         )
                     }
                     .padding(.horizontal)
-                    
+
                     // Weekly Glucose Chart
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Weekly Glucose Trend")
                             .font(.headline)
                             .accessibilityAddTraits(.isHeader)
                             .padding(.horizontal)
-                        
+
                         if glucoseReadings.isEmpty {
                             Text("No data yet. Add glucose readings to see your trend.")
                                 .foregroundStyle(.secondary)
@@ -115,28 +115,28 @@ struct DashboardView: View {
                     .background(RoundedRectangle(cornerRadius: 12)
                         .fill(Color(.secondarySystemGroupedBackground)))
                     .padding(.horizontal)
-                    
+
                     // Quick Actions
                     HStack(spacing: 15) {
                         NavigationLink(destination: AddGlucoseView()) {
                             QuickActionButton(
-                                title: "Add Glucose", 
+                                title: "Add Glucose",
                                 systemImage: "plus.circle",
                                 color: .pink
                             )
                         }
-                        
+
                         NavigationLink(destination: AddFoodView()) {
                             QuickActionButton(
-                                title: "Log Food", 
+                                title: "Log Food",
                                 systemImage: "fork.knife",
                                 color: .blue
                             )
                         }
-                        
+
                         NavigationLink(destination: AddExerciseView()) {
                             QuickActionButton(
-                                title: "Log Exercise", 
+                                title: "Log Exercise",
                                 systemImage: "figure.walk",
                                 color: .green
                             )
@@ -155,7 +155,7 @@ struct DashboardView: View {
             }
         }
     }
-    
+
     /// The 15 most recent readings from the last 7 days, for the weekly chart.
     private var weeklyReadings: [GlucoseReading] {
         let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
@@ -180,17 +180,17 @@ struct DashboardView: View {
     private func glucoseStatusColor() -> Color {
         glucoseReadings.first?.readingStatus.color ?? .gray
     }
-    
+
     private func dailyCarbsTotal() -> String {
         let totalCarbs = todayFoodEntries.reduce(0) { $0 + $1.carbs }
         return String(format: "%.0f", totalCarbs)
     }
-    
+
     private func dailyExerciseMinutes() -> String {
         let totalMinutes = todayExerciseEntries.reduce(0) { $0 + $1.durationInMinutes }
         return String(format: "%.0f", totalMinutes)
     }
-    
+
     private func daysOfJourney() -> String {
         if let firstProfile = userProfiles.first {
             let days = Calendar.current.dateComponents([.day], from: firstProfile.diagnosisDate, to: Date()).day ?? 0
@@ -207,7 +207,7 @@ struct DashboardCard: View {
     let systemImage: String
     let color: Color
     let isAnimating: Bool
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -215,17 +215,17 @@ struct DashboardCard: View {
                     .font(.title2)
                     .foregroundStyle(color)
                     .symbolEffect(.pulse, options: .repeating, value: isAnimating)
-                
+
                 Text(title)
                     .font(.headline)
                     .foregroundStyle(.secondary)
             }
-            
+
             HStack(alignment: .lastTextBaseline) {
                 Text(value)
                     .font(.title)
                     .fontWeight(.bold)
-                
+
                 Text(unit)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -244,7 +244,7 @@ struct QuickActionButton: View {
     let title: String
     let systemImage: String
     let color: Color
-    
+
     var body: some View {
         VStack {
             Image(systemName: systemImage)
@@ -254,7 +254,7 @@ struct QuickActionButton: View {
                 .background(color)
                 .clipShape(Circle())
                 .shadow(radius: 2)
-            
+
             Text(title)
                 .font(.caption)
                 .foregroundStyle(.primary)

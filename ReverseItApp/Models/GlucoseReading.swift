@@ -8,16 +8,16 @@ final class GlucoseReading {
     var value: Double // in mg/dL
     var note: String?
     var readingType: ReadingType
-    
+
     @Relationship(deleteRule: .nullify) var relatedFood: [FoodEntry]? = []
-    
+
     enum ReadingType: String, Codable, CaseIterable {
         case fasting
         case beforeMeal
         case afterMeal
         case bedtime
         case random
-        
+
         var description: LocalizedStringResource {
             switch self {
             case .fasting: "Fasting"
@@ -28,7 +28,7 @@ final class GlucoseReading {
             }
         }
     }
-    
+
     /// Clinical classification thresholds, in mg/dL.
     enum Threshold {
         static let low = 70.0
@@ -58,7 +58,7 @@ final class GlucoseReading {
             }
         }
     }
-    
+
     init(
         id: UUID = UUID(),
         timestamp: Date = Date(),
@@ -72,7 +72,7 @@ final class GlucoseReading {
         self.note = note
         self.readingType = readingType
     }
-    
+
     func isInRange(min: Double, max: Double) -> Bool {
         return value >= min && value <= max
     }
@@ -84,20 +84,20 @@ extension GlucoseReading {
             sortBy: [SortDescriptor(\.timestamp, order: .reverse)]
         )
         descriptor.fetchLimit = count
-        
+
         return try modelContext.fetch(descriptor)
     }
-    
+
     static func averageForPeriod(start: Date, end: Date, modelContext: ModelContext) throws -> Double? {
         let descriptor = FetchDescriptor<GlucoseReading>(
             predicate: #Predicate<GlucoseReading> { reading in
                 reading.timestamp >= start && reading.timestamp <= end
             }
         )
-        
+
         let readings = try modelContext.fetch(descriptor)
         guard !readings.isEmpty else { return nil }
-        
+
         let sum = readings.reduce(0.0) { $0 + $1.value }
         return sum / Double(readings.count)
     }

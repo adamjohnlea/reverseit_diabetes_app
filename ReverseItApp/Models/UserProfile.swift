@@ -16,7 +16,7 @@ final class UserProfile {
     var lastUpdated: Date
     var useMetricSystem: Bool
     var onboardingCompleted: Bool
-    
+
     var bmiCategory: String {
         if bmi < 18.5 {
             return "Underweight"
@@ -28,19 +28,19 @@ final class UserProfile {
             return "Obese"
         }
     }
-    
+
     var diabetesDuration: String {
         let components = Calendar.current.dateComponents([.year, .month], from: diagnosisDate, to: Date())
         let years = components.year ?? 0
         let months = components.month ?? 0
-        
+
         if years > 0 {
             return "\(years) year\(years == 1 ? "" : "s")"
         } else {
             return "\(months) month\(months == 1 ? "" : "s")"
         }
     }
-    
+
     init(
         id: UUID = UUID(),
         name: String = "",
@@ -70,7 +70,7 @@ final class UserProfile {
         self.useMetricSystem = useMetricSystem
         self.onboardingCompleted = onboardingCompleted
     }
-    
+
     var bmi: Double {
         let heightInMeters = height / 100
         return weight / (heightInMeters * heightInMeters)
@@ -84,18 +84,18 @@ extension UserProfile {
         guard let threeMonthsAgo = Calendar.current.date(byAdding: .month, value: -3, to: Date()) else {
             throw DataError.invalidDate
         }
-        
+
         let descriptor = FetchDescriptor<GlucoseReading>(
             predicate: #Predicate<GlucoseReading> { reading in
                 reading.timestamp < threeMonthsAgo
             }
         )
-        
+
         let oldReadings = try modelContext.fetch(descriptor)
         oldReadings.forEach { modelContext.delete($0) }
         try modelContext.save()
     }
-    
+
     /// Bounds within which each user-editable target must fall.
     enum TargetLimits {
         static let glucoseMin = 40.0...120.0
@@ -110,11 +110,11 @@ extension UserProfile {
         targetDailyCarbs = targetDailyCarbs.clamped(to: TargetLimits.dailyCarbs)
         targetDailyExerciseMinutes = targetDailyExerciseMinutes.clamped(to: TargetLimits.dailyExerciseMinutes)
     }
-    
+
     enum DataError: LocalizedError {
         case invalidDate
         case fetchFailed
-        
+
         var errorDescription: String? {
             switch self {
             case .invalidDate: return String(localized: "Could not calculate date range")
@@ -122,22 +122,22 @@ extension UserProfile {
             }
         }
     }
-    
+
     func glucoseProgress(modelContext: ModelContext, days: Int = 30) throws -> GlucoseProgress {
         let endDate = Date()
         guard let startDate = Calendar.current.date(byAdding: .day, value: -days, to: endDate) else {
             throw DataError.invalidDate
         }
-        
+
         let descriptor = FetchDescriptor<GlucoseReading>(
             predicate: #Predicate<GlucoseReading> { reading in
                 reading.timestamp >= startDate && reading.timestamp <= endDate
             }
         )
-        
+
         let readings = try modelContext.fetch(descriptor)
         let totalReadings = readings.count
-        
+
         // Handle case with no readings
         guard totalReadings > 0 else {
             return GlucoseProgress(
@@ -147,10 +147,10 @@ extension UserProfile {
                 daysAnalyzed: days
             )
         }
-        
+
         let inRangeCount = readings.filter { $0.value >= targetGlucoseMin && $0.value <= targetGlucoseMax }.count
         let totalValue = readings.reduce(0.0) { $0 + $1.value }
-        
+
         return GlucoseProgress(
             inRangePercentage: Double(inRangeCount) / Double(totalReadings) * 100,
             averageReading: totalValue / Double(totalReadings),
@@ -158,13 +158,13 @@ extension UserProfile {
             daysAnalyzed: days
         )
     }
-    
+
     struct GlucoseProgress {
         let inRangePercentage: Double
         let averageReading: Double
         let totalReadings: Int
         let daysAnalyzed: Int
-        
+
         var status: ProgressStatus {
             switch inRangePercentage {
             case 80...: return .excellent
@@ -173,13 +173,13 @@ extension UserProfile {
             default: return .needsImprovement
             }
         }
-        
+
         enum ProgressStatus {
             case excellent
             case good
             case fair
             case needsImprovement
-            
+
             var description: LocalizedStringResource {
                 switch self {
                 case .excellent: "Excellent Control"
@@ -190,13 +190,13 @@ extension UserProfile {
             }
         }
     }
-    
+
     func isOnTrackWithDailyCarbs(modelContext: ModelContext) throws -> Bool {
         let today = Date()
         let carbs = try FoodEntry.totalCarbsForDay(today, modelContext: modelContext)
         return carbs <= Double(targetDailyCarbs)
     }
-    
+
     func isOnTrackWithExercise(modelContext: ModelContext) throws -> Bool {
         let today = Date()
         let duration = try ExerciseEntry.totalDurationForDay(today, modelContext: modelContext)

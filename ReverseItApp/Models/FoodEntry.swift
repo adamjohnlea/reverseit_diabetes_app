@@ -13,15 +13,15 @@ final class FoodEntry {
     var mealType: MealType
     var photo: Data? // Optional photo of the food
     var note: String?
-    
+
     @Relationship(deleteRule: .nullify) var glucoseReadings: [GlucoseReading]? = []
-    
+
     enum MealType: String, Codable, CaseIterable {
-        case breakfast = "breakfast"
-        case lunch = "lunch"
-        case dinner = "dinner"
-        case snack = "snack"
-        
+        case breakfast
+        case lunch
+        case dinner
+        case snack
+
         var description: LocalizedStringResource {
             switch self {
             case .breakfast: "Breakfast"
@@ -30,7 +30,7 @@ final class FoodEntry {
             case .snack: "Snack"
             }
         }
-        
+
         var icon: String {
             switch self {
             case .breakfast: return "sunrise.fill"
@@ -40,22 +40,22 @@ final class FoodEntry {
             }
         }
     }
-    
+
     var totalMacros: Double {
         return carbs + protein + fat
     }
-    
+
     var macroPercentages: (carbs: Double, protein: Double, fat: Double) {
         let total = totalMacros
         guard total > 0 else { return (0, 0, 0) }
-        
+
         return (
             carbs: (carbs / total) * 100,
             protein: (protein / total) * 100,
             fat: (fat / total) * 100
         )
     }
-    
+
     init(
         id: UUID = UUID(),
         name: String,
@@ -79,7 +79,7 @@ final class FoodEntry {
         self.photo = photo
         self.note = note
     }
-    
+
     func validate() -> Bool {
         guard !name.isEmpty,
               carbs >= 0, protein >= 0, fat >= 0,
@@ -89,7 +89,7 @@ final class FoodEntry {
         }
         return true
     }
-    
+
     /// Hour-of-day boundaries used to bucket meals into day periods.
     private enum MealPeriodHours {
         static let morning = 5..<11
@@ -112,46 +112,46 @@ extension FoodEntry {
     static func fetchMealsForDay(_ date: Date, modelContext: ModelContext) throws -> [FoodEntry] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: date)
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-        
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? startOfDay.addingTimeInterval(86_400)
+
         let descriptor = FetchDescriptor<FoodEntry>(
             predicate: #Predicate<FoodEntry> { entry in
                 entry.timestamp >= startOfDay && entry.timestamp < endOfDay
             },
             sortBy: [SortDescriptor(\.timestamp)]
         )
-        
+
         return try modelContext.fetch(descriptor)
     }
-    
+
     static func totalCarbsForDay(_ date: Date, modelContext: ModelContext) throws -> Double {
         let meals = try fetchMealsForDay(date, modelContext: modelContext)
         return meals.reduce(0) { $0 + $1.carbs }
     }
-    
+
     static func totalCaloriesForDay(_ date: Date, modelContext: ModelContext) throws -> Double {
         let meals = try fetchMealsForDay(date, modelContext: modelContext)
         return meals.reduce(0) { $0 + $1.calories }
     }
-    
+
     func glucoseImpact(timeWindow: TimeInterval = 7200) -> [GlucoseReading]? {
         // Look for glucose readings within 2 hours after meal
         guard let readings = glucoseReadings else { return nil }
-        
+
         return readings.filter { reading in
-            reading.timestamp > timestamp && 
+            reading.timestamp > timestamp &&
             reading.timestamp <= timestamp.addingTimeInterval(timeWindow)
         }.sorted { $0.timestamp < $1.timestamp }
     }
-    
+
     var averageGlucoseImpact: Double? {
         guard let readings = glucoseImpact() else { return nil }
         guard !readings.isEmpty else { return nil }
-        
+
         let sum = readings.reduce(0.0) { $0 + $1.value }
         return sum / Double(readings.count)
     }
-    
+
     /// Atwater general factors for converting macronutrient grams to kilocalories.
     enum Energy {
         static let caloriesPerGramOfCarbs = 4.0

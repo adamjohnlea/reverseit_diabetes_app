@@ -6,7 +6,7 @@ struct GlucoseLogView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \GlucoseReading.timestamp, order: .reverse, animation: .default) private var readings: [GlucoseReading]
     @Query private var userProfiles: [UserProfile]
-    
+
     // Limit visible readings to reduce memory usage
     private var visibleReadings: [GlucoseReading] {
         Array(readings.prefix(100))
@@ -29,7 +29,7 @@ struct GlucoseLogView: View {
                             .frame(height: 200)
                     }
                 }
-                
+
                 // List of readings
                 Section("Recent Readings") {
                     if visibleReadings.isEmpty {
@@ -70,7 +70,7 @@ struct GlucoseLogView: View {
                         }
                     }
                 }
-                
+
                 // Statistics
                 if !readings.isEmpty {
                     Section("Statistics") {
@@ -104,7 +104,7 @@ struct GlucoseLogView: View {
         guard let profile = userProfiles.first else { return nil }
         return profile.targetGlucoseMin...profile.targetGlucoseMax
     }
-    
+
     private func delete(_ reading: GlucoseReading) {
         modelContext.delete(reading)
         do {
@@ -119,14 +119,14 @@ struct GlucoseLogView: View {
         let sum = readings.reduce(0) { $0 + $1.value }
         return String(format: "%.0f mg/dL", sum / Double(readings.count))
     }
-    
+
     private func lowestGlucose() -> String {
         if let lowest = readings.min(by: { $0.value < $1.value }) {
             return String(format: "%.0f mg/dL", lowest.value)
         }
         return "--"
     }
-    
+
     private func highestGlucose() -> String {
         if let highest = readings.max(by: { $0.value < $1.value }) {
             return String(format: "%.0f mg/dL", highest.value)
@@ -138,7 +138,7 @@ struct GlucoseLogView: View {
 struct StatisticRow: View {
     let title: String
     let value: String
-    
+
     var body: some View {
         HStack {
             Text(title)
@@ -154,22 +154,22 @@ struct AddGlucoseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(HealthKitManager.self) private var healthKitManager
-    
+
     @State private var glucoseValue = ""
     @State private var note = ""
     @State private var readingType: GlucoseReading.ReadingType = .random
     @State private var timestamp = Date()
     @State private var syncToHealth = true
     @State private var showingHealthSyncAlert = false
-    @State private var healthSyncError: Error? = nil
-    
+    @State private var healthSyncError: Error?
+
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     TextField("Glucose Value", text: $glucoseValue)
                         .keyboardType(.numberPad)
-                    
+
                     Picker("Reading Type", selection: $readingType) {
                         Text("Fasting").tag(GlucoseReading.ReadingType.fasting)
                         Text("Before Meal").tag(GlucoseReading.ReadingType.beforeMeal)
@@ -177,21 +177,21 @@ struct AddGlucoseView: View {
                         Text("Bedtime").tag(GlucoseReading.ReadingType.bedtime)
                         Text("Random").tag(GlucoseReading.ReadingType.random)
                     }
-                    
+
                     DatePicker("Time", selection: $timestamp, displayedComponents: [.date, .hourAndMinute])
                 }
-                
+
                 Section {
                     TextField("Notes", text: $note, axis: .vertical)
                         .lineLimit(3)
                 }
-                
+
                 if healthKitManager.isHealthKitAuthorized {
                     Section {
                         Toggle("Sync to Apple Health", isOn: $syncToHealth)
                     }
                 }
-                
+
                 Section {
                     Button("Save Reading") {
                         saveReading()
@@ -216,19 +216,19 @@ struct AddGlucoseView: View {
             }
         }
     }
-    
+
     private func saveReading() {
         guard let value = Double(glucoseValue) else { return }
-        
+
         let newReading = GlucoseReading(
             timestamp: timestamp,
             value: value,
             note: note.isEmpty ? nil : note,
             readingType: readingType
         )
-        
+
         modelContext.insert(newReading)
-        
+
         // Sync to HealthKit if authorized and sync is enabled
         if healthKitManager.isHealthKitAuthorized && syncToHealth {
             Task {
@@ -242,7 +242,7 @@ struct AddGlucoseView: View {
                 }
             }
         }
-        
+
         dismiss()
     }
 }

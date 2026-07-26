@@ -51,19 +51,19 @@ struct OnboardingView: View {
                         .foregroundStyle(.pink)
                         .padding()
                         .symbolEffect(.pulse)
-                    
+
                     Text("Welcome to ReverseIt!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.primary)
-                    
+
                     Text("Your journey to reverse type 2 diabetes starts here")
                         .font(.headline)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
-                    
+
                     Spacer()
-                    
+
                     Button("Get Started") {
                         withAnimation {
                             currentPage = 1
@@ -81,7 +81,7 @@ struct OnboardingView: View {
                     Text("Tell us about yourself")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                    
+
                     Form {
                         Section(header: Text("Unit Preference")) {
                             Picker("Units", selection: $useMetricSystem) {
@@ -90,7 +90,7 @@ struct OnboardingView: View {
                             }
                             .pickerStyle(.segmented)
                         }
-                        
+
                         Section(header: Text("Personal Information")) {
                             TextField("Name", text: $name)
                                 .textContentType(.name)
@@ -109,7 +109,7 @@ struct OnboardingView: View {
                                 .keyboardType(.decimalPad)
                                 .focused($focusedField, equals: .height)
                         }
-                        
+
                         Section(header: Text("Medical Information")) {
                             DatePicker("Diagnosis Date", selection: $diagnosisDate, in: ...Date(), displayedComponents: [.date])
                         }
@@ -124,7 +124,7 @@ struct OnboardingView: View {
                             }
                         }
                     }
-                    
+
                     Button("Continue") {
                         if validateAndCreateProfile() {
                             withAnimation {
@@ -146,15 +146,15 @@ struct OnboardingView: View {
                         .frame(width: 100, height: 100)
                         .foregroundStyle(.red)
                         .padding()
-                    
+
                     Text("Health Data Access")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                    
+
                     Text("ReverseIt works best when it can access your health data. This helps us track your progress automatically.")
                         .multilineTextAlignment(.center)
                         .padding()
-                    
+
                     if isHealthKitAuthorizing {
                         ProgressView()
                             .progressViewStyle(.circular)
@@ -215,13 +215,13 @@ struct OnboardingView: View {
             showAlert = true
             return false
         }
-        
+
         guard let weightDouble = Double(weight), weightDouble > 0 else {
             alertMessage = "Please enter a valid weight"
             showAlert = true
             return false
         }
-        
+
         if useMetricSystem {
             guard weightDouble < InputLimits.maxWeightKg else {
                 alertMessage = "Please enter a valid weight in kg"
@@ -235,13 +235,13 @@ struct OnboardingView: View {
                 return false
             }
         }
-        
+
         guard let heightDouble = Double(height), heightDouble > 0 else {
             alertMessage = "Please enter a valid height"
             showAlert = true
             return false
         }
-        
+
         if useMetricSystem {
             guard heightDouble < InputLimits.maxHeightCm else {
                 alertMessage = "Please enter a valid height in cm"
@@ -255,7 +255,7 @@ struct OnboardingView: View {
                 return false
             }
         }
-        
+
         return true
     }
 
@@ -274,9 +274,9 @@ struct OnboardingView: View {
             newProfile.weightInPounds = Double(weight) ?? 0.0
             newProfile.heightInInches = Double(height) ?? 0.0
         }
-        
+
         modelContext.insert(newProfile)
-        
+
         do {
             try modelContext.save()
             withAnimation {
@@ -287,7 +287,7 @@ struct OnboardingView: View {
             showAlert = true
         }
     }
-    
+
     private func completeOnboarding() {
         do {
             let descriptor = FetchDescriptor<UserProfile>()

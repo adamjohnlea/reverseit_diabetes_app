@@ -1,7 +1,7 @@
+# Force unwraps are banned in app code (see project standards); tests may use them.
 opt_in_rules:
   - force_unwrapping
 
-# Force unwraps are permitted in tests, so lint only app code.
 excluded:
   - ReverseItApp.xcodeproj
   - ReverseItAppTests
@@ -9,3 +9,23 @@ excluded:
 
 force_unwrapping:
   severity: error
+
+# Namespacing enums inside a model type (e.g. GlucoseProgress.ProgressStatus) is
+# intentional and reads well.
+nesting:
+  type_level: 2
+
+# Rules disabled deliberately — they flag idiomatic, readable code rather than
+# real problems in this codebase:
+#   multiple_closures_with_trailing_closure — SwiftUI's Button(action:){ label }
+#   large_tuple — the named (carbs:protein:fat:) macro tuple is self-documenting
+#   type_body_length / file_length — SwiftUI view files are legitimately long
+#   cyclomatic_complexity — exhaustive HealthKit/exercise-type mapping switches
+#   line_length — dominated by non-fragmentable localized string literals
+disabled_rules:
+  - multiple_closures_with_trailing_closure
+  - large_tuple
+  - type_body_length
+  - file_length
+  - cyclomatic_complexity
+  - line_length

@@ -10,12 +10,12 @@ final class ExerciseEntry {
     var caloriesBurned: Double?
     var intensity: ExerciseIntensity
     var note: String?
-    
+
     enum ExerciseIntensity: String, Codable, CaseIterable {
         case light
         case moderate
         case vigorous
-        
+
         var description: LocalizedStringResource {
             switch self {
             case .light: "Light"
@@ -23,7 +23,7 @@ final class ExerciseEntry {
             case .vigorous: "Vigorous"
             }
         }
-        
+
         var metsMultiplier: Double {
             switch self {
             case .light: return 2.0
@@ -32,7 +32,7 @@ final class ExerciseEntry {
             }
         }
     }
-    
+
     init(
         id: UUID = UUID(),
         type: String,
@@ -50,22 +50,22 @@ final class ExerciseEntry {
         self.intensity = intensity
         self.note = note
     }
-    
+
     var durationInMinutes: Double {
         return duration / 60.0
     }
-    
+
     var formattedDuration: String {
         let hours = Int(duration) / 3600
         let minutes = Int(duration) / 60 % 60
-        
+
         if hours > 0 {
             return "\(hours)h \(minutes)m"
         } else {
             return "\(minutes)m"
         }
     }
-    
+
     /// Constants of the standard MET energy formula:
     /// kcal/min = METs × 3.5 × body weight (kg) ÷ 200.
     enum MET {
@@ -94,23 +94,23 @@ extension ExerciseEntry {
     static func fetchExercisesForDay(_ date: Date, modelContext: ModelContext) throws -> [ExerciseEntry] {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: date)
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-        
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? startOfDay.addingTimeInterval(86_400)
+
         let descriptor = FetchDescriptor<ExerciseEntry>(
             predicate: #Predicate<ExerciseEntry> { entry in
                 entry.startTime >= startOfDay && entry.startTime < endOfDay
             },
             sortBy: [SortDescriptor(\.startTime)]
         )
-        
+
         return try modelContext.fetch(descriptor)
     }
-    
+
     static func totalDurationForDay(_ date: Date, modelContext: ModelContext) throws -> TimeInterval {
         let exercises = try fetchExercisesForDay(date, modelContext: modelContext)
         return exercises.reduce(0) { $0 + $1.duration }
     }
-    
+
     static func totalCaloriesForDay(_ date: Date, weightKg: Double, modelContext: ModelContext) throws -> Double {
         let exercises = try fetchExercisesForDay(date, modelContext: modelContext)
         return exercises.reduce(0) { $0 + $1.estimatedCalories(weightKg: weightKg) }
@@ -126,12 +126,12 @@ extension ExerciseEntry {
         default: return .moderate
         }
     }
-    
+
     enum ActivityLevel {
         case light
         case moderate
         case intense
-        
+
         var description: LocalizedStringResource {
             switch self {
             case .light: "Light Activity"
@@ -139,7 +139,7 @@ extension ExerciseEntry {
             case .intense: "Intense Activity"
             }
         }
-        
+
         var icon: String {
             switch self {
             case .light: return "figure.walk"
@@ -148,7 +148,7 @@ extension ExerciseEntry {
             }
         }
     }
-    
+
     func progressTowardDailyGoal(targetMinutes: Int) -> Double {
         return min(durationInMinutes / Double(targetMinutes), 1.0)
     }

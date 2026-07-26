@@ -115,34 +115,6 @@ struct DashboardView: View {
                     .background(RoundedRectangle(cornerRadius: 12)
                         .fill(Color(.secondarySystemGroupedBackground)))
                     .padding(.horizontal)
-
-                    // Quick Actions
-                    HStack(spacing: 15) {
-                        NavigationLink(destination: AddGlucoseView()) {
-                            QuickActionButton(
-                                title: "Add Glucose",
-                                systemImage: "plus.circle",
-                                color: .pink
-                            )
-                        }
-
-                        NavigationLink(destination: AddFoodView()) {
-                            QuickActionButton(
-                                title: "Log Food",
-                                systemImage: "fork.knife",
-                                color: .blue
-                            )
-                        }
-
-                        NavigationLink(destination: AddExerciseView()) {
-                            QuickActionButton(
-                                title: "Log Exercise",
-                                systemImage: "figure.walk",
-                                color: .green
-                            )
-                        }
-                    }
-                    .padding(.horizontal)
                 }
                 .padding(.vertical)
             }
@@ -237,32 +209,6 @@ struct DashboardCard: View {
             .fill(Color(.secondarySystemGroupedBackground)))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title): \(value) \(unit)")
-    }
-}
-
-struct QuickActionButton: View {
-    let title: String
-    let systemImage: String
-    let color: Color
-
-    var body: some View {
-        VStack {
-            Image(systemName: systemImage)
-                .font(.title2)
-                .foregroundStyle(.white)
-                .frame(width: 50, height: 50)
-                .background(color)
-                .clipShape(Circle())
-                .shadow(radius: 2)
-
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.primary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 10)
-        .background(RoundedRectangle(cornerRadius: 12)
-            .fill(Color(.secondarySystemGroupedBackground)))
     }
 }
 

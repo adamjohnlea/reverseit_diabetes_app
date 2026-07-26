@@ -1,2 +1,6 @@
 .DS_Store
 .memex
+
+# Per-user Xcode state (window layout, selection, breakpoints)
+xcuserdata/
+*.xcuserstate

@@ -248,7 +248,7 @@ struct SettingsView: View {
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.trailing)
                 .frame(width: 40)
-            Text("-")
+            Text(verbatim: "-")
             TextField("", text: $targetGlucoseMax)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.trailing)

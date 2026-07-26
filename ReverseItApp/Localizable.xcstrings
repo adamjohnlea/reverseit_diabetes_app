@@ -1,0 +1,603 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "-" : {
+
+    },
+    "%@, %lld mg/dL, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$lld mg/dL, %3$@"
+          }
+        }
+      }
+    },
+    "%@: %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ %3$@"
+          }
+        }
+      }
+    },
+    "%lld cal" : {
+
+    },
+    "%lld calories burned" : {
+
+    },
+    "%lld hr" : {
+
+    },
+    "%lld kcal" : {
+
+    },
+    "%lld mg/dL" : {
+
+    },
+    "%lld min" : {
+
+    },
+    "%lldg carbs" : {
+
+    },
+    "0" : {
+
+    },
+    "About" : {
+
+    },
+    "About ReverseIt!" : {
+
+    },
+    "Add Exercise" : {
+
+    },
+    "Add Food" : {
+
+    },
+    "Add Glucose Reading" : {
+
+    },
+    "After Meal" : {
+
+    },
+    "Age" : {
+
+    },
+    "Allow Health Access" : {
+
+    },
+    "App Settings" : {
+
+    },
+    "Apple Health Integration" : {
+
+    },
+    "Apple Health is not available on this device." : {
+
+    },
+    "Bedtime" : {
+
+    },
+    "Before Meal" : {
+
+    },
+    "Breakfast" : {
+
+    },
+    "Calculate calories automatically" : {
+
+    },
+    "Calories" : {
+
+    },
+    "Calories Burned" : {
+
+    },
+    "Can I change my daily targets?" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Carbs" : {
+
+    },
+    "cm" : {
+
+    },
+    "Contact Support" : {
+
+    },
+    "Continue" : {
+
+    },
+    "Could not calculate date range" : {
+
+    },
+    "Custom exercise type" : {
+
+    },
+    "Daily Carb Target" : {
+
+    },
+    "Daily Exercise Target" : {
+
+    },
+    "Danger Zone" : {
+
+    },
+    "Dashboard" : {
+
+    },
+    "Data Collection" : {
+
+    },
+    "Data from Apple Health has been imported successfully." : {
+
+    },
+    "Data Storage" : {
+
+    },
+    "Date" : {
+
+    },
+    "Day" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete this exercise?" : {
+
+    },
+    "Delete this glucose reading?" : {
+
+    },
+    "Delete this meal?" : {
+
+    },
+    "Diagnosis Date" : {
+
+    },
+    "Dinner" : {
+
+    },
+    "Does this sync with Apple Health?" : {
+
+    },
+    "Done" : {
+
+    },
+    "Duration" : {
+
+    },
+    "Email Support" : {
+
+    },
+    "Enable Notifications" : {
+
+    },
+    "Error" : {
+
+    },
+    "Excellent Control" : {
+
+    },
+    "Exercise" : {
+
+    },
+    "Exercise Details" : {
+
+    },
+    "Exercise Log" : {
+
+    },
+    "Exercise progress: %lld of %lld minutes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Exercise progress: %1$lld of %2$lld minutes"
+          }
+        }
+      }
+    },
+    "Exercise Type" : {
+
+    },
+    "Exercises" : {
+
+    },
+    "Failed to fetch data" : {
+
+    },
+    "Failed to import data from Apple Health. Please try again." : {
+
+    },
+    "Failed to sync exercise to Apple Health: %@" : {
+
+    },
+    "Failed to sync food entry to Apple Health: %@" : {
+
+    },
+    "Failed to sync glucose reading to Apple Health: %@" : {
+
+    },
+    "Fair Control" : {
+
+    },
+    "Fasting" : {
+
+    },
+    "Fat" : {
+
+    },
+    "Food Log" : {
+
+    },
+    "Food Name" : {
+
+    },
+    "Frequently Asked Questions" : {
+
+    },
+    "g" : {
+
+    },
+    "Get Started" : {
+
+    },
+    "Glucose" : {
+
+    },
+    "Glucose Log" : {
+
+    },
+    "Glucose trend chart" : {
+
+    },
+    "Glucose Value" : {
+
+    },
+    "Go to the Food Log tab and tap + to add a new meal. Enter the name, nutrition details, and meal type." : {
+
+    },
+    "Good Control" : {
+
+    },
+    "Health Data Access" : {
+
+    },
+    "Health data is not available on this device." : {
+
+    },
+    "Health Goals" : {
+
+    },
+    "Health Sync Error" : {
+
+    },
+    "Height" : {
+
+    },
+    "Height (cm)" : {
+
+    },
+    "Height (in)" : {
+
+    },
+    "Hello, %@" : {
+
+    },
+    "Help & Support" : {
+
+    },
+    "High" : {
+
+    },
+    "How do I log my meals?" : {
+
+    },
+    "How do I track my glucose levels?" : {
+
+    },
+    "Imperial (lb, in)" : {
+
+    },
+    "Import Data from Apple Health" : {
+
+    },
+    "Import Failed" : {
+
+    },
+    "Import Successful" : {
+
+    },
+    "in" : {
+
+    },
+    "Intense Activity" : {
+
+    },
+    "Intensity" : {
+
+    },
+    "kcal" : {
+
+    },
+    "Key Features:" : {
+
+    },
+    "kg" : {
+
+    },
+    "Last updated: May 2025" : {
+
+    },
+    "lbs" : {
+
+    },
+    "Light" : {
+
+    },
+    "Light Activity" : {
+
+    },
+    "Low" : {
+
+    },
+    "Lunch" : {
+
+    },
+    "Meal Type" : {
+
+    },
+    "Meals" : {
+
+    },
+    "Medical Information" : {
+
+    },
+    "Metric (kg, cm)" : {
+
+    },
+    "mg/dL" : {
+
+    },
+    "min" : {
+
+    },
+    "Minutes" : {
+
+    },
+    "Moderate" : {
+
+    },
+    "Moderate Activity" : {
+
+    },
+    "Name" : {
+
+    },
+    "Needs Improvement" : {
+
+    },
+    "No data yet. Add glucose readings to see your trend." : {
+
+    },
+    "No exercises logged for this date" : {
+
+    },
+    "No glucose readings yet" : {
+
+    },
+    "No glucose readings yet. Add your first reading to start tracking." : {
+
+    },
+    "No meals logged for this date" : {
+
+    },
+    "No profile found" : {
+
+    },
+    "Normal" : {
+
+    },
+    "Notes" : {
+
+    },
+    "Nutrition" : {
+
+    },
+    "of %lld min" : {
+
+    },
+    "OK" : {
+
+    },
+    "Optional" : {
+
+    },
+    "Personal Information" : {
+
+    },
+    "Privacy Policy" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Protein" : {
+
+    },
+    "Random" : {
+
+    },
+    "Random Check" : {
+
+    },
+    "Reading Type" : {
+
+    },
+    "Recent Readings" : {
+
+    },
+    "Recent research has shown that type 2 diabetes can be reversed in many cases through proper diet, exercise, and weight management. This app provides the tools you need to track your progress and make informed decisions about your health." : {
+
+    },
+    "Reset" : {
+
+    },
+    "Reset App" : {
+
+    },
+    "Reset App Data" : {
+
+    },
+    "ReverseIt collects the health data you enter, including glucose readings, food entries, and exercise information. This data is stored securely and never sold to third parties." : {
+
+    },
+    "ReverseIt works best when it can access your health data. This helps us track your progress automatically." : {
+
+    },
+    "ReverseIt! is designed to help people reverse type 2 diabetes through lifestyle changes, diet tracking, and regular monitoring of health metrics." : {
+
+    },
+    "Save Changes" : {
+
+    },
+    "Save Exercise" : {
+
+    },
+    "Save Food Entry" : {
+
+    },
+    "Save Reading" : {
+
+    },
+    "Select Date" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Snack" : {
+
+    },
+    "Something Went Wrong" : {
+
+    },
+    "Start Time" : {
+
+    },
+    "Statistics" : {
+
+    },
+    "Sync to Apple Health" : {
+
+    },
+    "Sync with Apple Health" : {
+
+    },
+    "Syncing with Apple Health allows you to share glucose readings, meals, and exercise data with the Health app." : {
+
+    },
+    "Tap on the Glucose tab and use the + button to add a new reading. You can specify when the reading was taken and add notes." : {
+
+    },
+    "Target Glucose Range" : {
+
+    },
+    "Target Max" : {
+
+    },
+    "Target Min" : {
+
+    },
+    "Tell us about yourself" : {
+
+    },
+    "The workout could not be saved to Apple Health." : {
+
+    },
+    "This will delete all your data and restart the app. This action cannot be undone." : {
+
+    },
+    "Time" : {
+
+    },
+    "Unit Preference" : {
+
+    },
+    "Units" : {
+
+    },
+    "Use Imperial Units" : {
+
+    },
+    "Value" : {
+
+    },
+    "Version 1.0" : {
+
+    },
+    "Vigorous" : {
+
+    },
+    "Visit Website" : {
+
+    },
+    "Weekly exercise minutes chart" : {
+
+    },
+    "Weekly Glucose Trend" : {
+
+    },
+    "Weekly Progress" : {
+
+    },
+    "Weight" : {
+
+    },
+    "Weight (kg)" : {
+
+    },
+    "Weight (lb)" : {
+
+    },
+    "Welcome to ReverseIt!" : {
+
+    },
+    "With your permission, ReverseIt can read from and write to Apple Health. This integration helps provide a more complete picture of your health." : {
+
+    },
+    "years" : {
+
+    },
+    "Yes, when you enable Health sync in Settings, your exercise and glucose data will sync with Apple Health." : {
+
+    },
+    "Yes! Go to Settings and update your health goals to match your doctor's recommendations." : {
+
+    },
+    "Your data is primarily stored on your device. When you enable iCloud syncing, your data is encrypted and stored in your personal iCloud account to enable access across your devices." : {
+
+    },
+    "Your journey to reverse type 2 diabetes starts here" : {
+
+    },
+    "Your privacy is important to us. This policy outlines what data ReverseIt collects and how it's used." : {
+
+    }
+  },
+  "version" : "1.0"
+}

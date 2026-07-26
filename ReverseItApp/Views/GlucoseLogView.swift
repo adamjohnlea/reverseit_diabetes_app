@@ -55,7 +55,7 @@ struct GlucoseLogView: View {
                             }
                             .accessibilityElement(children: .combine)
                             .accessibilityLabel(
-                                "\(reading.readingType.description), \(Int(reading.value)) mg/dL, \(reading.readingStatus.description)"
+                                "\(String(localized: reading.readingType.description)), \(Int(reading.value)) mg/dL, \(String(localized: reading.readingStatus.description))"
                             )
                             .accessibilityAction(named: "Delete") {
                                 readingPendingDeletion = reading

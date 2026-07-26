@@ -16,11 +16,11 @@ final class ExerciseEntry {
         case moderate
         case vigorous
         
-        var description: String {
+        var description: LocalizedStringResource {
             switch self {
-            case .light: return "Light"
-            case .moderate: return "Moderate"
-            case .vigorous: return "Vigorous"
+            case .light: "Light"
+            case .moderate: "Moderate"
+            case .vigorous: "Vigorous"
             }
         }
         
@@ -132,11 +132,11 @@ extension ExerciseEntry {
         case moderate
         case intense
         
-        var description: String {
+        var description: LocalizedStringResource {
             switch self {
-            case .light: return "Light Activity"
-            case .moderate: return "Moderate Activity"
-            case .intense: return "Intense Activity"
+            case .light: "Light Activity"
+            case .moderate: "Moderate Activity"
+            case .intense: "Intense Activity"
             }
         }
         

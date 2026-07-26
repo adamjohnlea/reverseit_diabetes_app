@@ -22,12 +22,12 @@ final class FoodEntry {
         case dinner = "dinner"
         case snack = "snack"
         
-        var description: String {
+        var description: LocalizedStringResource {
             switch self {
-            case .breakfast: return "Breakfast"
-            case .lunch: return "Lunch"
-            case .dinner: return "Dinner"
-            case .snack: return "Snack"
+            case .breakfast: "Breakfast"
+            case .lunch: "Lunch"
+            case .dinner: "Dinner"
+            case .snack: "Snack"
             }
         }
         

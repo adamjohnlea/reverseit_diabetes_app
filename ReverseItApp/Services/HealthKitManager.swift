@@ -10,9 +10,9 @@ enum HealthKitError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .notAvailable:
-            return "Health data is not available on this device."
+            return String(localized: "Health data is not available on this device.")
         case .workoutSaveFailed:
-            return "The workout could not be saved to Apple Health."
+            return String(localized: "The workout could not be saved to Apple Health.")
         }
     }
 }

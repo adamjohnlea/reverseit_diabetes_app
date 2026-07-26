@@ -117,8 +117,8 @@ extension UserProfile {
         
         var errorDescription: String? {
             switch self {
-            case .invalidDate: return "Could not calculate date range"
-            case .fetchFailed: return "Failed to fetch data"
+            case .invalidDate: return String(localized: "Could not calculate date range")
+            case .fetchFailed: return String(localized: "Failed to fetch data")
             }
         }
     }
@@ -180,12 +180,12 @@ extension UserProfile {
             case fair
             case needsImprovement
             
-            var description: String {
+            var description: LocalizedStringResource {
                 switch self {
-                case .excellent: return "Excellent Control"
-                case .good: return "Good Control"
-                case .fair: return "Fair Control"
-                case .needsImprovement: return "Needs Improvement"
+                case .excellent: "Excellent Control"
+                case .good: "Good Control"
+                case .fair: "Fair Control"
+                case .needsImprovement: "Needs Improvement"
                 }
             }
         }

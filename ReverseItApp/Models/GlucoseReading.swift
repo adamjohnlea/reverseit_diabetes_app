@@ -18,13 +18,13 @@ final class GlucoseReading {
         case bedtime
         case random
         
-        var description: String {
+        var description: LocalizedStringResource {
             switch self {
-            case .fasting: return "Fasting"
-            case .beforeMeal: return "Before Meal"
-            case .afterMeal: return "After Meal"
-            case .bedtime: return "Bedtime"
-            case .random: return "Random Check"
+            case .fasting: "Fasting"
+            case .beforeMeal: "Before Meal"
+            case .afterMeal: "After Meal"
+            case .bedtime: "Bedtime"
+            case .random: "Random Check"
             }
         }
     }
@@ -50,11 +50,11 @@ final class GlucoseReading {
         case normal
         case high
 
-        var description: String {
+        var description: LocalizedStringResource {
             switch self {
-            case .low: return "Low"
-            case .normal: return "Normal"
-            case .high: return "High"
+            case .low: "Low"
+            case .normal: "Normal"
+            case .high: "High"
             }
         }
     }

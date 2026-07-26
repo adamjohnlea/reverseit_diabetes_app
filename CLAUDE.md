@@ -12,7 +12,11 @@ ReverseIt! is an iOS app (iOS 18+, Swift 6, strict concurrency) for type 2 diabe
 
 Targets: `ReverseItApp` (app), `ReverseItAppTests` (Swift Testing unit tests), `ReverseItAppUITests` (XCUIAutomation UI tests). One shared scheme: `ReverseItApp`.
 
-The project uses **explicit file references** (not synchronized folders), so new source files must be registered in the pbxproj — create them with the `XcodeWrite` MCP tool (which registers them) rather than plain filesystem writes.
+The project uses **explicit file references** (not synchronized folders), so new source files must be registered in the pbxproj — create them with the `XcodeWrite` MCP tool (which registers them) rather than plain filesystem writes. Resources (asset catalogs, string catalogs) additionally need a Resources build-phase entry.
+
+## Localization
+
+User-facing strings live in `ReverseItApp/Localizable.xcstrings`, auto-populated at build time (`SWIFT_EMIT_LOC_STRINGS` / `LOCALIZATION_PREFERS_STRING_CATALOGS` are on). English is the only language so far. When adding user-facing text: use `Text("literal")` in views (auto-extracted), `LocalizedStringResource` for display strings on model/non-view types (see the enum `description` properties), and `String(localized:)` for `errorDescription`. Use `Text(verbatim:)` for punctuation/symbols that must not be translated. A headless `xcodebuild` compiles strings into the product but doesn't sync them back to the source catalog — Xcode's editor does that on open, or run `xcodebuild -exportLocalizations`.
 
 ## Build Commands
 

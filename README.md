@@ -112,9 +112,8 @@ Built with Swift 6 and leveraging the latest Apple technologies (SwiftUI, SwiftD
   - Swipe-to-delete actions
 
 - **Data Management**
-  - iCloud sync across devices
-  - Automatic cleanup of old data (3+ months)
-  - Batch data import/export
+  - Local, on-device storage with SwiftData
+  - Import from and export to Apple Health
   - Reset option for fresh start
 
 ## Screenshots
@@ -126,10 +125,9 @@ _Coming soon_
 ### Frameworks & Libraries
 
 - **SwiftUI** - Modern declarative UI framework for all views
-- **SwiftData** - Apple's latest persistence framework (iOS 17+)
+- **SwiftData** - Apple's persistence framework, storing all data on-device
 - **Swift Charts** - Native charting for data visualization
-- **HealthKit** - Apple Health ecosystem integration
-- **CloudKit** - Cross-device data synchronization
+- **HealthKit** - Apple Health ecosystem integration (import/export)
 
 ### Swift Language Features
 
@@ -149,15 +147,14 @@ _Coming soon_
 
 ### Minimum Requirements
 
-- **iOS**: 17.0 or later
-- **Xcode**: 15.0 or later (for development)
-- **macOS**: Sonoma 14.0 or later (for development)
+- **iOS**: 18.0 or later
+- **Xcode**: 16.0 or later (for development)
 - **Swift**: 6.0
 
 ### Device Compatibility
 
-- iPhone running iOS 17+
-- iPad running iPadOS 17+
+- iPhone running iOS 18+
+- iPad running iPadOS 18+
 
 ## Installation
 
@@ -169,13 +166,8 @@ _App Store release coming soon_
 
 #### Prerequisites
 
-1. macOS with Xcode 15.0+ installed
-2. XcodeGen installed (for project generation)
-
-Install XcodeGen via Homebrew:
-```bash
-brew install xcodegen
-```
+- macOS with Xcode 16.0+ installed
+- [xcbeautify](https://github.com/cpisciotta/xcbeautify) and [SwiftLint](https://github.com/realm/SwiftLint) (`brew install xcbeautify swiftlint`) for the `make` workflow
 
 #### Setup Steps
 
@@ -185,25 +177,21 @@ git clone https://github.com/yourusername/reverseit_diabetes_app.git
 cd reverseit_diabetes_app
 ```
 
-2. Generate the Xcode project:
-```bash
-xcodegen generate
-```
-
-3. Open the project:
+2. Open the project:
 ```bash
 open ReverseItApp.xcodeproj
 ```
 
-4. Select your development team in Xcode:
-   - Open project settings
-   - Select the ReverseItApp target
-   - Go to "Signing & Capabilities"
-   - Select your team
+3. Select your development team in Xcode under the ReverseItApp target's Signing & Capabilities.
 
-5. Build and run:
-   - Select a simulator or connected device
-   - Press `Cmd + R` or click the Run button
+4. Build and run with `Cmd + R`, or from the command line:
+
+```bash
+make          # build
+make test     # unit tests
+make ui-test  # UI tests
+make lint     # swiftlint --strict
+```
 
 ## App Structure
 
@@ -211,24 +199,18 @@ open ReverseItApp.xcodeproj
 reverseit_diabetes_app/
 ├── ReverseItApp/
 │   ├── ReverseItApp.swift         # Main app entry point
-│   ├── Models/                    # SwiftData models
-│   │   ├── UserProfile.swift      # User profile and health goals
-│   │   ├── GlucoseReading.swift   # Blood glucose tracking
-│   │   ├── FoodEntry.swift        # Meal and nutrition logging
-│   │   └── ExerciseEntry.swift    # Physical activity tracking
-│   ├── Views/                     # SwiftUI views
-│   │   ├── ContentView.swift      # Main tab navigation
-│   │   ├── OnboardingView.swift   # First-time user setup
-│   │   ├── DashboardView.swift    # Main dashboard
-│   │   ├── GlucoseLogView.swift   # Glucose tracking interface
-│   │   ├── FoodLogView.swift      # Food logging interface
-│   │   ├── ExerciseLogView.swift  # Exercise tracking interface
-│   │   └── SettingsView.swift     # Settings and configuration
+│   ├── Models/                    # SwiftData models + ExerciseType enum
+│   ├── Views/                     # SwiftUI views (+ Components/)
+│   ├── Support/                   # Shared helpers (StatusStyle, BodyMeasurements)
 │   ├── Services/
 │   │   └── HealthKitManager.swift # Apple Health integration
+│   ├── Assets.xcassets            # App icon + accent color
+│   ├── Localizable.xcstrings      # String Catalog (localization)
 │   ├── Info.plist                 # App configuration
-│   └── ReverseIt.entitlements     # App capabilities
-├── project.yml                    # XcodeGen configuration
+│   └── ReverseIt.entitlements     # App capabilities (HealthKit)
+├── ReverseItAppTests/             # Swift Testing unit tests
+├── ReverseItAppUITests/           # XCUIAutomation UI tests
+├── Makefile                       # build / test / ui-test / lint
 └── README.md                      # This file
 ```
 
@@ -366,7 +348,6 @@ The app requests permission to read and write the following HealthKit data types
 ### Data Storage
 
 - All data stored locally on device using SwiftData
-- Optional iCloud sync via CloudKit (encrypted in transit and at rest)
 - No third-party servers or analytics
 - No data sharing without explicit user consent
 
@@ -379,8 +360,8 @@ The app requests permission to read and write the following HealthKit data types
 
 ### Data Retention
 
-- Glucose readings automatically archived after 3 months
-- Users can manually reset all data via Settings
+- Data is retained on device until the user deletes it
+- Users can delete individual entries, or reset all data via Settings
 - Deletion is permanent and immediate
 
 ## Contributing

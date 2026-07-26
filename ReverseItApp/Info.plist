@@ -19,11 +19,13 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>ManageIt! uses the camera to scan nutrition-facts labels so it can fill in food details for you.</string>
+	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+	<string>ManageIt! saves the glucose readings, meals, and workouts you log to Apple Health so your health data stays consistent across your apps.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>ManageIt! reads your glucose, nutrition, weight, and workout data from Apple Health so it can show your progress and keep your log up to date.</string>
 	<key>NSHealthUpdateUsageDescription</key>
@@ -33,8 +35,8 @@
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<true/>
 	</dict>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<key>UILaunchScreen</key>
+	<dict/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

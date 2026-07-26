@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2FD37A"/>
+      <stop offset="1" stop-color="#0C8F86"/>
+    </linearGradient>
+    <filter id="sh2" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#004b3f" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg2)"/>
+  <!-- counter-clockwise reverse arc (~280 deg) -->
+  <g filter="url(#sh2)">
+    <path d="M512,250
+             A 262,262 0 1 0 774,512"
+          fill="none" stroke="#ffffff" stroke-width="60" stroke-linecap="round"/>
+    <!-- arrowhead at top opening -->
+    <path d="M512,250 l -104,-8 M512,250 l 6,-104"
+          fill="none" stroke="#ffffff" stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- central glucose droplet -->
+  <path d="M512,392
+           C 560,472 606,512 606,566
+           C 606,624 564,668 512,668
+           C 460,668 418,624 418,566
+           C 418,512 464,472 512,392 Z"
+        fill="#ffffff" filter="url(#sh2)"/>
+  <circle cx="512" cy="576" r="30" fill="#0C8F86"/>
+</svg>

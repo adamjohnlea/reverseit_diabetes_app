@@ -12,7 +12,8 @@ enum TestSupport {
             FoodEntry.self,
             ExerciseEntry.self,
             GamificationProfile.self,
-            EarnedAchievement.self
+            EarnedAchievement.self,
+            GoalPeriod.self
         ])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [configuration])

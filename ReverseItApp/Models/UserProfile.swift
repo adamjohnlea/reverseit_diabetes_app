@@ -229,6 +229,9 @@ extension ModelContext {
         try delete(model: GlucoseReading.self)
         try delete(model: FoodEntry.self)
         try delete(model: ExerciseEntry.self)
+        try delete(model: EarnedAchievement.self)
+        try delete(model: GamificationProfile.self)
+        try delete(model: GoalPeriod.self)
         try delete(model: UserProfile.self)
         try save()
     }

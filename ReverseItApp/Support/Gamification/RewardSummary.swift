@@ -42,9 +42,16 @@ extension GamificationProfile {
     }
 
     /// The most recently earned achievement, resolved to its catalog entry.
+    ///
+    /// Badges unlocked together in a single refresh share an `earnedDate`, so a
+    /// secondary sort on `achievementID` keeps the chosen "latest" stable across
+    /// calls and app launches rather than implementation-defined.
     func mostRecentAchievement(modelContext: ModelContext) throws -> Achievement? {
         var descriptor = FetchDescriptor<EarnedAchievement>(
-            sortBy: [SortDescriptor(\.earnedDate, order: .reverse)]
+            sortBy: [
+                SortDescriptor(\.earnedDate, order: .reverse),
+                SortDescriptor(\.achievementID)
+            ]
         )
         descriptor.fetchLimit = 1
         guard let earned = try modelContext.fetch(descriptor).first else { return nil }
